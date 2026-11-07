@@ -7,12 +7,12 @@ import { cn } from "@/lib/cn";
 
 export function PageHeader({ title, description, actions }: { title: string; description?: ReactNode; actions?: ReactNode }) {
   return (
-    <div className="mb-6 flex flex-wrap items-start justify-between gap-4 border-b border-line pb-5">
+    <div className="mb-8 flex flex-wrap items-start justify-between gap-4 border-b border-line pb-6">
       <div className="min-w-0">
-        <h1 className="text-3xl font-semibold">{title}</h1>
-        {description ? <p className="mt-1 max-w-2xl text-ink-soft">{description}</p> : null}
+        <h1 className="text-3xl font-extrabold tracking-tight text-ink">{title}</h1>
+        {description ? <div className="mt-1.5 max-w-2xl text-sm sm:text-base text-ink-soft leading-relaxed">{description}</div> : null}
       </div>
-      {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
+      {actions ? <div className="flex flex-wrap items-center gap-2.5">{actions}</div> : null}
     </div>
   );
 }
@@ -21,24 +21,28 @@ export function PageHeader({ title, description, actions }: { title: string; des
 
 type Tone = "neutral" | "success" | "warning" | "danger" | "info";
 const tones: Record<Tone, string> = {
-  neutral: "bg-paper text-ink-soft border-line-strong",
-  success: "bg-brand-tint text-brand-dark border-brand",
-  warning: "bg-ember-tint text-ember border-ember",
-  danger: "bg-danger-tint text-danger border-danger",
-  info: "bg-surface text-ink border-line-strong",
+  neutral: "bg-slate-100 text-slate-700 border-slate-200",
+  success: "bg-emerald-50 text-emerald-800 border-emerald-200",
+  warning: "bg-amber-50 text-amber-800 border-amber-200",
+  danger: "bg-red-50 text-red-800 border-red-200",
+  info: "bg-blue-50 text-blue-800 border-blue-200",
 };
 
 export function Badge({ tone = "neutral", children }: { tone?: Tone; children: ReactNode }) {
-  return <span className={cn("inline-flex items-center whitespace-nowrap rounded-sm border px-2 py-0.5 text-sm font-semibold", tones[tone])}>{children}</span>;
+  return (
+    <span className={cn("inline-flex items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-bold", tones[tone])}>
+      {children}
+    </span>
+  );
 }
 
 /* ------------------------------------------------------------ empty / notice */
 
 export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="rounded-lg border border-dashed border-line-strong bg-surface px-6 py-12 text-center">
-      <p className="font-serif text-xl font-semibold">{title}</p>
-      {children ? <div className="mx-auto mt-2 max-w-md text-ink-soft">{children}</div> : null}
+    <div className="rounded-2xl border border-dashed border-line-strong bg-surface px-6 py-14 text-center shadow-xs">
+      <p className="text-xl font-bold text-ink">{title}</p>
+      {children ? <div className="mx-auto mt-2 max-w-md text-sm text-ink-soft">{children}</div> : null}
     </div>
   );
 }
@@ -49,7 +53,7 @@ export type TabItem = { href: string; label: string; count?: number; active: boo
 
 export function LinkTabs({ items, label }: { items: TabItem[]; label: string }) {
   return (
-    <nav aria-label={label} className="-mx-4 mb-5 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+    <nav aria-label={label} className="-mx-4 mb-6 overflow-x-auto px-4 sm:mx-0 sm:px-0">
       <ul className="flex min-w-max gap-1 border-b border-line">
         {items.map((t) => (
           <li key={t.label}>
@@ -57,12 +61,18 @@ export function LinkTabs({ items, label }: { items: TabItem[]; label: string }) 
               href={t.href as Route}
               aria-current={t.active ? "page" : undefined}
               className={cn(
-                "-mb-px inline-flex min-h-11 items-center gap-2 border-b-2 px-4 no-underline",
-                t.active ? "border-brand font-semibold text-ink" : "border-transparent text-ink-soft hover:text-ink",
+                "-mb-px inline-flex min-h-11 items-center gap-2 border-b-2 px-4 text-sm font-semibold transition-all no-underline",
+                t.active
+                  ? "border-brand text-brand-dark font-bold"
+                  : "border-transparent text-ink-soft hover:border-slate-300 hover:text-ink",
               )}
             >
-              {t.label}
-              {t.count !== undefined ? <span className="rounded-sm bg-paper px-1.5 text-sm text-muted">{t.count}</span> : null}
+              <span>{t.label}</span>
+              {t.count !== undefined ? (
+                <span className={cn("rounded-full px-2 py-0.5 text-xs font-bold", t.active ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600")}>
+                  {t.count}
+                </span>
+              ) : null}
             </Link>
           </li>
         ))}
@@ -92,9 +102,12 @@ export function SearchBox({
         defaultValue={defaultValue}
         placeholder={placeholder}
         maxLength={100}
-        className="min-h-11 w-full min-w-0 rounded-md border border-line-strong bg-surface px-3 text-base"
+        className="min-h-11 w-full min-w-0 rounded-xl border border-line-strong bg-surface px-4 text-sm text-ink shadow-2xs placeholder:text-muted/60 focus:border-brand-dark focus:outline-none focus:ring-4 focus:ring-brand/15"
       />
-      <button type="submit" className="min-h-11 rounded-md border border-line-strong bg-surface px-4 font-semibold hover:bg-brand-tint">
+      <button
+        type="submit"
+        className="min-h-11 rounded-xl border border-line-strong bg-surface px-4 text-sm font-semibold text-ink shadow-2xs hover:bg-slate-50 cursor-pointer"
+      >
         {label}
       </button>
     </form>
@@ -107,33 +120,33 @@ export function Pagination({ page, pages, hrefFor, total, pageSize }: { page: nu
   if (pages <= 1) return null;
   const from = (page - 1) * pageSize + 1;
   const to = Math.min(page * pageSize, total);
-  const link = "inline-flex min-h-11 items-center rounded-md border border-line-strong bg-surface px-4 font-semibold no-underline hover:bg-brand-tint";
-  const off = "inline-flex min-h-11 items-center rounded-md border border-line bg-paper px-4 text-muted";
+  const link = "inline-flex min-h-10 items-center rounded-xl border border-line-strong bg-surface px-3.5 text-sm font-semibold text-ink shadow-2xs no-underline hover:bg-slate-50";
+  const off = "inline-flex min-h-10 items-center rounded-xl border border-line bg-paper px-3.5 text-sm text-muted cursor-not-allowed opacity-60";
   return (
-    <nav aria-label="Pages" className="mt-5 flex flex-wrap items-center justify-between gap-3">
-      <p className="text-sm text-muted">
-        Showing {from} to {to} of {total}
+    <nav aria-label="Pages" className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line/80 pt-4">
+      <p className="text-xs font-medium text-muted">
+        Inaonyesha <span className="font-bold text-ink">{from}</span> hadi <span className="font-bold text-ink">{to}</span> kati ya <span className="font-bold text-ink">{total}</span>
       </p>
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         {page > 1 ? (
           <Link href={hrefFor(page - 1) as Route} className={link} rel="prev">
-            Previous
+            &larr; Nyuma
           </Link>
         ) : (
           <span className={off} aria-disabled="true">
-            Previous
+            &larr; Nyuma
           </span>
         )}
-        <span className="inline-flex min-h-11 items-center px-2 text-ink-soft">
-          Page {page} of {pages}
+        <span className="inline-flex min-h-10 items-center px-2 text-xs font-bold text-ink">
+          Ukurasa {page} wa {pages}
         </span>
         {page < pages ? (
           <Link href={hrefFor(page + 1) as Route} className={link} rel="next">
-            Next
+            Mbele &rarr;
           </Link>
         ) : (
           <span className={off} aria-disabled="true">
-            Next
+            Mbele &rarr;
           </span>
         )}
       </div>
@@ -146,7 +159,7 @@ export function Pagination({ page, pages, hrefFor, total, pageSize }: { page: nu
 /** A real table on wide screens, stacked cards on phones. Cells show their label on small screens. */
 export function DataTable({ children, label }: { children: ReactNode; label: string }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-line bg-surface">
+    <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-2xs">
       <table aria-label={label} className="block w-full border-collapse md:table">
         {children}
       </table>
@@ -157,13 +170,13 @@ export function DataTable({ children, label }: { children: ReactNode; label: str
 export function THead({ children }: { children: ReactNode }) {
   return (
     <thead className="sr-only md:not-sr-only md:table-header-group">
-      <tr className="md:table-row md:border-b md:border-line md:bg-paper">{children}</tr>
+      <tr className="md:table-row md:border-b md:border-line md:bg-slate-50">{children}</tr>
     </thead>
   );
 }
 
 export function Th({ children, className }: { children?: ReactNode; className?: string }) {
-  return <th scope="col" className={cn("px-4 py-3 text-left text-sm font-semibold uppercase tracking-wider text-muted", className)}>{children}</th>;
+  return <th scope="col" className={cn("px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-muted", className)}>{children}</th>;
 }
 
 export function TBody({ children }: { children: ReactNode }) {
@@ -171,7 +184,7 @@ export function TBody({ children }: { children: ReactNode }) {
 }
 
 export function Tr({ children, unread = false }: { children: ReactNode; unread?: boolean }) {
-  return <tr className={cn("block px-4 py-3 md:table-row md:p-0", unread && "bg-brand-tint/50")}>{children}</tr>;
+  return <tr className={cn("block px-4 py-3 md:table-row md:p-0 transition-colors hover:bg-slate-50/70", unread && "bg-emerald-50/60 font-semibold")}>{children}</tr>;
 }
 
 export function Td({ label, children, className }: { label: string; children: ReactNode; className?: string }) {
@@ -179,7 +192,7 @@ export function Td({ label, children, className }: { label: string; children: Re
     <td
       data-label={label}
       className={cn(
-        "flex items-baseline justify-between gap-4 py-1 before:shrink-0 before:text-sm before:font-semibold before:text-muted before:content-[attr(data-label)] md:table-cell md:px-4 md:py-3 md:align-middle md:before:content-none",
+        "flex items-baseline justify-between gap-4 py-1.5 before:shrink-0 before:text-xs before:font-bold before:uppercase before:tracking-wider before:text-muted before:content-[attr(data-label)] md:table-cell md:px-4 md:py-3.5 md:align-middle md:before:content-none text-sm text-ink",
         className,
       )}
     >
@@ -194,7 +207,7 @@ export function Notice({ notices, code }: { notices: Record<string, string>; cod
   const text = code ? notices[code] : undefined;
   if (!text) return null;
   return (
-    <div role="status" className="mb-5 rounded-md border-l-4 border-brand bg-brand-tint px-4 py-3">
+    <div role="status" className="mb-6 rounded-2xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-950 shadow-2xs">
       {text}
     </div>
   );

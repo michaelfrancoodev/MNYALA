@@ -37,22 +37,35 @@ export function GalleryGrid({ items }: { items: GalleryEntry[] }) {
 
   return (
     <>
-      <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, i) => (
           <li key={item.id}>
             <button
               type="button"
               onClick={() => setIndex(i)}
-              className="group block w-full text-left"
+              className="group block w-full text-left rounded-2xl border border-line bg-surface p-3 shadow-2xs hover:shadow-lg hover:border-brand/40 transition-all duration-300 cursor-pointer"
               aria-label={`Fungua picha: ${item.title}`}
             >
-              <MediaImage
-                image={item.image}
-                sizes="(min-width: 1024px) 22rem, (min-width: 640px) 50vw, 100vw"
-                className="aspect-[4/3] w-full rounded-md border border-line object-cover transition-opacity group-hover:opacity-90"
-              />
-              <span className="mt-2 block font-serif text-lg font-semibold">{item.title}</span>
-              <span className="block text-sm text-muted">{item.categoryLabel}</span>
+              <div className="overflow-hidden rounded-xl bg-slate-100">
+                <MediaImage
+                  image={item.image}
+                  sizes="(min-width: 1024px) 22rem, (min-width: 640px) 50vw, 100vw"
+                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-2 pt-3">
+                <span className="inline-block rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-800">
+                  {item.categoryLabel}
+                </span>
+                <span className="mt-1.5 block text-base font-bold text-ink group-hover:text-brand-dark transition-colors">
+                  {item.title}
+                </span>
+                {item.description ? (
+                  <span className="mt-1 block text-xs text-ink-soft line-clamp-2">
+                    {item.description}
+                  </span>
+                ) : null}
+              </div>
             </button>
           </li>
         ))}
@@ -65,31 +78,46 @@ export function GalleryGrid({ items }: { items: GalleryEntry[] }) {
         onClick={(e) => {
           if (e.target === dialog.current) setIndex(null);
         }}
-        className="m-auto max-h-[94vh] w-[min(94vw,64rem)] overflow-auto rounded-md border border-line bg-paper p-0 backdrop:bg-black/70"
+        className="m-auto max-h-[94vh] w-[min(94vw,64rem)] overflow-auto rounded-3xl border border-line bg-surface p-0 shadow-2xl backdrop:bg-black/70"
       >
         {current ? (
-          <div className="p-4 sm:p-6">
-            <MediaImage image={current.image} sizes="94vw" className="mx-auto max-h-[68vh] w-auto max-w-full rounded-md object-contain" />
-            <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
+          <div className="p-6 sm:p-8">
+            <MediaImage image={current.image} sizes="94vw" className="mx-auto max-h-[68vh] w-auto max-w-full rounded-2xl object-contain shadow-md" />
+            <div className="mt-6 flex flex-wrap items-start justify-between gap-4 border-t border-line/80 pt-5">
               <div>
-                <p className="font-serif text-xl font-semibold">{current.title}</p>
-                {current.description ? <p className="mt-1 text-ink-soft">{current.description}</p> : null}
-                <p className="mt-1 text-sm text-muted">
+                <span className="inline-block rounded-md bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
+                  {current.categoryLabel}
+                </span>
+                <p className="mt-1 text-2xl font-bold text-ink">{current.title}</p>
+                {current.description ? <p className="mt-2 text-sm text-ink-soft max-w-xl">{current.description}</p> : null}
+                <p className="mt-2 text-xs font-semibold text-muted">
                   Picha {(index ?? 0) + 1} kati ya {items.length}
                 </p>
               </div>
               <div className="flex gap-2">
                 {items.length > 1 ? (
                   <>
-                    <button type="button" onClick={() => step(-1)} className="min-h-11 rounded-md border border-line-strong bg-surface px-4 font-semibold">
+                    <button
+                      type="button"
+                      onClick={() => step(-1)}
+                      className="min-h-10 rounded-xl border border-line-strong bg-surface px-4 text-sm font-semibold text-ink shadow-2xs hover:bg-slate-50 cursor-pointer"
+                    >
                       Iliyotangulia
                     </button>
-                    <button type="button" onClick={() => step(1)} className="min-h-11 rounded-md border border-line-strong bg-surface px-4 font-semibold">
+                    <button
+                      type="button"
+                      onClick={() => step(1)}
+                      className="min-h-10 rounded-xl border border-line-strong bg-surface px-4 text-sm font-semibold text-ink shadow-2xs hover:bg-slate-50 cursor-pointer"
+                    >
                       Inayofuata
                     </button>
                   </>
                 ) : null}
-                <button type="button" onClick={() => setIndex(null)} className="min-h-11 rounded-md border border-brand-dark bg-brand px-4 font-semibold text-white">
+                <button
+                  type="button"
+                  onClick={() => setIndex(null)}
+                  className="min-h-10 rounded-xl bg-slate-900 px-5 text-sm font-semibold text-white shadow-2xs hover:bg-black cursor-pointer"
+                >
                   Funga
                 </button>
               </div>

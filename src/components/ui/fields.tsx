@@ -3,8 +3,10 @@ import { useId } from "react";
 import { cn } from "@/lib/cn";
 
 const control =
-  "block w-full rounded-md border bg-surface px-3 py-2 text-base text-ink " +
-  "placeholder:text-muted disabled:bg-paper disabled:text-muted";
+  "block w-full rounded-xl border bg-surface px-4 py-2.5 text-base text-ink shadow-2xs " +
+  "placeholder:text-muted/60 transition-all duration-200 " +
+  "focus:outline-none focus:ring-4 focus:ring-brand/15 focus:border-brand-dark " +
+  "disabled:bg-paper disabled:text-muted disabled:cursor-not-allowed";
 
 type Common = { label: string; hint?: ReactNode; error?: string; wrapperClassName?: string };
 
@@ -19,18 +21,18 @@ function Shell({
 }: Common & { id: string; required?: boolean; children: ReactNode }) {
   return (
     <div className={cn("space-y-1.5", wrapperClassName)}>
-      <label htmlFor={id} className="block text-sm font-semibold text-ink">
+      <label htmlFor={id} className="block text-xs font-bold uppercase tracking-wider text-ink-soft">
         {label}
         {required ? <span className="text-danger" aria-hidden="true"> *</span> : null}
       </label>
       {children}
       {hint && !error ? (
-        <p id={`${id}-hint`} className="text-sm text-muted">
+        <p id={`${id}-hint`} className="text-xs font-medium text-muted">
           {hint}
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className="text-sm font-semibold text-danger">
+        <p id={`${id}-error`} className="text-xs font-semibold text-danger">
           {error}
         </p>
       ) : null}
@@ -55,7 +57,7 @@ export function TextField({
         required={required}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, hint, error)}
-        className={cn(control, error ? "border-danger" : "border-line-strong", className)}
+        className={cn(control, error ? "border-danger focus:border-danger focus:ring-danger/15 bg-danger-tint/10" : "border-line-strong", className)}
         {...rest}
       />
     </Shell>
@@ -74,7 +76,7 @@ export function TextAreaField({
         required={required}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, hint, error)}
-        className={cn(control, "min-h-32", error ? "border-danger" : "border-line-strong", className)}
+        className={cn(control, "min-h-32 resize-y", error ? "border-danger focus:border-danger focus:ring-danger/15 bg-danger-tint/10" : "border-line-strong", className)}
         {...rest}
       />
     </Shell>
@@ -93,7 +95,7 @@ export function SelectField({
         required={required}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, hint, error)}
-        className={cn(control, error ? "border-danger" : "border-line-strong", className)}
+        className={cn(control, error ? "border-danger focus:border-danger focus:ring-danger/15 bg-danger-tint/10" : "border-line-strong", className)}
         {...rest}
       >
         {children}

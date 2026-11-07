@@ -26,12 +26,25 @@ export function ContactForm({ defaults, renderedAt }: { defaults: Defaults; rend
 
   if (state?.ok) {
     return (
-      <div className="rounded-lg border border-brand bg-brand-tint p-6" role="status">
-        <h2 className="text-2xl font-semibold">Asante</h2>
-        <p className="mt-2 text-lg">{state.message}</p>
-        <p className="mt-5">
-          <a href="/wasiliana" className="font-semibold">
-            Tuma ujumbe mwingine
+      <div className="rounded-2xl border border-emerald-300 bg-emerald-50/80 p-8 shadow-xs" role="status">
+        <div className="flex items-center gap-3">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xs">
+            <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-emerald-950">Ujumbe Umepokelewa!</h2>
+            <p className="text-sm text-emerald-800">Asante kwa kuwasiliana na Mnyala Co. Ltd.</p>
+          </div>
+        </div>
+        <p className="mt-4 text-base text-emerald-900 leading-relaxed">{state.message}</p>
+        <p className="mt-6">
+          <a
+            href="/wasiliana"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-800 hover:text-emerald-950 underline underline-offset-4"
+          >
+            Tuma ujumbe mwingine &rarr;
           </a>
         </p>
       </div>
@@ -42,7 +55,7 @@ export function ContactForm({ defaults, renderedAt }: { defaults: Defaults; rend
   const sureField = (key: string) => errors[key]?.[0];
 
   return (
-    <form action={action} className="space-y-5" noValidate>
+    <form action={action} className="space-y-6" noValidate>
       <div ref={summary} tabIndex={-1} className="outline-none">
         {failed?.message ? <Alert tone="error">{failed.message}</Alert> : null}
         {failed && !failed.message && Object.keys(errors).length > 0 ? (
@@ -50,58 +63,68 @@ export function ContactForm({ defaults, renderedAt }: { defaults: Defaults; rend
         ) : null}
       </div>
 
-      <TextField
-        label="Jina kamili"
-        name="fullName"
-        autoComplete="name"
-        required
-        defaultValue={values.fullName}
-        error={sureField("fullName")}
-        maxLength={120}
-      />
-      <TextField
-        label="Barua pepe"
-        name="email"
-        type="email"
-        autoComplete="email"
-        inputMode="email"
-        required
-        defaultValue={values.email}
-        error={sureField("email")}
-        maxLength={254}
-      />
-      <TextField
-        label="Namba ya simu (si lazima)"
-        name="phone"
-        type="tel"
-        autoComplete="tel"
-        inputMode="tel"
-        hint="Mfano: 0758 730 108"
-        defaultValue={values.phone}
-        error={sureField("phone")}
-        maxLength={30}
-      />
-      <SelectField
-        label="Kichwa cha ujumbe"
-        name="subject"
-        required
-        defaultValue={values.subject ?? defaults.subject}
-        error={sureField("subject")}
-      >
-        <option value="" disabled>
-          Chagua kimoja
-        </option>
-        {(Object.keys(MESSAGE_SUBJECT) as Array<keyof typeof MESSAGE_SUBJECT>).map((key) => (
-          <option key={key} value={key}>
-            {MESSAGE_SUBJECT[key]}
+      <div className="grid gap-5 sm:grid-cols-2">
+        <TextField
+          label="Jina kamili"
+          name="fullName"
+          autoComplete="name"
+          required
+          placeholder="Mfano: Juma Shabani"
+          defaultValue={values.fullName}
+          error={sureField("fullName")}
+          maxLength={120}
+        />
+        <TextField
+          label="Barua pepe"
+          name="email"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          required
+          placeholder="juma@example.com"
+          defaultValue={values.email}
+          error={sureField("email")}
+          maxLength={254}
+        />
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <TextField
+          label="Namba ya simu (si lazima)"
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          inputMode="tel"
+          hint="Mfano: 0758 730 108"
+          placeholder="07XX XXX XXX"
+          defaultValue={values.phone}
+          error={sureField("phone")}
+          maxLength={30}
+        />
+        <SelectField
+          label="Kichwa cha ujumbe"
+          name="subject"
+          required
+          defaultValue={values.subject ?? defaults.subject}
+          error={sureField("subject")}
+        >
+          <option value="" disabled>
+            Chagua kimoja
           </option>
-        ))}
-      </SelectField>
+          {(Object.keys(MESSAGE_SUBJECT) as Array<keyof typeof MESSAGE_SUBJECT>).map((key) => (
+            <option key={key} value={key}>
+              {MESSAGE_SUBJECT[key]}
+            </option>
+          ))}
+        </SelectField>
+      </div>
+
       <TextAreaField
         label="Ujumbe"
         name="message"
         required
-        rows={6}
+        rows={5}
+        placeholder="Andika ujumbe au mahitaji yako ya bidhaa..."
         defaultValue={values.message ?? defaults.message}
         error={sureField("message")}
         hint={`${count} kati ya herufi ${MESSAGE_MAX}`}
@@ -118,14 +141,14 @@ export function ContactForm({ defaults, renderedAt }: { defaults: Defaults; rend
         </label>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4">
-        <SubmitButton pendingLabel="Inatuma..." size="md">
-          Tuma ujumbe
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-line/80 pt-5">
+        <SubmitButton pendingLabel="Inatuma ujumbe..." size="md" className="w-full sm:w-auto">
+          Tuma Ujumbe Sasa
         </SubmitButton>
-        <p className="text-sm text-muted">
-          Kwa kutuma, unakubali taarifa hizi zitumike kukujibu.{" "}
-          <a href="/faragha" className="font-semibold">
-            Soma sera ya faragha
+        <p className="text-xs text-muted">
+          Taarifa zako zitalindwa kwa mujibu wa{" "}
+          <a href="/faragha" className="font-semibold text-brand-dark hover:underline">
+            Sera ya Faragha
           </a>
           .
         </p>

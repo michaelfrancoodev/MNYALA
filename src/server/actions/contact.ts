@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import { getEnv } from "@/lib/env";
 import { contactSchema } from "@/lib/validators/contact";
@@ -38,6 +39,8 @@ export async function submitContactAction(_prev: ActionState | null, fd: FormDat
       { ip },
     );
     if (!result.ok) return { ok: false, message: TOO_MANY, values };
+    revalidatePath("/admin");
+    revalidatePath("/admin/messages");
     return { ok: true, message: SUCCESS, id: result.id };
   } catch {
     return { ok: false, message: TRY_AGAIN, values };

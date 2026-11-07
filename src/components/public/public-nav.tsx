@@ -4,6 +4,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { buttonClasses } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { COMMON, NAV } from "@/messages/sw";
 
@@ -21,58 +22,77 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
 
   return (
     <>
-      <nav aria-label="Menyu kuu" className="hidden lg:block">
-        <ul className="flex items-center gap-1">
-          {NAV.map((item) => {
-            const active = isActive(pathname, item.href);
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href as Route}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "inline-flex min-h-11 items-center whitespace-nowrap border-b-2 px-3 text-base no-underline",
-                    active ? "border-brand font-semibold text-ink" : "border-transparent text-ink-soft hover:border-line-strong hover:text-ink",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <div className="hidden items-center gap-3 lg:flex">
+        <nav aria-label="Menyu kuu">
+          <ul className="flex items-center gap-1.5">
+            {NAV.map((item) => {
+              const active = isActive(pathname, item.href);
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href as Route}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "inline-flex items-center rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-150 no-underline",
+                      active
+                        ? "bg-brand text-white shadow-xs"
+                        : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-800",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+        <Link href="/wasiliana" className={buttonClasses("primary", "sm", "ml-2")}>
+          Agiza Sasa
+        </Link>
+      </div>
 
       <button
         type="button"
         onClick={() => dialog.current?.showModal()}
         aria-haspopup="dialog"
-        className="min-h-11 rounded-md border border-line-strong bg-surface px-4 font-semibold text-ink lg:hidden"
+        className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-line-strong bg-surface px-3.5 text-sm font-semibold text-ink shadow-2xs hover:bg-slate-50 lg:hidden cursor-pointer"
       >
-        {COMMON.menu}
+        <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+        <span>{COMMON.menu}</span>
       </button>
 
       <dialog
         ref={dialog}
         aria-label={COMMON.menu}
-        className="m-0 ml-auto h-full max-h-none w-80 max-w-[88vw] overflow-y-auto border-l border-line bg-paper p-0 backdrop:bg-black/40"
+        className="m-0 ml-auto h-full max-h-none w-80 max-w-[88vw] overflow-y-auto border-l border-line bg-surface p-0 shadow-2xl backdrop:bg-black/50"
         onClick={(e) => {
           if (e.target === dialog.current) dialog.current?.close();
         }}
       >
-        <div className="flex min-h-full flex-col p-5">
+        <div className="flex min-h-full flex-col p-6">
           <div className="mb-6 flex items-center justify-between">
-            <p className="font-serif text-xl font-semibold text-brand-dark">Mnyala</p>
+            <div>
+              <p className="text-xl font-bold text-ink">Mnyala Co. Ltd</p>
+              <p className="text-xs font-semibold text-muted">Nishati Safi Mbeya</p>
+            </div>
             <button
               type="button"
               onClick={() => dialog.current?.close()}
-              className="min-h-11 rounded-md border border-line-strong bg-surface px-4 font-semibold text-ink"
+              className="inline-flex size-9 items-center justify-center rounded-xl border border-line-strong bg-surface text-ink hover:bg-slate-50 cursor-pointer"
+              aria-label={COMMON.close}
             >
-              {COMMON.close}
+              <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
             </button>
           </div>
           <nav aria-label="Menyu ya simu">
-            <ul className="divide-y divide-line border-y border-line">
+            <ul className="space-y-1">
               {NAV.map((item) => {
                 const active = isActive(pathname, item.href);
                 return (
@@ -80,7 +100,10 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
                     <Link
                       href={item.href as Route}
                       aria-current={active ? "page" : undefined}
-                      className={cn("block py-3.5 font-serif text-xl no-underline", active ? "font-semibold text-brand-dark" : "text-ink")}
+                      className={cn(
+                        "block rounded-xl px-4 py-3 text-base font-semibold no-underline transition-all",
+                        active ? "bg-brand text-white shadow-xs" : "text-slate-800 hover:bg-slate-100",
+                      )}
                     >
                       {item.label}
                     </Link>
@@ -93,7 +116,7 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
             {phoneHref ? (
               <a
                 href={phoneHref}
-                className="flex min-h-12 items-center justify-center rounded-md border border-brand-dark bg-brand px-5 font-semibold text-white no-underline"
+                className={buttonClasses("primary", "md", "w-full")}
               >
                 {COMMON.call}
               </a>
@@ -101,7 +124,7 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
             {whatsappHref ? (
               <a
                 href={whatsappHref}
-                className="flex min-h-12 items-center justify-center rounded-md border border-line-strong bg-surface px-5 font-semibold text-ink no-underline"
+                className={buttonClasses("secondary", "md", "w-full")}
               >
                 {COMMON.whatsapp}
               </a>

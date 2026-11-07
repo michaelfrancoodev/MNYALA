@@ -7,7 +7,7 @@ import { COMMON } from "@/messages/sw";
 import { getPublishedGallery, getSiteSettings } from "@/server/services/site";
 
 export const metadata: Metadata = {
-  title: "Kuhusu sisi",
+  title: "Kuhusu Sisi",
   description:
     "Mnyala Co. Ltd ni kampuni ya Kitanzania inayotengeneza mkaa safi, majiko, mbegu na mbolea asilia kutokana na matunda ya mti wa mbono.",
 };
@@ -18,21 +18,24 @@ export default async function AboutPage() {
 
   return (
     <>
-      <PageHeading eyebrow="Kuhusu sisi" title="Tunageuza matunda ya mbono kuwa nishati endelevu">
+      <PageHeading eyebrow="Kuhusu Kampuni" title="Tunageuza Matunda ya Mbono Kuwa Nishati Endelevu">
         <p>
-          Tunatengeneza mkaa safi, majiko, mbegu na mbolea asilia kutokana na matunda ya mti wa mbono (Jatropha curcas). Lengo
-          letu ni kulinda misitu, kupunguza taka na kutoa nishati safi kwa jamii.
+          Mnyala Co. Ltd inatengeneza mkaa safi wa kisasa, majiko ya ufanisi, mbegu za mbono (Jatropha curcas), na mbolea asilia
+          kutokana na matunda ya mti wa mbono. Lengo letu ni kulinda misitu ya asili, kupunguza moshi majumbani, na kutoa nishati
+          safi na ya bei nafuu kwa jamii ya Tanzania.
         </p>
       </PageHeading>
 
-      <section className="border-b border-line">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1.3fr_1fr]">
-          <div className="max-w-prose space-y-5 text-lg">
-            <h2 className="text-3xl font-semibold">Sisi ni nani</h2>
+      {/* Sisi ni Nani */}
+      <section className="border-b border-line bg-paper py-16 sm:py-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.2fr_1fr]">
+          <div className="space-y-5 text-base sm:text-lg text-ink-soft leading-relaxed">
+            <span className="text-xs font-bold uppercase tracking-wider text-brand">Utambulisho Wetu</span>
+            <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Sisi ni Nani</h2>
             <p>
-              Mnyala Company Limited ni kampuni ya Kitanzania iliyojitolea kutengeneza mkaa wa ubora wa juu kutokana na matunda ya
-              mti wa mbono (Jatropha curcas). Tunaamini kuwa matunda haya ni rasilimali muhimu yanayoweza kugeuzwa kuwa nishati
-              safi huku tukilinda mazingira yetu.
+              Mnyala Company Limited ni kampuni ya Kitanzania yenye makao makuu jijini Mbeya, iliyojitolea kutengeneza mkaa wa ubora
+              wa juu kutokana na matunda ya mti wa mbono (Jatropha curcas). Tunaamini kuwa matunda haya ni rasilimali mbadala yenye
+              thamani kubwa inayoweza kuokoa maelfu ya miti inayokatwa kila siku kwa ajili ya mkaa wa kuni.
             </p>
             <p>
               Bidhaa zetu zinatoa suluhisho la gharama nafuu, salama na endelevu badala ya mkaa wa kawaida, zikisaidia familia na
@@ -43,74 +46,89 @@ export default async function AboutPage() {
               kwa wakulima wanaotaka kuanza kilimo cha mti huu wa thamani.
             </p>
           </div>
-          {photo ? (
-            <MediaImage image={photo} sizes="(min-width: 1024px) 24rem, 100vw" className="aspect-[4/3] w-full rounded-md border border-line object-cover lg:self-start" />
-          ) : null}
-        </div>
-      </section>
 
-      <section className="border-b border-line bg-surface">
-        <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
-          <h2 className="text-3xl font-semibold">Hadithi yetu</h2>
-          <div className="mt-5 max-w-prose space-y-5 text-lg">
-            <p>
-              Mnyala Company ilianzishwa kwa dira moja rahisi: kugeuza rasilimali za kilimo kuwa bidhaa za nishati zenye thamani.
-              Tuliona kiwango cha ukataji wa miti kinaongezeka, tukabuni mkaa unaolinda mazingira na kupunguza hewa chafu
-              inayotokana na uchomaji mkaa wa kawaida wa kuni.
-            </p>
-            <p>
-              Tunaendelea kuwekeza katika ubunifu, uendelevu na uzalishaji wa ubora. Bidhaa zetu sasa zinajumuisha mkaa safi,
-              mbegu na mbolea asilia, zote zikitokana na mti mmoja wa mbono.
-            </p>
+          <div className="relative">
+            <div className="overflow-hidden rounded-3xl border border-line bg-surface p-3 shadow-xl">
+              {photo ? (
+                <MediaImage
+                  image={photo}
+                  sizes="(min-width: 1024px) 24rem, 100vw"
+                  className="aspect-[4/3] w-full rounded-2xl object-cover"
+                />
+              ) : (
+                <div className="flex aspect-[4/3] items-center justify-center rounded-2xl bg-brand-tint text-brand-dark font-bold text-xl">
+                  Kiwanda cha Mnyala, Mbeya
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-line">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:px-8 sm:py-16 md:grid-cols-2">
-          <div>
-            <h2 className="text-2xl font-semibold">Dira yetu</h2>
-            <p className="mt-3 text-lg text-ink-soft">
-              Kutengeneza bidhaa za nishati zinazolinda mazingira kutokana na matunda ya mbono, kupunguza ukataji wa miti, na
-              kutoa ajira kwa jamii. Kuhudumia bara la Afrika.
-            </p>
-          </div>
-          <div>
-            <h2 className="text-2xl font-semibold">Maono yetu</h2>
-            <p className="mt-3 text-lg text-ink-soft">
-              Kuwa kinara barani Afrika katika nishati endelevu na ubunifu wa bidhaa rafiki kwa mazingira, kwa kujenga
-              mustakabali salama, wa kijani na wenye manufaa kwa jamii na vizazi vijavyo.
-            </p>
+      {/* Dira na Maono */}
+      <section className="border-b border-line bg-surface py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <div className="grid gap-8 md:grid-cols-2">
+            <div className="rounded-3xl border border-line bg-paper p-8 sm:p-10 shadow-xs">
+              <span className="inline-block rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800 border border-emerald-200">
+                Dira Yetu (Mission)
+              </span>
+              <h3 className="mt-4 text-2xl font-bold text-ink">Nishati Endelevu na Uhifadhi</h3>
+              <p className="mt-3 text-base text-ink-soft leading-relaxed">
+                Kutengeneza bidhaa za nishati safi zinazolinda mazingira kutokana na matunda ya mbono, kupunguza ukataji wa miti ya
+                asili, kutoa ajira za kijani kwa jamii, na kuhudumia bara zima la Afrika kwa nishati endelevu.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-line bg-paper p-8 sm:p-10 shadow-xs">
+              <span className="inline-block rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800 border border-emerald-200">
+                Maono Yetu (Vision)
+              </span>
+              <h3 className="mt-4 text-2xl font-bold text-ink">Kuwa Kinara Barani Afrika</h3>
+              <p className="mt-3 text-base text-ink-soft leading-relaxed">
+                Kuwa kinara barani Afrika katika nishati mbadala na ubunifu wa bidhaa rafiki kwa mazingira, kwa kujenga lazima
+                salama, ya kijani na yenye manufaa ya kiuchumi kwa jamii na vizazi vijavyo.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Stats Counter */}
       {site.stats.length > 0 ? (
-        <section className="border-b border-line bg-surface">
-          <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
-            <h2 className="text-3xl font-semibold">Mchango wetu kwa mazingira</h2>
-            <dl className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="border-b border-line bg-paper py-16 sm:py-20">
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <h2 className="text-3xl font-extrabold text-ink text-center">Mchango Wetu Katika Mazingira & Jamii</h2>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {site.stats.map((s) => (
-                <div key={s.label} className="border-t-2 border-brand pt-3">
-                  <dd className="font-serif text-4xl font-semibold text-brand-dark">{s.value}</dd>
-                  <dt className="mt-1 text-ink-soft">{s.label}</dt>
+                <div key={s.label} className="rounded-2xl border border-line bg-surface p-6 text-center shadow-2xs">
+                  <p className="text-4xl font-extrabold text-brand-dark">{s.value}</p>
+                  <p className="mt-2 text-sm font-semibold text-ink-soft">{s.label}</p>
                 </div>
               ))}
-            </dl>
+            </div>
           </div>
         </section>
       ) : null}
 
-      <section className="bg-brand-tint">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-5 py-12 sm:px-8">
-          <h2 className="max-w-xl text-3xl font-semibold">Chagua nishati safi, linda misitu ya Tanzania</h2>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/bidhaa" className={buttonClasses("primary")}>
-              {COMMON.seeProducts}
-            </Link>
-            <Link href="/wasiliana" className={buttonClasses("secondary")}>
-              {COMMON.contactUs}
-            </Link>
+      {/* CTA Banner */}
+      <section className="bg-paper py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-6 rounded-3xl bg-gradient-to-r from-emerald-800 to-slate-900 p-8 sm:p-12 text-white shadow-xl">
+            <div className="max-w-xl">
+              <h2 className="text-2xl sm:text-3xl font-extrabold">Chagua Nishati Safi, Linda Misitu ya Tanzania</h2>
+              <p className="mt-2 text-emerald-100/90 text-sm sm:text-base">
+                Jiunge na mamia ya familia na biashara zinazotumia mkaa wa mbono leo.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/bidhaa" className={buttonClasses("primary", "md", "bg-emerald-500 hover:bg-emerald-600 text-white border-transparent")}>
+                {COMMON.seeProducts}
+              </Link>
+              <Link href="/wasiliana" className={buttonClasses("secondary", "md", "bg-white/10 hover:bg-white/20 text-white border-white/20")}>
+                {COMMON.contactUs}
+              </Link>
+            </div>
           </div>
         </div>
       </section>
