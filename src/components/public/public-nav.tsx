@@ -6,15 +6,29 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { buttonClasses } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
-import { COMMON, NAV } from "@/messages/sw";
+import { NAV as NAV_SW, COMMON as COMMON_SW } from "@/messages/sw";
+import { NAV as NAV_EN, COMMON as COMMON_EN } from "@/messages/en";
+import type { Locale } from "@/messages/i18n";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; whatsappHref?: string }) {
+export function PublicNav({
+  phoneHref,
+  whatsappHref,
+  locale = "sw",
+}: {
+  phoneHref?: string;
+  whatsappHref?: string;
+  locale?: Locale;
+}) {
   const pathname = usePathname();
   const dialog = useRef<HTMLDialogElement>(null);
+  const isSw = locale === "sw";
+  const navItems = isSw ? NAV_SW : NAV_EN;
+  const common = isSw ? COMMON_SW : COMMON_EN;
 
   useEffect(() => {
     dialog.current?.close();
@@ -23,9 +37,9 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
   return (
     <>
       <div className="hidden items-center gap-3 lg:flex">
-        <nav aria-label="Menyu kuu">
+        <nav aria-label="Menyu kuu / Main Menu">
           <ul className="flex items-center gap-1.5">
-            {NAV.map((item) => {
+            {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
                 <li key={item.href}>
@@ -47,27 +61,30 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
           </ul>
         </nav>
         <Link href="/wasiliana" className={buttonClasses("primary", "sm", "ml-2")}>
-          Agiza Sasa
+          {isSw ? "Agiza Sasa" : "Order Now"}
         </Link>
       </div>
 
-      <button
-        type="button"
-        onClick={() => dialog.current?.showModal()}
-        aria-haspopup="dialog"
-        className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-line-strong bg-surface px-3.5 text-sm font-semibold text-ink shadow-2xs hover:bg-slate-50 lg:hidden cursor-pointer"
-      >
-        <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <line x1="4" x2="20" y1="12" y2="12" />
-          <line x1="4" x2="20" y1="6" y2="6" />
-          <line x1="4" x2="20" y1="18" y2="18" />
-        </svg>
-        <span>{COMMON.menu}</span>
-      </button>
+      <div className="flex items-center gap-2 lg:hidden">
+        <LanguageSwitcher current={locale} />
+        <button
+          type="button"
+          onClick={() => dialog.current?.showModal()}
+          aria-haspopup="dialog"
+          className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-line-strong bg-surface px-3.5 text-sm font-semibold text-ink shadow-2xs hover:bg-slate-50 cursor-pointer"
+        >
+          <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="12" y2="12" />
+            <line x1="4" x2="20" y1="6" y2="6" />
+            <line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+          <span>{common.menu}</span>
+        </button>
+      </div>
 
       <dialog
         ref={dialog}
-        aria-label={COMMON.menu}
+        aria-label={common.menu}
         className="m-0 ml-auto h-full max-h-none w-80 max-w-[88vw] overflow-y-auto border-l border-line bg-surface p-0 shadow-2xl backdrop:bg-black/50"
         onClick={(e) => {
           if (e.target === dialog.current) dialog.current?.close();
@@ -77,13 +94,15 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
           <div className="mb-6 flex items-center justify-between">
             <div>
               <p className="text-xl font-bold text-ink">Mnyala Co. Ltd</p>
-              <p className="text-xs font-semibold text-muted">Nishati Safi Mbeya</p>
+              <p className="text-xs font-semibold text-muted">
+                {isSw ? "Nishati Safi Mbeya" : "Clean Energy Mbeya"}
+              </p>
             </div>
             <button
               type="button"
               onClick={() => dialog.current?.close()}
               className="inline-flex size-9 items-center justify-center rounded-xl border border-line-strong bg-surface text-ink hover:bg-slate-50 cursor-pointer"
-              aria-label={COMMON.close}
+              aria-label={common.close}
             >
               <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M18 6 6 18" />
@@ -91,9 +110,17 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
               </svg>
             </button>
           </div>
-          <nav aria-label="Menyu ya simu">
+
+          <div className="mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted mb-2">
+              {isSw ? "Chagua Lugha" : "Language"}
+            </p>
+            <LanguageSwitcher current={locale} />
+          </div>
+
+          <nav aria-label="Menyu ya simu / Mobile Menu">
             <ul className="space-y-1">
-              {NAV.map((item) => {
+              {navItems.map((item) => {
                 const active = isActive(pathname, item.href);
                 return (
                   <li key={item.href}>
@@ -118,7 +145,7 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
                 href={phoneHref}
                 className={buttonClasses("primary", "md", "w-full")}
               >
-                {COMMON.call}
+                {common.call}
               </a>
             ) : null}
             {whatsappHref ? (
@@ -126,7 +153,7 @@ export function PublicNav({ phoneHref, whatsappHref }: { phoneHref?: string; wha
                 href={whatsappHref}
                 className={buttonClasses("secondary", "md", "w-full")}
               >
-                {COMMON.whatsapp}
+                {common.whatsapp}
               </a>
             ) : null}
           </div>

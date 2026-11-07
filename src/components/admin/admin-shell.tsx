@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { hasRole } from "@/server/auth/roles";
 import type { SessionUser } from "@/server/auth/session";
+import type { Locale } from "@/messages/i18n";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { MobileNav } from "./mobile-nav";
 import { NAV } from "./nav";
 import { NavLinks, type NavLinkGroup } from "./nav-links";
@@ -10,18 +12,33 @@ import { UserBlock } from "./user-block";
 
 export type NavCounts = { messages?: number; orders?: number };
 
-function visibleGroups(user: SessionUser, counts: NavCounts): NavLinkGroup[] {
+function visibleGroups(user: SessionUser, counts: NavCounts, locale: Locale): NavLinkGroup[] {
   return NAV.map((group) => ({
-    label: group.label,
+    label: locale === "sw" ? group.labelSw ?? group.label : group.label,
     items: group.items
       .filter((item) => hasRole(user.role, item.min))
-      .map((item) => ({ href: item.href, label: item.label, count: item.count ? counts[item.count] : undefined })),
+      .map((item) => ({
+        href: item.href,
+        label: locale === "sw" ? item.labelSw : item.label,
+        count: item.count ? counts[item.count] : undefined,
+      })),
   })).filter((group) => group.items.length > 0);
 }
 
-export function AdminShell({ user, counts, children }: { user: SessionUser; counts: NavCounts; children: ReactNode }) {
-  const groups = visibleGroups(user, counts);
+export function AdminShell({
+  user,
+  counts,
+  locale = "sw",
+  children,
+}: {
+  user: SessionUser;
+  counts: NavCounts;
+  locale?: Locale;
+  children: ReactNode;
+}) {
+  const groups = visibleGroups(user, counts, locale);
   const totalAlerts = (counts.messages || 0) + (counts.orders || 0);
+  const isSw = locale === "sw";
 
   return (
     <div className="min-h-screen bg-paper lg:grid lg:grid-cols-[16.5rem_minmax(0,1fr)]">
@@ -40,7 +57,7 @@ export function AdminShell({ user, counts, children }: { user: SessionUser; coun
             <p className="truncate text-base font-bold text-ink">Mnyala Co. Ltd</p>
             <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted">
               <span className="size-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-              Admin Portal
+              {isSw ? "Mfumo wa Usimamizi" : "Admin Portal"}
             </p>
           </div>
         </div>
@@ -69,19 +86,24 @@ export function AdminShell({ user, counts, children }: { user: SessionUser; coun
           {/* Desktop breadcrumb/title */}
           <div className="hidden items-center gap-2 lg:flex">
             <span className="inline-flex size-2 rounded-full bg-emerald-500" />
-            <span className="text-sm font-semibold text-ink-soft">Mfumo wa Ndani • Mbeya, Tanzania</span>
+            <span className="text-xs font-semibold text-ink-soft">
+              {isSw ? "Mfumo wa Ndani • Mbeya, Tanzania" : "Internal Management • Mbeya, Tanzania"}
+            </span>
           </div>
 
-          {/* Action buttons & notification bell */}
+          {/* Action buttons, language switcher & notification bell */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Language Switcher in Admin Header */}
+            <LanguageSwitcher current={locale} />
+
             <Link
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-line-strong bg-surface px-3 py-1.5 text-xs font-semibold text-ink-soft shadow-2xs hover:bg-slate-50 hover:text-ink no-underline transition-all"
-              title="Fungua tovuti ya umma"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-line-strong bg-surface px-3 py-1.5 text-xs font-bold text-ink-soft shadow-2xs hover:bg-slate-50 hover:text-ink no-underline transition-all"
+              title={isSw ? "Fungua tovuti ya umma" : "Open public website"}
             >
-              <span>Tovuti</span>
+              <span>{isSw ? "Tovuti" : "Website"}</span>
               <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                 <polyline points="15 3 21 3 21 9" />
@@ -93,7 +115,7 @@ export function AdminShell({ user, counts, children }: { user: SessionUser; coun
             <Link
               href="/admin/messages"
               className="relative inline-flex size-9.5 items-center justify-center rounded-xl border border-line-strong bg-surface text-ink-soft shadow-2xs hover:bg-slate-50 hover:text-ink no-underline transition-all"
-              title={`${counts.messages || 0} ujumbe mpya`}
+              title={`${counts.messages || 0} ${isSw ? "ujumbe mpya" : "new messages"}`}
             >
               <svg className="size-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m3 7 9 6 9-6" />
@@ -111,14 +133,14 @@ export function AdminShell({ user, counts, children }: { user: SessionUser; coun
               <Link
                 href="/admin/orders"
                 className="inline-flex items-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-800 shadow-2xs hover:bg-amber-100 no-underline transition-all"
-                title={`${counts.orders} maagizo yanayosubiri`}
+                title={`${counts.orders} ${isSw ? "maagizo yanayosubiri" : "pending orders"}`}
               >
                 <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <circle cx="8" cy="21" r="1" />
                   <circle cx="19" cy="21" r="1" />
                   <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
                 </svg>
-                <span>{counts.orders} Oda</span>
+                <span>{counts.orders} {isSw ? "Oda" : "Orders"}</span>
               </Link>
             ) : null}
 

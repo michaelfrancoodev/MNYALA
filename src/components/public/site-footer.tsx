@@ -1,10 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { mailtoLink, telLink } from "@/lib/contact-links";
-import { COMMON, NAV } from "@/messages/sw";
+import { COMMON as COMMON_SW, NAV as NAV_SW } from "@/messages/sw";
+import { COMMON as COMMON_EN, NAV as NAV_EN } from "@/messages/en";
 import type { SiteSettings } from "@/server/services/site";
+import type { Locale } from "@/messages/i18n";
 
-export function SiteFooter({ site }: { site: SiteSettings }) {
+export function SiteFooter({ site, locale = "sw" }: { site: SiteSettings; locale?: Locale }) {
+  const isSw = locale === "sw";
+  const navItems = isSw ? NAV_SW : NAV_EN;
+  const common = isSw ? COMMON_SW : COMMON_EN;
+
   const social = [
     site.facebook ? { label: "Facebook", href: site.facebook } : null,
     site.instagram ? { label: "Instagram", href: site.instagram } : null,
@@ -18,23 +24,28 @@ export function SiteFooter({ site }: { site: SiteSettings }) {
             <Image src="/brand/emblem.webp" alt="Mnyala" width={40} height={40} priority className="size-10" />
             <div>
               <p className="text-xl font-extrabold text-white">Mnyala Co. Ltd</p>
-              <p className="text-xs font-semibold text-emerald-400">Nishati Safi & Kilimo Endelevu</p>
+              <p className="text-xs font-semibold text-emerald-400">
+                {isSw ? "Nishati Safi & Kilimo Endelevu" : "Clean Energy & Sustainable Agriculture"}
+              </p>
             </div>
           </div>
           <p className="mt-4 max-w-sm text-sm text-slate-400 leading-relaxed">
-            Tunageuza matunda ya mti wa mbono (Jatropha curcas) kuwa mkaa safi wa kisasa usio na moshi, mbegu bora, na mbolea asilia (mboji).
-            Lengo letu ni nishati safi, salama na uhifadhi thabiti wa mazingira ya Tanzania.
+            {isSw
+              ? "Tunageuza matunda ya mti wa mbono (Jatropha curcas) kuwa mkaa safi wa kisasa usio na moshi, mbegu bora, na mbolea asilia (mboji). Lengo letu ni nishati safi, salama na uhifadhi thabiti wa misitu ya Tanzania."
+              : "We convert jatropha biomass fruits into smokeless bio-charcoal briquettes, quality seeds, and organic fertilizer. Our mission is delivering affordable clean cooking energy while preserving Tanzania's natural forests."}
           </p>
           <div className="mt-4 flex items-center gap-2 text-xs text-slate-400">
             <span className="size-2 rounded-full bg-emerald-500" aria-hidden="true" />
-            Makao Makuu: Mbeya, Tanzania
+            {isSw ? "Makao Makuu & Kiwanda: Mbeya, Tanzania" : "Headquarters & Factory: Mbeya, Tanzania"}
           </div>
         </div>
 
-        <nav aria-label="Viungo vya chini">
-          <p className="text-xs font-bold uppercase tracking-wider text-white">Kurasa za Tovuti</p>
+        <nav aria-label="Viungo vya chini / Footer Links">
+          <p className="text-xs font-bold uppercase tracking-wider text-white">
+            {isSw ? "Kurasa za Tovuti" : "Quick Links"}
+          </p>
           <ul className="mt-4 space-y-2.5 text-sm">
-            {NAV.map((item) => (
+            {navItems.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="text-slate-400 transition-colors hover:text-white no-underline">
                   {item.label}
@@ -43,14 +54,16 @@ export function SiteFooter({ site }: { site: SiteSettings }) {
             ))}
             <li>
               <Link href="/faragha" className="text-slate-400 transition-colors hover:text-white no-underline">
-                {COMMON.privacy}
+                {common.privacy}
               </Link>
             </li>
           </ul>
         </nav>
 
         <div>
-          <p className="text-xs font-bold uppercase tracking-wider text-white">Mawasiliano Mbeya</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-white">
+            {isSw ? "Mawasiliano Mbeya" : "Factory Contacts"}
+          </p>
           <address className="mt-4 space-y-3 not-italic text-sm text-slate-400">
             {site.address ? (
               <div className="flex items-start gap-2.5">
@@ -110,10 +123,10 @@ export function SiteFooter({ site }: { site: SiteSettings }) {
       <div className="border-t border-slate-850 bg-black/40">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-5 text-xs text-slate-400 sm:px-8">
           <p>
-            &copy; {new Date().getFullYear()} Mnyala Co. Ltd. {COMMON.rights}
+            &copy; {new Date().getFullYear()} Mnyala Co. Ltd. {common.rights}
           </p>
           <Link href="/admin/login" rel="nofollow" className="text-slate-400 hover:text-white no-underline">
-            {COMMON.staff}
+            {common.staff}
           </Link>
         </div>
       </div>

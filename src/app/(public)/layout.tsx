@@ -5,6 +5,7 @@ import { WhatsAppButton } from "@/components/public/whatsapp-button";
 import { getEnv } from "@/lib/env";
 import { COMMON } from "@/messages/sw";
 import { getSiteSettings } from "@/server/services/site";
+import { getLocale } from "@/messages/i18n";
 
 // Pages read the database on every request, so they are never built without one.
 export const dynamic = "force-dynamic";
@@ -17,7 +18,7 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
-  const site = await getSiteSettings();
+  const [site, locale] = await Promise.all([getSiteSettings(), getLocale()]);
   return (
     <>
       <a
@@ -26,11 +27,11 @@ export default async function PublicLayout({ children }: { children: React.React
       >
         {COMMON.skip}
       </a>
-      <SiteHeader site={site} />
+      <SiteHeader site={site} locale={locale} />
       <main id="main" tabIndex={-1}>
         {children}
       </main>
-      <SiteFooter site={site} />
+      <SiteFooter site={site} locale={locale} />
       <WhatsAppButton number={site.whatsapp} />
     </>
   );
