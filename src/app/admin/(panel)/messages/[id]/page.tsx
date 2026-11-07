@@ -106,6 +106,16 @@ export default async function MessagePage({ params, searchParams }: { params: Pr
             {m.repliedAt ? <p className="text-sm text-muted">Replied on {formatDateTime(m.repliedAt)}.</p> : null}
           </section>
 
+          <section aria-label="Convert to order" className="space-y-3">
+            <h2 className="text-lg font-semibold">Orders</h2>
+            <Link
+              href={`/admin/orders/new?messageId=${m.id}`}
+              className={`${buttonClasses("secondary")} w-full`}
+            >
+              Start Order from this Message
+            </Link>
+          </section>
+
           {hasRole(user.role, "admin") ? (
             <section aria-label="Delete">
               <ConfirmAction

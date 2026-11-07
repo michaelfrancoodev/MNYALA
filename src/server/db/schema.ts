@@ -250,6 +250,7 @@ export const orderItems = pgTable(
     productId: uuid("product_id").references(() => products.id, { onDelete: "set null" }),
     /** The product name at the time of the order, so history does not change when a product is renamed. */
     nameSnapshot: varchar("name_snapshot", { length: 120 }).notNull(),
+    position: integer("position").notNull().default(0),
     quantity: integer("quantity").notNull(),
     unitPriceTzs: integer("unit_price_tzs").notNull(),
     lineTotalTzs: integer("line_total_tzs").notNull(),

@@ -9,6 +9,8 @@ export const NAV: NavGroup[] = [
     items: [
       { href: "/admin", label: "Dashboard", min: "staff" },
       { href: "/admin/messages", label: "Messages", min: "staff", count: "messages" },
+      { href: "/admin/orders", label: "Orders", min: "staff", count: "orders" },
+      { href: "/admin/customers", label: "Customers", min: "staff" },
       { href: "/admin/products", label: "Products", min: "staff" },
       { href: "/admin/gallery", label: "Gallery", min: "admin" },
     ],
