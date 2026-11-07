@@ -73,18 +73,18 @@ export function SavingsCalculator({ whatsapp, locale = "sw" }: { whatsapp?: stri
   const waHref = whatsapp ? whatsappLink(whatsapp, waText) : "#";
 
   return (
-    <div className="rounded-3xl border border-line bg-surface p-6 sm:p-10 shadow-xs">
+    <div className="rounded-lg border border-line bg-surface p-6 sm:p-8 shadow-xs">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line/80 pb-5">
         <div>
-          <span className="inline-block rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800 border border-emerald-200">
-            {isSw ? "Kikokotoo cha Gharama za Nishati" : "Energy Savings Estimator"}
-          </span>
-          <h2 className="mt-2 text-2xl font-extrabold text-ink sm:text-3xl">
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+            {isSw ? "Uchambuzi wa Kiuchumi & Nishati" : "Commercial Fuel Cost Analysis"}
+          </p>
+          <h2 className="mt-1.5 text-2xl font-black text-ink sm:text-3xl tracking-tight">
             {isSw ? "Hesabu Kiasi Utakachookoa Kila Mwezi" : "Calculate Your Monthly Fuel Savings"}
           </h2>
           <p className="mt-1 text-sm text-ink-soft">
             {isSw
-              ? "Chagua aina ya matumizi yako uone jinsi mkaa wa mbono unavyookoa hadi 40% ya fedha zako."
+              ? "Chagua aina ya matumizi yako uone jinsi mkaa wa mbono unavyookoa hadi 45% ya fedha zako."
               : "Select your usage profile to see how much money you save compared to traditional wood charcoal."}
           </p>
         </div>
@@ -99,9 +99,9 @@ export function SavingsCalculator({ whatsapp, locale = "sw" }: { whatsapp?: stri
               key={t.id}
               type="button"
               onClick={() => setSelectedId(t.id)}
-              className={`rounded-2xl border p-4 text-left transition-all cursor-pointer ${
+              className={`rounded-md border p-3.5 text-left transition-all cursor-pointer ${
                 active
-                  ? "border-emerald-600 bg-emerald-50/80 shadow-xs ring-2 ring-emerald-600/20"
+                  ? "border-emerald-700 bg-emerald-50/80 shadow-xs ring-1 ring-emerald-700"
                   : "border-line bg-paper hover:bg-slate-100 hover:border-slate-300"
               }`}
             >
@@ -117,13 +117,13 @@ export function SavingsCalculator({ whatsapp, locale = "sw" }: { whatsapp?: stri
       </div>
 
       {/* Output Comparison Panel */}
-      <div className="mt-8 rounded-2xl bg-slate-900 p-6 sm:p-8 text-white shadow-md">
+      <div className="mt-7 rounded-lg bg-slate-950 p-6 sm:p-7 text-white border border-slate-800 shadow-md">
         <div className="grid gap-6 sm:grid-cols-3">
           <div>
-            <p className="text-xs font-semibold text-slate-400">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
               {isSw ? "Gharama ya Mkaa wa Kawaida wa Kuni" : "Traditional Charcoal Cost"}
             </p>
-            <p className="mt-1 text-xl font-bold text-slate-300 line-through">
+            <p className="mt-1.5 text-xl font-bold text-slate-300 line-through">
               {formatTzs(tier.traditionalCost)} / {isSw ? "mwezi" : "mo"}
             </p>
             <span className="mt-1 text-xs text-slate-500 block">
@@ -132,10 +132,10 @@ export function SavingsCalculator({ whatsapp, locale = "sw" }: { whatsapp?: stri
           </div>
 
           <div>
-            <p className="text-xs font-semibold text-emerald-300">
+            <p className="text-xs font-semibold text-emerald-300 uppercase tracking-wider">
               {isSw ? "Gharama kwa Mkaa Safi wa Mnyala" : "Mnyala Bio-Charcoal Cost"}
             </p>
-            <p className="mt-1 text-2xl font-extrabold text-emerald-400">
+            <p className="mt-1.5 text-2xl font-black text-emerald-400">
               {formatTzs(tier.mnyalaCost)} / {isSw ? "mwezi" : "mo"}
             </p>
             <span className="mt-1 text-xs text-emerald-300/80 block">
@@ -143,7 +143,7 @@ export function SavingsCalculator({ whatsapp, locale = "sw" }: { whatsapp?: stri
             </span>
           </div>
 
-          <div className="rounded-xl bg-emerald-800/50 p-4 border border-emerald-600/40">
+          <div className="rounded-md bg-emerald-900/60 p-4 border border-emerald-700/50">
             <p className="text-xs font-bold uppercase tracking-wider text-emerald-200">
               {isSw ? "Fedha Unazookoa Kila Mwezi" : "Your Monthly Savings"}
             </p>
@@ -151,7 +151,7 @@ export function SavingsCalculator({ whatsapp, locale = "sw" }: { whatsapp?: stri
               {formatTzs(monthlySavings)}
             </p>
             <p className="mt-1 text-xs text-emerald-200 font-semibold">
-              {isSw ? "Okoa hadi 40% ya gharama zako!" : "Save up to 40% on energy costs!"}
+              {isSw ? "Okoa hadi 45% ya gharama zako!" : "Save up to 45% on energy costs!"}
             </p>
           </div>
         </div>
@@ -167,7 +167,7 @@ export function SavingsCalculator({ whatsapp, locale = "sw" }: { whatsapp?: stri
               href={waHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white shadow-xs hover:bg-emerald-600 active:scale-98 transition-all no-underline"
+              className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-xs hover:bg-emerald-700 active:scale-98 transition-all no-underline"
             >
               <span>{isSw ? "Agiza Kiasi Hiki WhatsApp" : "Order This Volume on WhatsApp"}</span>
               <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
