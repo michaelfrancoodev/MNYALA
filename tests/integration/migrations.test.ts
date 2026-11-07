@@ -46,7 +46,7 @@ describe("migrations on a brand new, empty database", () => {
     const sql = postgres(urlFor(dbName), { max: 1, onnotice: () => {} });
     try {
       const [row] = await sql<{ n: number }[]>`select count(*)::int as n from drizzle.__drizzle_migrations`;
-      expect(row?.n).toBe(1);
+      expect(row?.n).toBe(2);
     } finally {
       await sql.end({ timeout: 5 });
     }
