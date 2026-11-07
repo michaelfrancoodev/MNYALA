@@ -40,6 +40,22 @@ export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
   };
 });
 
+export async function updateSiteSettings(
+  db: ReturnType<typeof getDb>,
+  settings: Record<string, string>,
+  userId?: string,
+): Promise<void> {
+  for (const [key, val] of Object.entries(settings)) {
+    await db
+      .insert(siteSettings)
+      .values({ key, value: val.trim(), updatedBy: userId })
+      .onConflictDoUpdate({
+        target: siteSettings.key,
+        set: { value: val.trim(), updatedBy: userId, updatedAt: new Date() },
+      });
+  }
+}
+
 export type MediaRef = { file: string; width: number; height: number; alt: string };
 
 export type PublicProduct = {

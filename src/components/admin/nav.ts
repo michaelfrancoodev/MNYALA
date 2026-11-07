@@ -13,6 +13,10 @@ export const NAV: NavGroup[] = [
       { href: "/admin/customers", label: "Customers", min: "staff" },
       { href: "/admin/products", label: "Products", min: "staff" },
       { href: "/admin/gallery", label: "Gallery", min: "admin" },
+      { href: "/admin/reports", label: "Reports", min: "admin" },
+      { href: "/admin/users", label: "Users", min: "super_admin" },
+      { href: "/admin/activity", label: "Activity", min: "super_admin" },
+      { href: "/admin/settings", label: "Settings", min: "staff" },
     ],
   },
 ];

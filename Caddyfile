@@ -1,0 +1,21 @@
+{
+	email info@mnyala.co.tz
+}
+
+# Replace mnyala.co.tz with your production domain
+{$DOMAIN:localhost} {
+	encode gzip zstd
+
+	reverse_proxy app:3000 {
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	header {
+		# Security Headers
+		X-Frame-Options "DENY"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+	}
+}
