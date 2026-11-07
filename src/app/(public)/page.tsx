@@ -105,16 +105,18 @@ export default async function HomePage() {
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                 {isSw ? "Kiwanda cha Mbeya, Tanzania" : "Mbeya Plant, Tanzania"}
               </p>
-              <h1 className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-ink leading-tight">
+              <h1 className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-ink leading-[1.15]">
                 {isSw ? (
                   <>
-                    Mkaa Safi wa Mbono &{" "}
-                    <span className="text-emerald-800">Majiko ya Kisasa</span>
+                    Pika Bila Moshi.{" "}
+                    <span className="text-emerald-800">Okoa Gharama.</span>{" "}
+                    Linda Misitu.
                   </>
                 ) : (
                   <>
-                    Clean Jatropha Bio-Charcoal &{" "}
-                    <span className="text-emerald-800">Modern Cookstoves</span>
+                    Cook Clean.{" "}
+                    <span className="text-emerald-800">Cut Costs.</span>{" "}
+                    Protect Forests.
                   </>
                 )}
               </h1>
