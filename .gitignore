@@ -12,3 +12,6 @@ next-env.d.ts
 /playwright-report
 .DS_Store
 .preview
+
+AGENTS.md
+CLAUDE.md
