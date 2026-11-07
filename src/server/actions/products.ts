@@ -1,0 +1,123 @@
+"use server";
+
+import type { Route } from "next";
+import { redirect } from "next/navigation";
+import { getEnv } from "@/lib/env";
+import { productSchema } from "@/lib/validators/product";
+import { audit } from "@/server/services/audit";
+import { IMAGE_ERROR_MESSAGE } from "@/server/services/gallery-admin";
+import { ImageError } from "@/server/services/images";
+import {
+  SlugTakenError,
+  createProduct,
+  deleteProduct,
+  moveProduct,
+  setProductPublished,
+  updateProduct,
+} from "@/server/services/products-admin";
+import { createLocalStorage } from "@/server/services/storage";
+import { authorize, fieldErrorsFrom, formValue, runAdminAction, type ActionState } from "./core";
+
+const storage = () => createLocalStorage(getEnv().STORAGE_DIR);
+const FIELDS = ["name", "slug", "category", "summary", "features", "priceTzs", "priceUnit", "imageAlt", "published"];
+
+/** A chosen picture, or undefined when the file input was left empty. */
+async function pictureFrom(fd: FormData): Promise<{ bytes: Buffer; maxBytes: number } | undefined> {
+  const file = fd.get("image");
+  if (!(file instanceof File) || file.size === 0) return undefined;
+  return { bytes: Buffer.from(await file.arrayBuffer()), maxBytes: getEnv().MAX_UPLOAD_MB * 1024 * 1024 };
+}
+
+/** Creates a product (no id in the form) or updates one (id present). */
+export async function saveProductAction(_prev: ActionState | null, fd: FormData): Promise<ActionState> {
+  return runAdminAction("admin", async (ctx): Promise<ActionState> => {
+    const values = Object.fromEntries(FIELDS.map((k) => [k, formValue(fd, k)]));
+    const parsed = productSchema.safeParse(values);
+    if (!parsed.success) return { ok: false, fieldErrors: fieldErrorsFrom(parsed.error.issues), values };
+
+    const id = formValue(fd, "id");
+    const image = await pictureFrom(fd);
+    try {
+      if (id) {
+        const row = await updateProduct(ctx.db, storage(), {
+          id,
+          input: parsed.data,
+          newImage: image,
+          removeImage: formValue(fd, "removeImage") === "on",
+          userId: ctx.user.id,
+        });
+        if (!row) return { ok: false, message: "That product no longer exists.", values };
+        await audit(ctx.db, {
+          userId: ctx.user.id,
+          action: "product.updated",
+          entityType: "product",
+          entityId: row.id,
+          details: { name: row.name, published: row.isPublished },
+          ip: ctx.ip,
+          userAgent: ctx.userAgent,
+        });
+      } else {
+        const row = await createProduct(ctx.db, storage(), {
+          input: parsed.data,
+          image,
+          userId: ctx.user.id,
+        });
+        await audit(ctx.db, {
+          userId: ctx.user.id,
+          action: "product.created",
+          entityType: "product",
+          entityId: row.id,
+          details: { name: row.name },
+          ip: ctx.ip,
+          userAgent: ctx.userAgent,
+        });
+      }
+    } catch (error) {
+      if (error instanceof SlugTakenError) return { ok: false, fieldErrors: { slug: [error.message] }, values };
+      if (error instanceof ImageError) return { ok: false, fieldErrors: { image: [IMAGE_ERROR_MESSAGE[error.code]] }, values };
+      throw error;
+    }
+    redirect(`/admin/products?notice=${id ? "saved" : "created"}` as Route);
+  });
+}
+
+export async function setProductPublishedAction(fd: FormData): Promise<void> {
+  const ctx = await authorize("admin");
+  const id = formValue(fd, "id");
+  const publish = formValue(fd, "publish") === "1";
+  if (await setProductPublished(ctx.db, id, publish)) {
+    await audit(ctx.db, {
+      userId: ctx.user.id,
+      action: publish ? "product.published" : "product.unpublished",
+      entityType: "product",
+      entityId: id,
+      ip: ctx.ip,
+      userAgent: ctx.userAgent,
+    });
+  }
+  redirect(`/admin/products?notice=${publish ? "published" : "unpublished"}` as Route);
+}
+
+export async function moveProductAction(fd: FormData): Promise<void> {
+  const ctx = await authorize("admin");
+  await moveProduct(ctx.db, formValue(fd, "id"), formValue(fd, "direction") === "up" ? "up" : "down");
+  redirect("/admin/products");
+}
+
+export async function deleteProductAction(fd: FormData): Promise<void> {
+  const ctx = await authorize("admin");
+  const id = formValue(fd, "id");
+  const result = await deleteProduct(ctx.db, storage(), id, formValue(fd, "confirmName"));
+  if (result === "name_mismatch") redirect(`/admin/products/${id}?notice=name-mismatch` as Route);
+  if (result === "deleted") {
+    await audit(ctx.db, {
+      userId: ctx.user.id,
+      action: "product.deleted",
+      entityType: "product",
+      entityId: id,
+      ip: ctx.ip,
+      userAgent: ctx.userAgent,
+    });
+  }
+  redirect("/admin/products?notice=deleted" as Route);
+}

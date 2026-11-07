@@ -63,8 +63,18 @@ export async function addGalleryImages(
 export async function getGalleryItem(db: Db, id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
   const [row] = await db
-    .select({ id: galleryItems.id, title: galleryItems.title, mediaId: galleryItems.mediaId })
+    .select({
+      id: galleryItems.id,
+      title: galleryItems.title,
+      description: galleryItems.description,
+      category: galleryItems.category,
+      isPublished: galleryItems.isPublished,
+      mediaId: galleryItems.mediaId,
+      file: media.file,
+      alt: media.alt,
+    })
     .from(galleryItems)
+    .innerJoin(media, eq(media.id, galleryItems.mediaId))
     .where(eq(galleryItems.id, id));
   return row ?? null;
 }

@@ -6,6 +6,11 @@ const config: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   serverExternalPackages: ["@node-rs/argon2", "sharp", "pino"],
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "55mb",
+    },
+  },
   async headers() {
     return [{ source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }];
   },
