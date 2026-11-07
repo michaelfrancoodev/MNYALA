@@ -1,0 +1,74 @@
+"use client";
+
+import { useEffect, useId, useRef, useState } from "react";
+
+/** A picture chooser with an instant preview and an early size check, so a huge file is caught before it is uploaded. */
+export function ImagePicker({
+  name, label, maxMb, error, existing, multiple = false,
+}: {
+  name: string;
+  label: string;
+  maxMb: number;
+  error?: string;
+  existing?: { src: string; alt: string } | null;
+  multiple?: boolean;
+}) {
+  const id = useId();
+  const input = useRef<HTMLInputElement>(null);
+  const [previews, setPreviews] = useState<Array<{ url: string; name: string }>>([]);
+  const [problem, setProblem] = useState<string | null>(null);
+
+  useEffect(() => () => previews.forEach((p) => URL.revokeObjectURL(p.url)), [previews]);
+
+  function onChange() {
+    const files = [...(input.current?.files ?? [])];
+    const tooBig = files.find((f) => f.size > maxMb * 1024 * 1024);
+    if (tooBig) {
+      setProblem(`${tooBig.name} is larger than ${maxMb} MB. Choose a smaller picture.`);
+      if (input.current) input.current.value = "";
+      setPreviews([]);
+      return;
+    }
+    setProblem(null);
+    setPreviews(files.map((f) => ({ url: URL.createObjectURL(f), name: f.name })));
+  }
+
+  const shown = problem ?? error;
+  return (
+    <div className="space-y-2">
+      <label htmlFor={id} className="block text-sm font-semibold text-ink">
+        {label}
+      </label>
+      {existing && previews.length === 0 ? (
+        // eslint-disable-next-line @next/next/no-img-element -- a stored WebP, already resized
+        <img src={existing.src} alt={existing.alt} className="h-36 w-auto max-w-full rounded-md border border-line object-cover" />
+      ) : null}
+      {previews.length > 0 ? (
+        <ul className="flex flex-wrap gap-3" aria-label="Chosen pictures">
+          {previews.map((p) => (
+            <li key={p.url} className="w-28">
+              {/* eslint-disable-next-line @next/next/no-img-element -- a local preview of the file just chosen */}
+              <img src={p.url} alt="" className="h-24 w-28 rounded-md border border-line object-cover" />
+              <span className="mt-1 block truncate text-xs text-muted">{p.name}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      <input
+        ref={input}
+        id={id}
+        name={name}
+        type="file"
+        multiple={multiple}
+        accept="image/jpeg,image/png,image/webp"
+        onChange={onChange}
+        aria-invalid={shown ? true : undefined}
+        aria-describedby={`${id}-hint`}
+        className="block w-full rounded-md border border-line-strong bg-surface p-2 text-base file:mr-3 file:rounded-md file:border file:border-line-strong file:bg-paper file:px-3 file:py-1.5 file:font-semibold"
+      />
+      <p id={`${id}-hint`} className={shown ? "text-sm font-semibold text-danger" : "text-sm text-muted"}>
+        {shown ?? `JPEG, PNG or WebP, up to ${maxMb} MB${multiple ? " each" : ""}. The picture is resized and its location data removed.`}
+      </p>
+    </div>
+  );
+}

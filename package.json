@@ -1,0 +1,55 @@
+{
+  "name": "mnyala",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mnyala Co. Ltd - public website and business admin",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@12.14.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx --env-file-if-exists=.env src/server/db/migrate.ts",
+    "db:check": "drizzle-kit check",
+    "seed:content": "tsx --env-file-if-exists=.env scripts/seed-content.mts",
+    "seed:admin": "tsx --env-file-if-exists=.env scripts/seed-admin.mts",
+    "test:e2e": "next build && vitest run --config vitest.e2e.config.mts",
+    "test:e2e:only": "vitest run --config vitest.e2e.config.mts"
+  },
+  "dependencies": {
+    "@fontsource-variable/source-sans-3": "5.3.0",
+    "@fontsource-variable/source-serif-4": "5.3.0",
+    "@node-rs/argon2": "2.2.1",
+    "drizzle-orm": "0.45.3",
+    "next": "16.3.8",
+    "nodemailer": "10.0.14",
+    "pino": "10.4.0",
+    "postgres": "3.4.9",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sharp": "0.35.5",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "22.20.5",
+    "@types/nodemailer": "8.0.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "drizzle-kit": "0.31.11",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.8",
+    "prettier": "3.9.9",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "5.0.3"
+  }
+}
