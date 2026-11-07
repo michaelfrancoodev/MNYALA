@@ -26,55 +26,35 @@ const CATEGORY_DEFAULT_IMAGE: Record<PublicProduct["category"], { src: string; a
   },
 };
 
-const B2B_SPECS: Record<PublicProduct["category"], { moq: string; wholesaleTiers: string; dispatch: string }> = {
-  charcoal: {
-    moq: "Mfuko 1 (Sampuli) / Mifuko 20 (Jumla)",
-    wholesaleTiers: "1-19: TZS 28,000 | 20+: TZS 25,000 | 100+: TZS 22,000",
-    dispatch: "Saa 24-48 Mikoani",
-  },
-  stove: {
-    moq: "Jiko 1 (Rejareja) / Majiko 5 (Jumla)",
-    wholesaleTiers: "Rejareja: TZS 45,000 | 5+: TZS 38,000",
-    dispatch: "Saa 24-48 Mikoani",
-  },
-  seeds: {
-    moq: "1 kg (Kiwango cha Chini)",
-    wholesaleTiers: "1-9kg: TZS 5,000/kg | 10kg+: TZS 4,000/kg",
-    dispatch: "Saa 24 Mikoani",
-  },
-  manure: {
-    moq: "Mfuko 1 wa 50kg / Mifuko 10 (Jumla)",
-    wholesaleTiers: "1-9: TZS 20,000 | 10+: TZS 16,000",
-    dispatch: "Saa 24-48 Mikoani",
-  },
-};
-
 export function Price({ product }: { product: Pick<PublicProduct, "priceTzs" | "priceUnit"> }) {
   if (product.priceTzs === null) {
-    return <span className="inline-block rounded bg-slate-100 px-2 py-1 text-xs font-bold text-ink-soft">{COMMON.priceOnRequest}</span>;
+    return (
+      <span className="inline-block rounded bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-700">
+        {COMMON.priceOnRequest}
+      </span>
+    );
   }
   return (
-    <span className="text-xl font-black text-ink tracking-tight">
+    <span className="text-lg font-black text-ink tracking-tight">
       {formatTzs(product.priceTzs)}
-      {product.priceUnit ? <span className="text-xs font-semibold text-muted"> / {product.priceUnit}</span> : null}
+      {product.priceUnit ? <span className="text-xs font-normal text-muted"> / {product.priceUnit}</span> : null}
     </span>
   );
 }
 
-/** Alibaba / Amazon B2B Industrial Product Card */
+/** Clean, honest product card */
 export function ProductCard({ product, whatsapp }: { product: PublicProduct; whatsapp?: string }) {
   const fallback = CATEGORY_DEFAULT_IMAGE[product.category];
-  const b2b = B2B_SPECS[product.category];
 
   return (
-    <div className="group flex flex-col justify-between rounded-lg border border-line bg-surface p-4 shadow-xs hover:border-emerald-700 hover:shadow-md transition-all duration-200">
+    <div className="group flex flex-col justify-between rounded-lg border border-line bg-surface p-5 shadow-xs hover:border-emerald-700 hover:shadow-md transition-all duration-200">
       <div>
         <div className="relative overflow-hidden rounded-md border border-line/80 bg-slate-100">
           {product.image ? (
             <MediaImage
               image={product.image}
               sizes="(min-width: 1024px) 24rem, 100vw"
-              className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-103"
+              className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-102"
             />
           ) : fallback ? (
             <Image
@@ -82,7 +62,7 @@ export function ProductCard({ product, whatsapp }: { product: PublicProduct; wha
               alt={fallback.alt}
               width={600}
               height={450}
-              className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-103"
+              className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-102"
             />
           ) : (
             <div className="flex aspect-[4/3] items-center justify-center bg-slate-100 text-ink font-bold text-sm">
@@ -92,36 +72,21 @@ export function ProductCard({ product, whatsapp }: { product: PublicProduct; wha
           <span className="absolute left-2.5 top-2.5 rounded bg-slate-900/90 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-xs">
             {PRODUCT_CATEGORY[product.category]}
           </span>
-          <span className="absolute right-2.5 top-2.5 rounded bg-emerald-700 px-2 py-0.5 text-[11px] font-bold text-white shadow-xs">
-            In Stock
-          </span>
         </div>
 
-        <div className="mt-3.5">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-muted">
-            Kiwanda cha Mbeya &bull; SKU: MN-{product.category.toUpperCase()}
-          </p>
-          <h3 className="mt-1 text-base font-extrabold text-ink group-hover:text-emerald-800 transition-colors leading-snug">
+        <div className="mt-4">
+          <h3 className="text-lg font-bold text-ink group-hover:text-emerald-800 transition-colors leading-snug">
             {product.name}
           </h3>
-          <p className="mt-1.5 text-xs text-ink-soft line-clamp-2 leading-relaxed">
+          <p className="mt-1.5 text-xs text-ink-soft line-clamp-3 leading-relaxed">
             {product.summary}
           </p>
         </div>
 
-        <div className="mt-3 rounded border border-line/70 bg-slate-50 p-2 text-xs">
-          <p className="font-bold text-slate-800">
-            Jumla & Rejareja: <span className="font-normal text-muted">{b2b.wholesaleTiers}</span>
-          </p>
-          <p className="mt-0.5 text-[11px] text-muted">
-            MOQ: <span className="font-semibold text-slate-700">{b2b.moq}</span>
-          </p>
-        </div>
-
         {product.features.length > 0 ? (
-          <ul className="mt-3 space-y-1 border-t border-line/60 pt-2.5">
-            {product.features.slice(0, 2).map((f) => (
-              <li key={f} className="flex items-center gap-1.5 text-xs text-slate-700">
+          <ul className="mt-3.5 space-y-1.5 border-t border-line/60 pt-3">
+            {product.features.slice(0, 3).map((f) => (
+              <li key={f} className="flex items-center gap-2 text-xs text-slate-700">
                 <svg className="size-3.5 shrink-0 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
@@ -132,10 +97,9 @@ export function ProductCard({ product, whatsapp }: { product: PublicProduct; wha
         ) : null}
       </div>
 
-      <div className="mt-4 border-t border-line/80 pt-3">
-        <div className="mb-2.5 flex items-baseline justify-between">
+      <div className="mt-5 border-t border-line/80 pt-3.5">
+        <div className="mb-3">
           <Price product={product} />
-          <span className="text-[11px] font-semibold text-emerald-800">{b2b.dispatch}</span>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <Link href={`/wasiliana?bidhaa=${product.slug}`} className={buttonClasses("primary", "sm", "w-full text-xs font-bold")}>
@@ -143,7 +107,7 @@ export function ProductCard({ product, whatsapp }: { product: PublicProduct; wha
           </Link>
           {whatsapp ? (
             <a
-              href={whatsappLink(whatsapp, `Habari Mnyala, nahitaji bei ya jumla na maelekezo ya kuagiza ${product.name}.`)}
+              href={whatsappLink(whatsapp, `Habari Mnyala, nahitaji maelezo na bei ya ${product.name}.`)}
               target="_blank"
               rel="noopener noreferrer"
               className={buttonClasses("secondary", "sm", "w-full text-xs font-semibold")}
