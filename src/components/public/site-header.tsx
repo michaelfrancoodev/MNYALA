@@ -81,6 +81,20 @@ export function SiteHeader({
           </svg>
           <span>{address}</span>
         </div>
+
+        <div className="hidden sm:flex ml-auto items-center">
+          <Link
+            href="/admin/login"
+            className="text-white/80 hover:text-[#4ade80] transition-colors no-underline text-xs font-semibold flex items-center gap-1.5"
+            title="Kuingia kwenye mfumo wa Admin"
+          >
+            <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span>Admin</span>
+          </Link>
+        </div>
       </div>
 
       {/* 2. MAIN HEADER (TWO LOGOS: MUST + MNYALA) */}
@@ -99,9 +113,9 @@ export function SiteHeader({
 
         {/* Center Title (div instead of h1 so each page has exactly one semantic h1) */}
         <div className="company-title">
-          <p className="company-eyebrow">{isSw ? "Sustainable Energy Solutions" : "Sustainable Energy Solutions"}</p>
-          <p className="company-brand-title">MNYALA CO. LTD</p>
-          <p>
+          <div className="company-eyebrow">{isSw ? "Sustainable Energy Solutions" : "Sustainable Energy Solutions"}</div>
+          <div className="company-brand-title">MNYALA CO. LTD</div>
+          <p className="company-subtitle">
             {isSw
               ? "Producing Eco-Friendly Charcoal From Natural Fruits"
               : "Producing Eco-Friendly Charcoal From Natural Fruits"}
@@ -123,7 +137,10 @@ export function SiteHeader({
 
       {/* 3. MENU BAR (WHITE NAVIGATION) */}
       <nav ref={navRef} className="menu-bar" aria-label="Menyu kuu">
-        <div className="nav-container lg:hidden">
+        <div className="nav-container">
+          <span className="mobile-nav-label">
+            {isSw ? "Menyu ya Tovuti" : "Site Menu"}
+          </span>
           <button
             type="button"
             onClick={() => setMenuOpen((prev) => !prev)}
@@ -132,15 +149,22 @@ export function SiteHeader({
             aria-expanded={menuOpen}
             aria-controls="nav-menu"
           >
-            <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <line x1="4" x2="20" y1="12" y2="12" />
-              <line x1="4" x2="20" y1="6" y2="6" />
-              <line x1="4" x2="20" y1="18" y2="18" />
-            </svg>
+            {menuOpen ? (
+              <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" x2="6" y1="6" y2="18" />
+                <line x1="6" x2="18" y1="6" y2="18" />
+              </svg>
+            ) : (
+              <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="4" x2="20" y1="12" y2="12" />
+                <line x1="4" x2="20" y1="6" y2="6" />
+                <line x1="4" x2="20" y1="18" y2="18" />
+              </svg>
+            )}
           </button>
         </div>
 
-        <ul id="nav-menu" className={`menu-bar-list ${menuOpen ? "open" : ""}`}>
+        <ul id="nav-menu" className={`menu-bar-list ${menuOpen ? "active open" : ""}`}>
           {navLinks.map((item) => {
             const active = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
@@ -156,6 +180,16 @@ export function SiteHeader({
               </li>
             );
           })}
+          <li className="lg:hidden border-t border-slate-100 mt-2 pt-2">
+            <Link
+              href="/admin/login"
+              onClick={() => setMenuOpen(false)}
+              className="text-brand font-bold flex items-center justify-between"
+            >
+              <span>{isSw ? "Mfumo wa Admin (Wafanyakazi)" : "Admin Portal (Staff)"}</span>
+              <span className="text-xs">&rarr;</span>
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

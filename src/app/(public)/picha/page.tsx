@@ -32,7 +32,7 @@ export default async function GalleryPage({ searchParams }: { searchParams: Prom
       {/* =========================
            1. GALLERY HERO
       ========================= */}
-      <section className="contact-hero" style={{ minHeight: "45vh", marginTop: 0 }}>
+      <section className="contact-hero">
         <div className="contact-overlay">
           <span>MATUKIO NA PICHA</span>
           <h1>Tazama Kazi Zetu</h1>

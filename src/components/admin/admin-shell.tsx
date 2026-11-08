@@ -75,12 +75,17 @@ export function AdminShell({
       <div className="flex min-w-0 flex-col">
         {/* Top Header */}
         <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-line bg-surface/95 px-4 backdrop-blur-md sm:px-6 lg:px-8">
-          {/* Mobile brand & toggle */}
-          <div className="flex items-center gap-3 lg:hidden">
-            <Image src="/brand/emblem.webp" alt="" width={30} height={30} priority className="size-7.5" />
-            <Link href="/admin" className="text-base font-bold text-ink no-underline">
-              Mnyala Admin
-            </Link>
+          {/* Mobile brand: Logo + Brand Name */}
+          <div className="flex items-center gap-2.5 lg:hidden">
+            <Image src="/brand/emblem.webp" alt="Mnyala" width={32} height={32} priority className="size-8 shrink-0" />
+            <div>
+              <Link href="/admin" className="text-base font-extrabold text-ink no-underline leading-tight block">
+                Mnyala Co. Ltd
+              </Link>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted block">
+                {isSw ? "Mfumo wa Usimamizi" : "Admin Portal"}
+              </span>
+            </div>
           </div>
 
           {/* Desktop breadcrumb/title */}
@@ -91,9 +96,8 @@ export function AdminShell({
             </span>
           </div>
 
-          {/* Action buttons, language switcher & notification bell */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Language Switcher in Admin Header */}
+          {/* Desktop action buttons: language switcher, website, messages bell, orders pill */}
+          <div className="hidden items-center gap-2.5 lg:flex">
             <LanguageSwitcher current={locale} />
 
             <Link
@@ -143,18 +147,17 @@ export function AdminShell({
                 <span>{counts.orders} {isSw ? "Oda" : "Orders"}</span>
               </Link>
             ) : null}
+          </div>
 
-            {/* Mobile Nav dialog */}
-            <div className="lg:hidden">
-              <MobileNav badgeCount={totalAlerts}>
-                <div className="flex-1">
-                  <NavLinks groups={groups} />
-                </div>
-                <div className="mt-6 border-t border-line pt-4">
-                  <UserBlock user={user} />
-                </div>
-              </MobileNav>
-            </div>
+          {/* Mobile Right: ONLY the Menu Icon */}
+          <div className="lg:hidden">
+            <MobileNav
+              badgeCount={totalAlerts}
+              user={user}
+              counts={counts}
+              locale={locale}
+              groups={groups}
+            />
           </div>
         </header>
 

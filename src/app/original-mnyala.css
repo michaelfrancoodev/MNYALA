@@ -55,9 +55,9 @@
    GLOBAL RESET
    ========================================================= */
 
-* {
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -91,11 +91,6 @@ a {
   text-decoration: none;
 }
 
-ul {
-  margin: 0;
-  padding: 0;
-}
-
 /* =========================================================
    TOP BAR
    ========================================================= */
@@ -105,16 +100,17 @@ ul {
 
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
 
-  gap: 35px;
+  gap: 10px 32px;
 
-  padding: 10px 40px;
+  padding: 10px 24px;
 
   background: #172033;
   color: var(--white);
 
-  font-size: 14px;
+  font-size: 13.5px;
 
   position: relative;
   z-index: 100;
@@ -140,22 +136,22 @@ ul {
 .main-header {
   width: 100%;
 
-  min-height: 180px;
+  min-height: 145px;
 
   display: grid;
 
   grid-template-columns:
-    140px
+    clamp(58px, 10vw, 124px)
     minmax(0, 1fr)
-    140px;
+    clamp(58px, 10vw, 124px);
 
   align-items: center;
 
-  column-gap: 25px;
+  column-gap: clamp(10px, 2.5vw, 28px);
 
-  padding: 20px 40px;
+  padding: clamp(14px, 2vw, 22px) clamp(12px, 3vw, 40px);
 
-  background: #0f3d2e;
+  background: linear-gradient(180deg, #0b3124 0%, #0f3d2e 100%);
 
   color: var(--white);
 
@@ -170,11 +166,11 @@ ul {
    ========================================================= */
 
 .header-logo {
-  width: 140px;
-  height: 140px;
+  width: clamp(58px, 10vw, 124px);
+  height: clamp(58px, 10vw, 124px);
 
-  min-width: 140px;
-  min-height: 140px;
+  min-width: 58px;
+  min-height: 58px;
 
   display: flex;
 
@@ -191,7 +187,7 @@ ul {
 
   flex-shrink: 0;
 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.22);
 
   visibility: visible;
   opacity: 1;
@@ -232,30 +228,32 @@ ul {
   overflow: hidden;
 }
 
-.company-title h4, .company-title .company-eyebrow {
-  margin: 0 0 6px;
+.company-title h4,
+.company-title .company-eyebrow {
+  margin: 0 0 4px;
 
   font-family: "Outfit", sans-serif;
 
-  font-size: 20px;
+  font-size: clamp(12px, 1.6vw, 19px);
 
   font-weight: 600;
 
-  color: #22c55e;
+  color: #4ade80;
 
   line-height: 1.3;
 }
 
-.company-title h1, .company-title .company-brand-title {
-  margin: 5px 0 10px;
+.company-title h1,
+.company-title .company-brand-title {
+  margin: 2px 0 6px;
 
   font-family: "Outfit", sans-serif;
 
-  font-size: 42px;
+  font-size: clamp(20px, 3.5vw, 40px);
 
   font-weight: 800;
 
-  letter-spacing: 3px;
+  letter-spacing: clamp(0.5px, 0.25vw, 2.5px);
 
   color: var(--white);
 
@@ -264,16 +262,17 @@ ul {
   white-space: nowrap;
 }
 
-.company-title p {
-  margin: 0;
+.company-title p,
+.company-title .company-subtitle {
+  margin: 0 auto;
 
-  font-size: 18px;
+  font-size: clamp(11px, 1.35vw, 16.5px);
 
   font-weight: 400;
 
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.92);
 
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 /* =========================================================
@@ -285,7 +284,9 @@ ul {
 
   background: var(--white);
 
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #d8e2dc;
+
+  box-shadow: 0 2px 10px rgba(15, 61, 46, 0.06);
 
   position: relative;
 
@@ -293,21 +294,15 @@ ul {
 }
 
 .nav-container {
-  width: 100%;
+  display: none;
+}
 
-  max-width: 1300px;
-
-  min-height: 56px;
-
-  margin: 0 auto;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: flex-end;
-
-  padding: 0.8rem 2rem;
+.mobile-nav-label {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f3d2e;
+  letter-spacing: 0.02em;
 }
 
 /* =========================================================
@@ -335,17 +330,17 @@ ul {
 
   padding: 0;
 
-  border: none;
+  border: 1px solid #d1fae5;
 
-  background: transparent;
+  background: #f0fdf4;
 
   color: #0f3d2e;
 
-  font-size: 25px;
+  font-size: 24px;
 
   cursor: pointer;
 
-  border-radius: 8px;
+  border-radius: 10px;
 
   transition: var(--transition);
 }
@@ -372,11 +367,11 @@ ul {
   align-items: center;
   justify-content: center;
 
-  gap: 40px;
+  gap: clamp(20px, 3vw, 44px);
 
   list-style: none;
 
-  padding: 18px 20px;
+  padding: 15px 20px;
 
   margin: 0;
 }
@@ -388,15 +383,17 @@ ul {
 .menu-bar > ul li a {
   display: inline-block;
 
-  padding: 5px 8px;
+  padding: 6px 12px;
 
   font-family: "Outfit", sans-serif;
 
-  font-size: 1.15rem;
+  font-size: 1.08rem;
 
   font-weight: 700;
 
   color: #0f3d2e;
+
+  border-radius: 8px;
 
   position: relative;
 
@@ -409,24 +406,28 @@ ul {
   position: absolute;
 
   left: 50%;
-  bottom: -4px;
+  bottom: -2px;
 
   width: 0;
-  height: 2px;
+  height: 3px;
 
   background: #22c55e;
+
+  border-radius: 2px;
 
   transform: translateX(-50%);
 
   transition: var(--transition);
 }
 
-.menu-bar > ul li a:hover {
-  color: #22c55e;
+.menu-bar > ul li a:hover,
+.menu-bar > ul li a.active {
+  color: #15803d;
 }
 
-.menu-bar > ul li a:hover::after {
-  width: 70%;
+.menu-bar > ul li a:hover::after,
+.menu-bar > ul li a.active::after {
+  width: 75%;
 }
 
 /* =========================================================
@@ -436,7 +437,7 @@ ul {
 .hero {
   position: relative;
 
-  min-height: 100vh;
+  min-height: clamp(420px, 60vh, 620px);
 
   display: flex;
 
@@ -445,12 +446,11 @@ ul {
 
   text-align: center;
 
-  padding: 0 2rem;
+  padding: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
 
   background:
-    linear-gradient(135deg, rgba(45, 122, 62, 0.85), rgba(26, 26, 26, 0.9)),
-    url("https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1600")
-      center / cover no-repeat;
+    linear-gradient(135deg, rgba(15, 61, 46, 0.88), rgba(26, 26, 26, 0.92)),
+    url("/original/uzalishaji mkaa.jpg") center / cover no-repeat;
 
   overflow: hidden;
 }
@@ -474,33 +474,33 @@ ul {
 
   width: 100%;
 
-  max-width: 800px;
+  max-width: 840px;
 }
 
 .hero-content h1 {
   font-family: "Outfit", sans-serif;
 
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(2rem, 4.5vw, 3.75rem);
 
   font-weight: 800;
 
   color: var(--white);
 
-  line-height: 1.15;
+  line-height: 1.18;
 
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
 
   animation: fadeInUp 1s ease-out;
 }
 
 .hero-content p {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
 
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9);
 
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 
   line-height: 1.7;
 
@@ -513,23 +513,26 @@ ul {
 
 .btn,
 .btn-contact {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
-  padding: 1rem 2.5rem;
+  padding: 0.9rem 2.2rem;
 
   background: var(--accent);
 
-  color: var(--dark);
+  color: #111827 !important;
 
-  text-decoration: none;
+  text-decoration: none !important;
 
   border-radius: 50px;
 
-  font-weight: 600;
+  font-weight: 700;
 
   font-size: 0.95rem;
 
-  border: none;
+  border: 2px solid var(--accent);
 
   cursor: pointer;
 
@@ -539,7 +542,7 @@ ul {
 
   overflow: hidden;
 
-  box-shadow: 0 4px 15px rgba(245, 166, 35, 0.3);
+  box-shadow: 0 4px 15px rgba(245, 166, 35, 0.35);
 }
 
 .btn::before,
@@ -572,10 +575,12 @@ ul {
 .btn:hover,
 .btn-contact:hover {
   background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #111827 !important;
 
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 
-  box-shadow: 0 8px 25px rgba(245, 166, 35, 0.4);
+  box-shadow: 0 8px 25px rgba(245, 166, 35, 0.45);
 }
 
 .btn:active {
@@ -583,19 +588,22 @@ ul {
 }
 
 .btn-secondary {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
-  padding: 1rem 2.5rem;
+  padding: 0.9rem 2.2rem;
 
-  background: transparent;
+  background: rgba(255, 255, 255, 0.12);
 
-  color: var(--white);
+  color: var(--white) !important;
 
-  text-decoration: none;
+  text-decoration: none !important;
 
   border-radius: 50px;
 
-  font-weight: 600;
+  font-weight: 700;
 
   font-size: 0.95rem;
 
@@ -607,9 +615,9 @@ ul {
 .btn-secondary:hover {
   background: var(--white);
 
-  color: var(--primary);
+  color: #0f3d2e !important;
 
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
 /* =========================================================
@@ -619,7 +627,7 @@ ul {
 .section-header {
   width: 100%;
 
-  max-width: 700px;
+  max-width: 720px;
 
   margin: 0 auto 3rem;
 
@@ -635,9 +643,9 @@ ul {
 
   color: var(--primary);
 
-  font-size: 0.85rem;
+  font-size: 0.82rem;
 
-  font-weight: 600;
+  font-weight: 700;
 
   text-transform: uppercase;
 
@@ -645,25 +653,27 @@ ul {
 
   border-radius: 50px;
 
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .section-header h2 {
   font-family: "Outfit", sans-serif;
 
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
 
   font-weight: 700;
 
   color: var(--dark);
 
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .section-header p {
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
 
-  color: #08661e;
+  color: #1e5a2b;
+
+  line-height: 1.7;
 }
 
 /* =========================================================
@@ -671,7 +681,7 @@ ul {
    ========================================================= */
 
 .why-choose {
-  padding: 6rem 2rem;
+  padding: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
 
   background: var(--bg-light);
 }
@@ -685,9 +695,9 @@ ul {
 
   display: grid;
 
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 
-  gap: 2rem;
+  gap: 1.75rem;
 }
 
 .choose-card {
@@ -695,7 +705,7 @@ ul {
 
   overflow: hidden;
 
-  padding: 2.5rem 2rem;
+  padding: 2rem 1.75rem;
 
   background: var(--white);
 
@@ -704,6 +714,8 @@ ul {
   border-radius: var(--radius-md);
 
   text-align: center;
+
+  box-shadow: var(--shadow-sm);
 
   transition: var(--transition);
 }
@@ -731,7 +743,7 @@ ul {
 }
 
 .choose-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-6px);
 
   box-shadow: var(--shadow-lg);
 
@@ -741,11 +753,11 @@ ul {
 .choose-card i {
   display: inline-block;
 
-  font-size: 2.5rem;
+  font-size: 2.25rem;
 
   color: var(--primary);
 
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 
   transition: var(--transition);
 }
@@ -757,21 +769,21 @@ ul {
 .choose-card h3 {
   font-family: "Outfit", sans-serif;
 
-  font-size: 1.6rem;
+  font-size: 1.35rem;
 
-  font-weight: 600;
+  font-weight: 700;
 
   color: var(--dark);
 
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.7rem;
 }
 
 .choose-card p {
   color: var(--text-light);
 
-  font-size: 1.25rem;
+  font-size: 1rem;
 
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
 /* =========================================================
@@ -779,7 +791,7 @@ ul {
    ========================================================= */
 
 .services {
-  padding: 6rem 2rem;
+  padding: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
 
   background: var(--white);
 }
@@ -793,9 +805,9 @@ ul {
 
   display: grid;
 
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 
-  gap: 2rem;
+  gap: 1.75rem;
 }
 
 .service-card {
@@ -803,13 +815,15 @@ ul {
 
   overflow: hidden;
 
-  padding: 2.5rem 2rem;
+  padding: 2rem 1.75rem;
 
   background: var(--white);
 
   border: 1px solid var(--border);
 
   border-radius: var(--radius-md);
+
+  box-shadow: var(--shadow-sm);
 
   transition: var(--transition);
 }
@@ -856,7 +870,7 @@ ul {
 
   color: var(--primary);
 
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 
   transition: var(--transition);
 }
@@ -870,21 +884,21 @@ ul {
 .service-card h3 {
   font-family: "Outfit", sans-serif;
 
-  font-size: 1.6rem;
+  font-size: 1.3rem;
 
-  font-weight: 600;
+  font-weight: 700;
 
   color: var(--dark);
 
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.7rem;
 }
 
 .service-card p {
   color: var(--text-light);
 
-  font-size: 1.25rem;
+  font-size: 1rem;
 
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
 /* =========================================================
@@ -892,7 +906,7 @@ ul {
    ========================================================= */
 
 .featured-products {
-  padding: 6rem 2rem;
+  padding: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
 
   background: var(--bg-cream);
 }
@@ -906,9 +920,9 @@ ul {
 
   display: grid;
 
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
 
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 .product-card {
@@ -923,20 +937,24 @@ ul {
   box-shadow: var(--shadow-sm);
 
   transition: var(--transition);
+
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-8px);
 
   box-shadow: var(--shadow-lg);
 }
 
 .product-image {
-  height: 240px;
+  height: 230px;
 
   position: relative;
 
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .product-image::after {
@@ -963,11 +981,15 @@ ul {
 }
 
 .product-card:hover .product-image img {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .product-content {
-  padding: 1.8rem;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .product-content h3 {
@@ -975,21 +997,21 @@ ul {
 
   font-size: 1.25rem;
 
-  font-weight: 600;
+  font-weight: 700;
 
   color: var(--dark);
 
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.65rem;
 }
 
 .product-content p {
   color: var(--text-light);
 
-  font-size: 1.25rem;
+  font-size: 0.98rem;
 
   line-height: 1.6;
 
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 /* product button styles managed via clean utility classes */
@@ -1203,9 +1225,9 @@ ul {
    ========================================================= */
 
 .footer {
-  padding: 5rem 2rem 0;
+  padding: clamp(3.5rem, 6vw, 5rem) 1.5rem 0;
 
-  background: linear-gradient(135deg, #0d4a2b, #1f8f4c);
+  background: linear-gradient(135deg, #0b3d23, #176f3b);
 
   color: var(--white);
 }
@@ -1219,23 +1241,27 @@ ul {
 
   display: grid;
 
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
-  gap: 3rem;
+  gap: 2.5rem;
+}
+
+.footer-box {
+  min-width: 0;
 }
 
 .footer-box h3 {
   position: relative;
 
-  padding-bottom: 0.8rem;
+  padding-bottom: 0.75rem;
 
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 
   font-family: "Outfit", sans-serif;
 
-  font-size: 1.35rem;
+  font-size: 1.2rem;
 
-  font-weight: 600;
+  font-weight: 700;
 
   color: #86efac;
 }
@@ -1257,13 +1283,14 @@ ul {
 }
 
 .footer-box p {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9);
 
-  font-size: 1.1rem;
+  font-size: 0.98rem;
 
-  line-height: 1.8;
+  line-height: 1.75;
 
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.65rem;
+  word-break: break-word;
 }
 
 .footer-box p i {
@@ -1276,10 +1303,12 @@ ul {
 
 .footer-box ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-box ul li {
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.65rem;
 }
 
 .footer-box ul li a {
@@ -1289,9 +1318,9 @@ ul {
 
   gap: 0.5rem;
 
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9);
 
-  font-size: 1.1rem;
+  font-size: 0.98rem;
 
   transition: var(--transition);
 }
@@ -1301,7 +1330,7 @@ ul {
 
   color: #4ade80;
 
-  font-size: 1.2rem;
+  font-size: 1.15rem;
 
   transition: var(--transition);
 }
@@ -1309,7 +1338,7 @@ ul {
 .footer-box ul li a:hover {
   color: #86efac;
 
-  padding-left: 5px;
+  padding-left: 4px;
 }
 
 .footer-box ul li a:hover::before {
@@ -1319,9 +1348,9 @@ ul {
 .social-icons {
   display: flex;
 
-  gap: 0.8rem;
+  gap: 0.75rem;
 
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 }
 
 .social-icons a {
@@ -1335,7 +1364,7 @@ ul {
 
   background: #14583a;
 
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 
   border-radius: 50%;
 
@@ -1359,17 +1388,17 @@ ul {
 }
 
 .footer-bottom {
-  margin-top: 4rem;
+  margin-top: 3.5rem;
 
-  padding: 2rem 0;
+  padding: 1.75rem 1rem 2.25rem;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 
   text-align: center;
 
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
 
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 
 /* =========================================================
@@ -1450,88 +1479,73 @@ ul {
    ========================================================= */
 
 @media (min-width: 769px) and (max-width: 1024px) {
-  /* TOP BAR */
-
   .top-bar {
     justify-content: center;
-
-    gap: 20px;
-
+    gap: 12px 24px;
     padding: 10px 20px;
-
     flex-wrap: wrap;
   }
 
-  /* HEADER */
-
   .main-header {
     min-height: auto;
-
-    grid-template-columns:
-      90px
-      minmax(0, 1fr)
-      90px;
-
-    column-gap: 15px;
-
-    padding: 18px 20px;
+    grid-template-columns: 88px minmax(0, 1fr) 88px;
+    column-gap: 16px;
+    padding: 16px 20px;
   }
 
   .header-logo {
-    width: 90px;
-    height: 90px;
-
-    min-width: 90px;
-    min-height: 90px;
-
+    width: 88px;
+    height: 88px;
+    min-width: 88px;
+    min-height: 88px;
     display: flex !important;
   }
 
   .header-logo img {
     display: block !important;
-
     width: 100%;
     height: 100%;
   }
 
-  .company-title h4, .company-title .company-eyebrow {
-    font-size: 16px;
-  }
-
-  .company-title h1, .company-title .company-brand-title {
-    font-size: 32px;
-
-    letter-spacing: 1.5px;
-  }
-
-  .company-title p {
+  .company-title h4,
+  .company-title .company-eyebrow {
     font-size: 15px;
   }
 
-  /* NAV */
+  .company-title h1,
+  .company-title .company-brand-title {
+    font-size: 30px;
+    letter-spacing: 1.5px;
+  }
+
+  .company-title p,
+  .company-title .company-subtitle {
+    font-size: 14px;
+  }
 
   .menu-bar > ul {
-    gap: 20px;
-
-    padding: 16px 15px;
+    gap: 24px;
+    padding: 14px 16px;
   }
 
   .menu-bar > ul li a {
     font-size: 1rem;
   }
 
-  /* CONTACT */
-
   .contact-container {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
 
-    gap: 3rem;
+  .footer-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
   }
 }
 
 /* =========================================================
-   MOBILE
-   481px — 768px
+   MOBILE & PHONES
+   <= 768px
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -1541,28 +1555,20 @@ ul {
 
   .top-bar {
     width: 100%;
-
     display: flex;
-
-    flex-direction: column;
-
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-
-    gap: 7px;
-
-    padding: 11px 10px;
-
+    gap: 6px 16px;
+    padding: 8px 12px;
     text-align: center;
-
     font-size: 12px;
   }
 
   .top-bar > div {
-    white-space: normal;
-
+    white-space: nowrap;
     justify-content: center;
-
     text-align: center;
   }
 
@@ -1573,47 +1579,26 @@ ul {
 
   .main-header {
     width: 100%;
-
     min-height: auto;
-
     display: grid;
-
-    grid-template-columns:
-      70px
-      minmax(0, 1fr)
-      70px;
-
+    grid-template-columns: 64px minmax(0, 1fr) 64px;
     align-items: center;
-
-    column-gap: 8px;
-
-    padding: 14px 10px 16px;
-
+    column-gap: 10px;
+    padding: 12px 12px 14px;
     height: auto;
   }
 
-  /* IMPORTANT:
-     BOTH LOGOS ARE FORCED VISIBLE
-  */
-
   .main-header .header-logo {
-    width: 70px;
-    height: 70px;
-
-    min-width: 70px;
-    min-height: 70px;
-
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    min-height: 64px;
     display: flex !important;
-
     align-items: center;
     justify-content: center;
-
     visibility: visible !important;
-
     opacity: 1 !important;
-
     border-width: 2px;
-
     flex-shrink: 0;
   }
 
@@ -1628,13 +1613,9 @@ ul {
   .main-header .header-logo img {
     width: 100%;
     height: 100%;
-
     display: block !important;
-
     visibility: visible !important;
-
     opacity: 1 !important;
-
     object-fit: contain;
   }
 
@@ -1644,44 +1625,35 @@ ul {
 
   .company-title {
     width: 100%;
-
     min-width: 0;
-
     text-align: center;
-
     overflow: hidden;
   }
 
-  .company-title h4, .company-title .company-eyebrow {
-    font-size: 11px;
-
-    line-height: 1.2;
-
+  .company-title h4,
+  .company-title .company-eyebrow {
+    font-size: clamp(10.5px, 2.8vw, 13px);
+    line-height: 1.25;
     margin: 0 0 3px;
-
     white-space: normal;
   }
 
-  .company-title h1, .company-title .company-brand-title {
-    font-size: 20px;
-
-    line-height: 1.1;
-
-    letter-spacing: 0.5px;
-
-    margin: 4px 0 6px;
-
-    white-space: nowrap;
+  .company-title h1,
+  .company-title .company-brand-title {
+    font-size: clamp(18px, 5vw, 24px);
+    line-height: 1.15;
+    letter-spacing: 0.6px;
+    margin: 2px 0 4px;
+    white-space: normal;
   }
 
-  .company-title p {
-    font-size: 9px;
-
-    line-height: 1.3;
-
+  .company-title p,
+  .company-title .company-subtitle {
+    font-size: clamp(10px, 2.6vw, 12.5px);
+    line-height: 1.35;
     margin: 0 auto;
-
     max-width: 100%;
+    white-space: normal;
   }
 
   /* -------------------------------------------------------
@@ -1690,29 +1662,21 @@ ul {
 
   .nav-container {
     width: 100%;
-
-    min-height: 56px;
-
+    min-height: 52px;
     display: flex;
-
     align-items: center;
-
-    justify-content: flex-end;
-
-    padding: 7px 12px;
+    justify-content: space-between;
+    padding: 6px 16px;
   }
 
   .hamburger {
     display: flex;
-
     align-items: center;
     justify-content: center;
-
-    width: 44px;
-    height: 44px;
-
-    min-width: 44px;
-    min-height: 44px;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
   }
 
   .nav-logo,
@@ -1726,80 +1690,64 @@ ul {
 
   .menu-bar > ul {
     position: absolute;
-
     top: 100%;
     left: 0;
-
     width: 100%;
-
     display: flex;
-
     flex-direction: column;
-
-    align-items: center;
-
+    align-items: stretch;
     justify-content: flex-start;
-
     gap: 0;
-
     padding: 0;
-
-    background: var(--primary);
-
+    background: #0f3d2e;
     max-height: 0;
-
     overflow: hidden;
-
     visibility: hidden;
-
     opacity: 0;
-
     transition:
-      max-height 0.4s ease,
-      opacity 0.3s ease,
-      visibility 0.3s ease;
-
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-
+      max-height 0.35s ease,
+      opacity 0.25s ease,
+      visibility 0.25s ease;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
     z-index: 1000;
   }
 
-  .menu-bar > ul.active {
-    max-height: 400px;
-
+  .menu-bar > ul.active,
+  .menu-bar > ul.open {
+    max-height: 420px;
     visibility: visible;
-
     opacity: 1;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .menu-bar > ul li {
     width: 100%;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
 
-    text-align: center;
+  .menu-bar > ul li:last-child {
+    border-bottom: none;
   }
 
   .menu-bar > ul li a {
     width: 100%;
-
     display: block;
-
-    padding: 15px 20px;
-
-    color: var(--white);
-
-    background: var(--primary);
-
+    padding: 14px 20px;
+    color: var(--white) !important;
+    background: transparent;
     font-size: 1rem;
+    border-radius: 0;
   }
 
   .menu-bar > ul li a::after {
     display: none;
   }
 
-  .menu-bar > ul li a:hover {
-    background: var(--primary-dark);
-
-    color: var(--white);
+  .menu-bar > ul li a:hover,
+  .menu-bar > ul li a.active {
+    background: #2d7a3e;
+    color: var(--white) !important;
   }
 
   /* -------------------------------------------------------
@@ -1807,51 +1755,48 @@ ul {
      ------------------------------------------------------- */
 
   .hero {
-    min-height: 80vh;
-
-    padding: 40px 16px;
+    min-height: clamp(360px, 52vh, 480px);
+    padding: 36px 16px;
   }
 
   .hero-content {
     width: 100%;
-
     max-width: 100%;
-
-    padding: 0 2px;
+    padding: 0 4px;
   }
 
   .hero-content h1 {
-    font-size: clamp(2rem, 8vw, 3rem);
-
-    line-height: 1.18;
-
-    margin-bottom: 1rem;
+    font-size: clamp(1.75rem, 6.5vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: 0.9rem;
   }
 
   .hero-content p {
-    font-size: 1rem;
-
+    font-size: 0.98rem;
     line-height: 1.65;
-
-    margin-bottom: 1.6rem;
-  }
-
-  .hero-content .btn-secondary {
-    margin-left: 0 !important;
-
-    margin-top: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   /* -------------------------------------------------------
-     CARDS
+     CARDS & SECTIONS
      ------------------------------------------------------- */
+
+  .why-choose,
+  .services,
+  .featured-products {
+    padding: 3.25rem 1.25rem;
+  }
 
   .choose-container,
   .services-container,
   .products-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
 
-    gap: 1.2rem;
+  .choose-card,
+  .service-card {
+    padding: 1.5rem 1.25rem;
   }
 
   /* -------------------------------------------------------
@@ -1860,8 +1805,7 @@ ul {
 
   .contact-container {
     grid-template-columns: 1fr;
-
-    gap: 2.5rem;
+    gap: 2rem;
   }
 
   .contact-info .info-box:hover {
@@ -1872,22 +1816,23 @@ ul {
      FOOTER
      ------------------------------------------------------- */
 
+  .footer {
+    padding: 3rem 1.25rem 0;
+  }
+
   .footer-container {
     grid-template-columns: 1fr;
-
-    gap: 2.5rem;
-
-    text-align: center;
+    gap: 2rem;
+    text-align: left;
   }
 
-  .footer-box h3::after {
-    left: 50%;
-
-    transform: translateX(-50%);
+  .footer-box h3 {
+    margin-bottom: 0.9rem;
   }
 
-  .social-icons {
-    justify-content: center;
+  .footer-bottom {
+    margin-top: 2.5rem;
+    padding: 1.5rem 0.5rem 4.5rem;
   }
 }
 
@@ -1897,170 +1842,65 @@ ul {
    ========================================================= */
 
 @media (max-width: 480px) {
-  /* -------------------------------------------------------
-     TOP BAR
-     ------------------------------------------------------- */
-
   .top-bar {
-    padding: 9px 8px;
-
-    gap: 5px;
-
-    font-size: 11px;
+    padding: 7px 10px;
+    gap: 4px 12px;
+    font-size: 11.5px;
   }
 
-  /* -------------------------------------------------------
-     HEADER
-     TWO LOGOS — SMALL BUT STILL VISIBLE
-     ------------------------------------------------------- */
-
   .main-header {
-    grid-template-columns:
-      50px
-      minmax(0, 1fr)
-      50px;
-
-    column-gap: 5px;
-
-    padding: 10px 8px 12px;
+    grid-template-columns: 52px minmax(0, 1fr) 52px;
+    column-gap: 8px;
+    padding: 10px 10px 12px;
   }
 
   .main-header .header-logo {
-    width: 50px;
-    height: 50px;
-
-    min-width: 50px;
-    min-height: 50px;
-
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
     display: flex !important;
-
     border-width: 2px;
   }
 
   .main-header .header-logo img {
     width: 100%;
     height: 100%;
-
     display: block !important;
-
     object-fit: contain;
   }
 
-  /* -------------------------------------------------------
-     COMPANY TITLE
-     ------------------------------------------------------- */
-
-  .company-title h4, .company-title .company-eyebrow {
-    font-size: 9px;
-
-    line-height: 1.2;
-
-    margin-bottom: 2px;
-  }
-
-  .company-title h1, .company-title .company-brand-title {
-    font-size: 17px;
-
-    letter-spacing: 0.3px;
-
-    line-height: 1.1;
-
-    margin: 4px 0;
-  }
-
-  .company-title p {
-    font-size: 8px;
-
-    line-height: 1.3;
-  }
-
-  /* -------------------------------------------------------
-     NAV
-     ------------------------------------------------------- */
-
   .nav-container {
-    padding: 6px 10px;
+    padding: 6px 12px;
   }
 
   .hamburger {
-    width: 42px;
-    height: 42px;
-
-    min-width: 42px;
-    min-height: 42px;
-
-    font-size: 22px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 20px;
   }
-
-  /* -------------------------------------------------------
-     HERO
-     ------------------------------------------------------- */
-
-  .hero {
-    min-height: 70vh;
-
-    padding: 28px 14px;
-  }
-
-  .hero-content h1 {
-    font-size: clamp(1.8rem, 8vw, 2.2rem);
-  }
-
-  .hero-content p {
-    font-size: 0.94rem;
-
-    line-height: 1.65;
-  }
-
-  /* -------------------------------------------------------
-     BUTTONS
-     ------------------------------------------------------- */
 
   .btn,
-  .btn-contact {
-    min-height: 46px;
-
-    padding: 0.9rem 2rem;
-
+  .btn-contact,
+  .btn-secondary {
+    min-height: 44px;
+    padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
   }
-
-  /* -------------------------------------------------------
-     CARDS
-     ------------------------------------------------------- */
-
-  .choose-container,
-  .services-container,
-  .products-container {
-    grid-template-columns: 1fr;
-  }
-
-  /* -------------------------------------------------------
-     PRODUCT IMAGE
-     ------------------------------------------------------- */
 
   .product-image {
     height: 200px;
   }
 
-  /* -------------------------------------------------------
-     CONTACT FORM
-     ------------------------------------------------------- */
-
   .contact-form form {
-    padding: 1.5rem;
-  }
-
-  /* -------------------------------------------------------
-     FOOTER
-     ------------------------------------------------------- */
-
-  .footer {
-    padding: 3rem 1rem 0;
+    padding: 1.25rem;
   }
 
   .footer-bottom p {
-    font-size: 12px;
+    font-size: 12.5px;
+    line-height: 1.6;
   }
 }
 
@@ -2071,40 +1911,20 @@ ul {
 
 @media (max-width: 360px) {
   .main-header {
-    grid-template-columns:
-      44px
-      minmax(0, 1fr)
-      44px;
-
-    column-gap: 4px;
-
-    padding: 8px 6px 10px;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    column-gap: 6px;
+    padding: 8px 8px 10px;
   }
 
   .main-header .header-logo {
     width: 44px;
     height: 44px;
-
     min-width: 44px;
     min-height: 44px;
   }
 
-  .company-title h4, .company-title .company-eyebrow {
-    font-size: 8px;
-  }
-
-  .company-title h1, .company-title .company-brand-title {
-    font-size: 15px;
-
-    letter-spacing: 0;
-  }
-
-  .company-title p {
-    font-size: 7px;
-  }
-
   .top-bar {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
@@ -2135,16 +1955,15 @@ ul {
 
 .about-hero {
   position: relative;
-  min-height: 70vh;
+  min-height: clamp(320px, 45vh, 460px);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   background:
-    linear-gradient(135deg, rgba(45, 122, 62, 0.85), rgba(26, 26, 26, 0.92)),
-    url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600")
-      center/cover no-repeat;
-  padding: 6rem 2rem;
+    linear-gradient(135deg, rgba(15, 61, 46, 0.88), rgba(26, 26, 26, 0.92)),
+    url("/original/staff.jpg") center/cover no-repeat;
+  padding: clamp(3.5rem, 6vw, 5rem) 1.5rem;
   margin-top: 0;
 }
 
@@ -2492,6 +2311,7 @@ ul {
   font-family: "Outfit", sans-serif;
   font-size: 2.2rem;
   font-weight: 700;
+  color: var(--white) !important;
   margin-bottom: 3rem;
 }
 
@@ -2523,7 +2343,7 @@ ul {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
-  color: var(--accent);
+  color: var(--accent) !important;
 }
 
 .impact-grid p {
@@ -2545,6 +2365,7 @@ ul {
   font-family: "Outfit", sans-serif;
   font-size: 2rem;
   font-weight: 700;
+  color: var(--white) !important;
   margin-bottom: 1rem;
 }
 
@@ -2579,14 +2400,24 @@ ul {
 
 @media (max-width: 768px) {
   .about-hero {
-    min-height: 50vh;
+    min-height: 300px;
+    padding: 3rem 1.25rem;
+  }
+
+  .about-section {
+    padding: 3.5rem 1.25rem;
   }
 
   .company-story,
   .values,
   .process,
   .impact {
-    padding: 4rem 1.5rem;
+    padding: 3.5rem 1.25rem;
+  }
+
+  .mission-vision {
+    padding: 3.5rem 1.25rem;
+    gap: 1.5rem;
   }
 
   .timeline {
@@ -2618,16 +2449,15 @@ ul {
 
 .products-hero {
   position: relative;
-  min-height: 70vh;
+  min-height: clamp(320px, 45vh, 460px);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   background:
-    linear-gradient(135deg, rgba(45, 122, 62, 0.85), rgba(26, 26, 26, 0.92)),
-    url("https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1600")
-      center/cover no-repeat;
-  padding: 6rem 2rem;
+    linear-gradient(135deg, rgba(15, 61, 46, 0.88), rgba(26, 26, 26, 0.92)),
+    url("/original/product3.jpg") center/cover no-repeat;
+  padding: clamp(3.5rem, 6vw, 5rem) 1.5rem;
   margin-top: 0;
 }
 
@@ -2700,8 +2530,8 @@ ul {
    ========================================= */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem 4rem;
@@ -2755,30 +2585,26 @@ ul {
 
 .products-grid .product-content ul {
   list-style: none;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .products-grid .product-content ul li {
   color: var(--text-light);
-  padding: 0.4rem 0;
+  padding: 0.25rem 0;
   font-size: 0.9rem;
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  align-items: flex-start;
+  gap: 0.55rem;
 }
 
 .products-grid .product-content ul li::before {
   content: "";
-  color: var(--primary);
-  font-weight: 700;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--primary-light);
+  width: 7px;
+  height: 7px;
+  min-width: 7px;
+  margin-top: 0.45rem;
+  background: var(--primary);
   border-radius: 50%;
-  font-size: 0.75rem;
 }
 
 /* responsive product buttons managed by clean utility classes */
@@ -2924,10 +2750,11 @@ ul {
 
 .package-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  max-width: 800px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 860px;
   margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .package-grid > div {
@@ -2986,6 +2813,7 @@ ul {
   font-family: "Outfit", sans-serif;
   font-size: 2rem;
   font-weight: 700;
+  color: var(--white) !important;
   margin-bottom: 1rem;
 }
 
@@ -3006,13 +2834,19 @@ ul {
 
 @media (max-width: 768px) {
   .products-hero {
-    min-height: 45vh;
+    min-height: 320px;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1.25rem 3rem;
   }
 
   .specifications table th,
   .specifications table td {
-    padding: 1rem;
-    font-size: 0.85rem;
+    padding: 0.9rem 1rem;
+    font-size: 0.88rem;
   }
 
   .package-grid {
@@ -3034,16 +2868,17 @@ ul {
   }
 
   .package-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .specifications {
-    overflow-x: auto;
-    padding: 4rem 1rem;
+    padding: 3.5rem 1rem;
   }
 
-  .specifications table {
-    min-width: 500px;
+  .specifications table th,
+  .specifications table td {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.85rem;
   }
 }
 /* =========================================
@@ -3052,16 +2887,15 @@ ul {
 
 .contact-hero {
   position: relative;
-  min-height: 70vh;
+  min-height: clamp(320px, 45vh, 460px);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   background:
-    linear-gradient(135deg, rgba(45, 122, 62, 0.85), rgba(26, 26, 26, 0.92)),
-    url("https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1600")
-      center/cover no-repeat;
-  padding: 6rem 2rem;
+    linear-gradient(135deg, rgba(15, 61, 46, 0.88), rgba(26, 26, 26, 0.92)),
+    url("/original/uzalishaji mkaa.jpg") center/cover no-repeat;
+  padding: clamp(3.5rem, 6vw, 5rem) 1.5rem;
   margin-top: 0;
 }
 
@@ -3368,6 +3202,7 @@ ul {
   font-family: "Outfit", sans-serif;
   font-size: 2rem;
   font-weight: 700;
+  color: var(--white) !important;
   margin-bottom: 1rem;
 }
 
@@ -3397,7 +3232,13 @@ ul {
 
 @media (max-width: 768px) {
   .contact-hero {
-    min-height: 45vh;
+    min-height: 320px;
+  }
+
+  .contact-info,
+  .contact-form-section,
+  .contact-map {
+    padding: 3.5rem 1.25rem;
   }
 
   .contact-form-section .contact-form form {
@@ -3405,7 +3246,8 @@ ul {
   }
 
   .contact-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }
 
@@ -3517,28 +3359,32 @@ ul {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 2rem 1.5rem 1.5rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
-  color: var(--white);
-  transform: translateY(60%);
+  padding: 2.2rem 1.4rem 1.25rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.55) 65%, transparent 100%);
+  color: var(--white) !important;
+  transform: translateY(0);
   transition: var(--transition);
 }
 
 .gallery-container .card:hover .overlay {
   transform: translateY(0);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.65) 75%, transparent 100%);
 }
 
 .gallery-container .card .overlay h3 {
   font-family: "Outfit", sans-serif;
   font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: var(--white) !important;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
+  margin-bottom: 0.35rem;
 }
 
 .gallery-container .card .overlay p {
   font-size: 0.9rem;
-  opacity: 0.9;
-  margin-bottom: 0.8rem;
+  color: rgba(255, 255, 255, 0.92) !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  margin-bottom: 0.7rem;
 }
 
 .category-badge {

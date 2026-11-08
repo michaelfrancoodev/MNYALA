@@ -140,11 +140,11 @@ export default async function HomePage() {
               <div className="product-content">
                 <h3>{p.name}</h3>
                 <p>{p.summary}</p>
-                <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                  <Link href={`/wasiliana?bidhaa=${p.slug}`} className="btn-product text-center font-bold">
+                <div className="mt-4 flex flex-col sm:flex-row gap-2.5">
+                  <Link href={`/wasiliana?bidhaa=${p.slug}`} className="btn-product flex-1 text-center font-bold">
                     Agiza Sasa
                   </Link>
-                  <Link href={`/bidhaa#${p.slug}`} className="btn-secondary text-center text-xs py-3 px-4 border-[#2d7a3e] text-[#2d7a3e] hover:bg-[#2d7a3e] hover:text-white rounded-full font-bold transition-colors">
+                  <Link href={`/bidhaa#${p.slug}`} className="btn-card-outline flex-1 text-center font-bold">
                     Maelezo Zaidi
                   </Link>
                 </div>

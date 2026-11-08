@@ -84,7 +84,7 @@ export default async function ProductsPage() {
                   <h3>{p.name}</h3>
                   <p className="text-sm text-slate-600 mt-2 mb-3">{p.summary}</p>
                   {p.features.length > 0 ? (
-                    <ul className="space-y-1 mb-4 text-xs text-slate-600 list-disc pl-4">
+                    <ul className="space-y-1.5 mb-4 text-xs text-slate-600">
                       {p.features.map((feat) => (
                         <li key={feat}>{feat}</li>
                       ))}
@@ -104,7 +104,7 @@ export default async function ProductsPage() {
                     )}
                   </div>
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2.5">
                     <Link href={`/wasiliana?bidhaa=${p.slug}`} className="btn-product w-full text-center font-bold">
                       Agiza Sasa
                     </Link>
@@ -112,7 +112,7 @@ export default async function ProductsPage() {
                       href={whatsappLink(whatsapp, `Habari Mnyala, nahitaji kujua kuhusu ${p.name}.`)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-lg border border-[#2d7a3e] bg-emerald-50/70 py-2 px-2 text-center text-xs font-bold text-[#0f3d2e] hover:bg-[#2d7a3e] hover:text-white transition-colors"
+                      className="btn-card-outline w-full text-center font-bold"
                     >
                       Uliza kwa WhatsApp
                     </a>
