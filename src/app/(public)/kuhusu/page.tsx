@@ -1,136 +1,169 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { MediaImage } from "@/components/public/media-image";
-import { PageHeading } from "@/components/public/page-heading";
-import { buttonClasses } from "@/components/ui/button";
-import { COMMON } from "@/messages/sw";
-import { getPublishedGallery, getSiteSettings } from "@/server/services/site";
+import { getLocale } from "@/messages/i18n";
 
 export const metadata: Metadata = {
-  title: "Kuhusu Sisi",
+  title: "Kuhusu Sisi | Mnyala Co. Ltd",
   description:
-    "Mnyala Co. Ltd ni kampuni ya Kitanzania inayotengeneza mkaa safi, majiko, mbegu na mbolea asilia kutokana na matunda ya mti wa mbono.",
+    "Mnyala Co. Ltd ni kampuni ya Kitanzania inayotengeneza mkaa safi, majiko, mbegu na mbolea asilia kutokana na matunda ya mti wa mbono jijini Mbeya.",
 };
 
 export default async function AboutPage() {
-  const [gallery, site] = await Promise.all([getPublishedGallery(), getSiteSettings()]);
-  const photo = gallery.find((g) => g.category === "production")?.image ?? null;
+  const locale = await getLocale();
+  const isSw = locale === "sw";
 
   return (
     <>
-      <PageHeading eyebrow="Kuhusu Kampuni" title="Tunageuza Matunda ya Mbono Kuwa Nishati Endelevu">
+      {/* =========================
+           1. ABOUT HERO
+      ========================= */}
+      <section className="about-hero">
+        <div className="about-overlay">
+          <span>{isSw ? "KARIBU KWA MNYALA CO. LTD" : "WELCOME TO MNYALA CO. LTD"}</span>
+          <h1>
+            {isSw
+              ? "Tunageuza Matunda (mbono) kuwa Nishati Endelevu"
+              : "Converting Jatropha Biomass Fruits into Sustainable Clean Energy"}
+          </h1>
+          <p>
+            {isSw
+              ? "Tunatengeneza mkaa safi, majiko, mbegu, na mbolea asilia kutokana na matunda ya mti wa mbono (Jatropha curcas). Lengo letu ni kulinda misitu, kupunguza taka, na kutoa nishati safi kwa jamii."
+              : "Manufacturing smokeless bio-charcoal, cookstoves, seeds, and organic compost from jatropha curcas fruits. Protecting indigenous forests and empowering communities."}
+          </p>
+        </div>
+      </section>
+
+      {/* =========================
+           2. WHO WE ARE
+      ========================= */}
+      <section className="about-section">
+        <div className="about-image">
+          <Image
+            src="/original/staff.jpg"
+            alt="Mnyala Co. Ltd - Timu ya Uzalishaji wa Mkaa Mbeya"
+            width={700}
+            height={500}
+            className="size-full object-cover rounded-xl"
+          />
+        </div>
+
+        <div className="about-text">
+          <h2>{isSw ? "Sisi Ni Nani?" : "Who We Are"}</h2>
+          <p>
+            <strong>Mnyala Company Limited</strong> {isSw ? "ni kampuni ya Kitanzania iliyojitolea kutengeneza mkaa wa ubora wa juu kutokana na matunda ya mti wa mbono (Jatropha curcas). Tunamini kuwa matunda haya ni rasilimali muhimu yanayoweza kugeuzwa kuwa nishati safi huku tukilinda mazingira yetu." : "is a registered Tanzanian enterprise pioneering high-grade bio-charcoal production from jatropha curcas fruits in Mbeya. We turn agricultural biomass into accessible clean energy."}
+          </p>
+          <p>
+            {isSw
+              ? "Bidhaa zetu zinatoa suluhisho la gharama nafuu, salama, na endelevu badala ya mkaa wa kawaida, zikisaidia familia na biashara kupunguza athari za mazingira. Pia tunatengeneza mboji (mbolea asilia) kutokana na mabaki ya uzalishaji."
+              : "Our products provide safe, affordable, and sustainable replacements for wood charcoal, cutting indoor smoke while producing organic compost from processing residues."}
+          </p>
+          <p>
+            {isSw
+              ? "Zaidi ya mkaa, tunauza majiko ya kisasa yaliyobuniwa kutumia mkaa wetu kwa ufanisi mkubwa, pamoja na mbegu za mbono kwa wakulima wanaotaka kuanza kilimo cha mti huu wa thamani."
+              : "Beyond charcoal, we manufacture clean cookstoves tailored for high efficiency, alongside certified jatropha seeds for farmers cultivating clean energy trees."}
+          </p>
+        </div>
+      </section>
+
+      {/* =========================
+           3. OUR STORY
+      ========================= */}
+      <section className="company-story">
+        <h2>{isSw ? "Hadithi Yetu" : "Our Story"}</h2>
         <p>
-          Mnyala Co. Ltd inatengeneza mkaa safi wa kisasa, majiko ya ufanisi, mbegu za mbono (Jatropha curcas), na mbolea asilia
-          kutokana na matunda ya mti wa mbono. Lengo letu ni kulinda misitu ya asili, kupunguza moshi majumbani, na kutoa nishati
-          safi na ya bei nafuu kwa jamii ya Tanzania.
+          {isSw
+            ? "Mnyala Company ilianzishwa kwa dira moja rahisi: kugeuza rasilimali za kilimo kuwa bidhaa za nishati zenye thamani. Tuliona kiwango cha ukataji wa miti kinaongezeka, tukabuni mkaa unaolinda mazingira, na kupunguza hewa chafu inayotokana na uchomaji mkaa wa miti ya asili."
+            : "Mnyala was founded on a simple vision: transform agricultural biomass into high-value energy products. Witnessing alarming deforestation rates, we innovated a clean fuel that preserves living forests while eliminating hazardous smoke."}
         </p>
-      </PageHeading>
+        <p>
+          {isSw
+            ? "Tunaendelea kuwekeza katika ubunifu, endelevu, na uzalishaji wa ubora. Bidhaa zetu sasa zinajumuisha mkaa safi, mbegu, na mbolea asilia — zote zikitokana na mti mmoja wa mbono."
+            : "We continuously invest in circular economy innovations. Our current ecosystem delivers bio-charcoal, planting seeds, and bio-fertilizer from the same renewable tree."}
+        </p>
+      </section>
 
-      {/* Sisi ni Nani */}
-      <section className="border-b border-line bg-paper py-16 sm:py-20">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.2fr_1fr]">
-          <div className="space-y-5 text-base sm:text-lg text-ink-soft leading-relaxed">
-            <span className="text-xs font-bold uppercase tracking-wider text-brand">Utambulisho Wetu</span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Sisi ni Nani</h2>
-            <p>
-              Mnyala Company Limited ni kampuni ya Kitanzania yenye makao makuu jijini Mbeya, iliyojitolea kutengeneza mkaa wa ubora
-              wa juu kutokana na matunda ya mti wa mbono (Jatropha curcas). Tunaamini kuwa matunda haya ni rasilimali mbadala yenye
-              thamani kubwa inayoweza kuokoa maelfu ya miti inayokatwa kila siku kwa ajili ya mkaa wa kuni.
-            </p>
-            <p>
-              Bidhaa zetu zinatoa suluhisho la gharama nafuu, salama na endelevu badala ya mkaa wa kawaida, zikisaidia familia na
-              biashara kupunguza athari za mazingira. Pia tunatengeneza mboji (mbolea asilia) kutokana na mabaki ya uzalishaji.
-            </p>
-            <p>
-              Zaidi ya mkaa, tunauza majiko ya kisasa yaliyobuniwa kutumia mkaa wetu kwa ufanisi mkubwa, pamoja na mbegu za mbono
-              kwa wakulima wanaotaka kuanza kilimo cha mti huu wa thamani.
-            </p>
+      {/* =========================
+           4. MISSION & VISION
+      ========================= */}
+      <section className="mission-vision">
+        <div className="mission-card">
+          <div className="flex items-center justify-center size-12 rounded-full bg-emerald-100 text-[#2d7a3e] mb-4">
+            <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="6" />
+              <circle cx="12" cy="12" r="2" />
+            </svg>
           </div>
+          <h3>{isSw ? "Dira Yetu (Mission)" : "Our Mission"}</h3>
+          <p>
+            {isSw
+              ? "Kutengeneza bidhaa za nishati zinazolinda mazingira kutokana na matunda ya mbono, kupunguza ukataji wa miti, na kutoa ajira kwa jamii. Kulihudumia bara la Africa kwa nishati endelevu."
+              : "Manufacture eco-friendly cooking energy from jatropha biomass, stop indigenous deforestation, generate green jobs, and serve Africa with clean sustainable solutions."}
+          </p>
+        </div>
 
-          <div className="relative">
-            <div className="overflow-hidden rounded-3xl border border-line bg-surface p-3 shadow-xl">
-              {photo ? (
-                <MediaImage
-                  image={photo}
-                  sizes="(min-width: 1024px) 24rem, 100vw"
-                  className="aspect-[4/3] w-full rounded-2xl object-cover"
-                />
-              ) : (
-                <div className="flex aspect-[4/3] items-center justify-center rounded-2xl bg-brand-tint text-brand-dark font-bold text-xl">
-                  Kiwanda cha Mnyala, Mbeya
-                </div>
-              )}
-            </div>
+        <div className="mission-card">
+          <div className="flex items-center justify-center size-12 rounded-full bg-emerald-100 text-[#2d7a3e] mb-4">
+            <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <h3>{isSw ? "Maono Yetu (Vision)" : "Our Vision"}</h3>
+          <p>
+            {isSw
+              ? "Kuwa kinara barani Afrika katika nishati endelevu na ubunifu wa bidhaa rafiki kwa mazingira, kwa kujenga mustakabali salama, kijani na wenye manufaa kwa jamii na vizazi vijavyo."
+              : "To lead Africa in renewable energy innovation and eco-friendly products, securing a green, prosperous future for generations to come."}
+          </p>
+        </div>
+      </section>
+
+      {/* =========================
+           5. IMPACT SECTION
+      ========================= */}
+      <section className="impact">
+        <h2>{isSw ? "Mchango Wetu kwa Mazingira" : "Our Environmental Impact"}</h2>
+        <div className="impact-grid">
+          <div>
+            <h3>500+</h3>
+            <p>{isSw ? "Tani za mkaa wa miti Zimeokolewa" : "Tons of Wood Charcoal Saved"}</p>
+          </div>
+          <div>
+            <h3>1000+</h3>
+            <p>{isSw ? "Wateja Wanaofurahia Bidhaa Zetu" : "Households & Businesses Served"}</p>
+          </div>
+          <div>
+            <h3>50+</h3>
+            <p>{isSw ? "Washirika wa Biashara na Kilimo" : "Commercial & Farm Partners"}</p>
+          </div>
+          <div>
+            <h3>100%</h3>
+            <p>{isSw ? "Bidhaa Zinazolinda Mazingira" : "Eco-Friendly Products"}</p>
           </div>
         </div>
       </section>
 
-      {/* Dira na Maono */}
-      <section className="border-b border-line bg-surface py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <div className="grid gap-8 md:grid-cols-2">
-            <div className="rounded-3xl border border-line bg-paper p-8 sm:p-10 shadow-xs">
-              <span className="inline-block rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800 border border-emerald-200">
-                Dira Yetu (Mission)
-              </span>
-              <h3 className="mt-4 text-2xl font-bold text-ink">Nishati Endelevu na Uhifadhi</h3>
-              <p className="mt-3 text-base text-ink-soft leading-relaxed">
-                Kutengeneza bidhaa za nishati safi zinazolinda mazingira kutokana na matunda ya mbono, kupunguza ukataji wa miti ya
-                asili, kutoa ajira za kijani kwa jamii, na kuhudumia bara zima la Afrika kwa nishati endelevu.
-              </p>
-            </div>
-
-            <div className="rounded-3xl border border-line bg-paper p-8 sm:p-10 shadow-xs">
-              <span className="inline-block rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800 border border-emerald-200">
-                Maono Yetu (Vision)
-              </span>
-              <h3 className="mt-4 text-2xl font-bold text-ink">Kuwa Kinara Barani Afrika</h3>
-              <p className="mt-3 text-base text-ink-soft leading-relaxed">
-                Kuwa kinara barani Afrika katika nishati mbadala na ubunifu wa bidhaa rafiki kwa mazingira, kwa kujenga lazima
-                salama, ya kijani na yenye manufaa ya kiuchumi kwa jamii na vizazi vijavyo.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Counter */}
-      {site.stats.length > 0 ? (
-        <section className="border-b border-line bg-paper py-16 sm:py-20">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
-            <h2 className="text-3xl font-extrabold text-ink text-center">Mchango Wetu Katika Mazingira & Jamii</h2>
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {site.stats.map((s) => (
-                <div key={s.label} className="rounded-2xl border border-line bg-surface p-6 text-center shadow-2xs">
-                  <p className="text-4xl font-extrabold text-brand-dark">{s.value}</p>
-                  <p className="mt-2 text-sm font-semibold text-ink-soft">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      {/* CTA Banner */}
-      <section className="bg-paper py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-6 rounded-3xl bg-gradient-to-r from-emerald-800 to-slate-900 p-8 sm:p-12 text-white shadow-xl">
-            <div className="max-w-xl">
-              <h2 className="text-2xl sm:text-3xl font-extrabold">Chagua Nishati Safi, Linda Misitu ya Tanzania</h2>
-              <p className="mt-2 text-emerald-100/90 text-sm sm:text-base">
-                Jiunge na mamia ya familia na biashara zinazotumia mkaa wa mbono leo.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/bidhaa" className={buttonClasses("primary", "md", "bg-emerald-500 hover:bg-emerald-600 text-white border-transparent")}>
-                {COMMON.seeProducts}
-              </Link>
-              <Link href="/wasiliana" className={buttonClasses("secondary", "md", "bg-white/10 hover:bg-white/20 text-white border-white/20")}>
-                {COMMON.contactUs}
-              </Link>
-            </div>
-          </div>
-        </div>
+      {/* =========================
+           6. CTA SECTION
+      ========================= */}
+      <section className="about-cta">
+        <h2>
+          {isSw
+            ? "Jiunge Nasi Kutengeneza Mustakabali wa Kijani"
+            : "Join Us in Building a Greener Future"}
+        </h2>
+        <p>
+          {isSw
+            ? "Chagua bidhaa zetu za nishati safi na usaidie kulinda misitu ya asili ya Tanzania."
+            : "Choose our clean energy products and help preserve Tanzania's indigenous forests."}
+        </p>
+        <Link href="/wasiliana" className="btn inline-flex items-center gap-2">
+          <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          <span>{isSw ? "Wasiliana Nasi" : "Contact Us"}</span>
+        </Link>
       </section>
     </>
   );

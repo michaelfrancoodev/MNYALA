@@ -1,27 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
 import { buttonClasses } from "@/components/ui/button";
-import { whatsappLink } from "@/lib/contact-links";
 import { formatTzs } from "@/lib/format";
 import { COMMON, PRODUCT_CATEGORY } from "@/messages/sw";
 import type { PublicProduct } from "@/server/services/site";
 import { MediaImage } from "./media-image";
+import { DirectOrderModal } from "./direct-order-modal";
 
 const CATEGORY_DEFAULT_IMAGE: Record<PublicProduct["category"], { src: string; alt: string }> = {
   charcoal: {
-    src: "/products/mnyala-charcoal-briquettes.jpg",
+    src: "/original/product3.jpg",
     alt: "Mkaa Safi wa Mbono - Mnyala Bio-Charcoal Briquettes Mbeya",
   },
   stove: {
-    src: "/products/mnyala-clean-cookstove.jpg",
+    src: "/original/stove1.jpg",
     alt: "Majiko ya Kisasa ya Ufanisi - Mnyala Clean Biomass Cookstoves",
   },
   seeds: {
-    src: "/products/mnyala-jatropha-seeds.jpg",
+    src: "/original/mbegu.jpg",
     alt: "Mbegu Bora za Mbono - Mnyala Selected Jatropha Curcas Seeds",
   },
   manure: {
-    src: "/products/mnyala-organic-fertilizer.jpg",
+    src: "/original/mbolea.jpg",
     alt: "Mbolea Asilia ya Mboji - Mnyala Organic Bio-Fertilizer Compost",
   },
 };
@@ -43,7 +43,7 @@ export function Price({ product }: { product: Pick<PublicProduct, "priceTzs" | "
 }
 
 /** Clean, honest product card */
-export function ProductCard({ product, whatsapp }: { product: PublicProduct; whatsapp?: string }) {
+export function ProductCard({ product }: { product: PublicProduct; whatsapp?: string }) {
   const fallback = CATEGORY_DEFAULT_IMAGE[product.category];
 
   return (
@@ -102,23 +102,14 @@ export function ProductCard({ product, whatsapp }: { product: PublicProduct; wha
           <Price product={product} />
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <Link href={`/wasiliana?bidhaa=${product.slug}`} className={buttonClasses("primary", "sm", "w-full text-xs font-bold")}>
-            {COMMON.orderNow}
+          <DirectOrderModal
+            product={product}
+            buttonLabel={COMMON.orderNow}
+            buttonClassName="btn-product text-center text-xs font-bold w-full py-2 px-1"
+          />
+          <Link href={`/bidhaa#${product.slug}`} className={buttonClasses("secondary", "sm", "w-full text-xs font-semibold text-center")}>
+            Maelezo
           </Link>
-          {whatsapp ? (
-            <a
-              href={whatsappLink(whatsapp, `Habari Mnyala, nahitaji maelezo na bei ya ${product.name}.`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonClasses("secondary", "sm", "w-full text-xs font-semibold")}
-            >
-              WhatsApp
-            </a>
-          ) : (
-            <Link href={`/bidhaa#${product.slug}`} className={buttonClasses("secondary", "sm", "w-full text-xs")}>
-              Maelezo
-            </Link>
-          )}
         </div>
       </div>
     </div>
@@ -126,7 +117,7 @@ export function ProductCard({ product, whatsapp }: { product: PublicProduct; wha
 }
 
 /** The full entry on the products catalog page. */
-export function ProductEntry({ product, whatsapp }: { product: PublicProduct; whatsapp?: string }) {
+export function ProductEntry({ product }: { product: PublicProduct; whatsapp?: string }) {
   const fallback = CATEGORY_DEFAULT_IMAGE[product.category];
 
   return (
@@ -190,19 +181,14 @@ export function ProductEntry({ product, whatsapp }: { product: PublicProduct; wh
               <Price product={product} />
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link href={`/wasiliana?bidhaa=${product.slug}`} className={buttonClasses("primary", "md", "font-bold")}>
-                {COMMON.orderNow}
+              <DirectOrderModal
+                product={product}
+                buttonLabel={COMMON.orderNow}
+                buttonClassName="btn-product font-bold px-6 py-2.5 text-xs"
+              />
+              <Link href={`/wasiliana?bidhaa=${product.slug}`} className={buttonClasses("secondary", "md", "font-semibold")}>
+                Wasiliana Nasi
               </Link>
-              {whatsapp ? (
-                <a
-                  href={whatsappLink(whatsapp, `Habari Mnyala, nahitaji kujua zaidi kuhusu ${product.name}.`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={buttonClasses("secondary", "md", "font-semibold")}
-                >
-                  {COMMON.askOnWhatsapp}
-                </a>
-              ) : null}
             </div>
           </div>
         </div>

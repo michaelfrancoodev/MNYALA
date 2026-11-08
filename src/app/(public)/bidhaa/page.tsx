@@ -1,113 +1,303 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { PageHeading } from "@/components/public/page-heading";
-import { ProductEntry } from "@/components/public/product-row";
-import { buttonClasses } from "@/components/ui/button";
-import { COMMON } from "@/messages/sw";
-import { getPublishedProducts, getSiteSettings } from "@/server/services/site";
+import { DirectOrderModal } from "@/components/public/direct-order-modal";
+import { formatTzs } from "@/lib/format";
+import { getLocale } from "@/messages/i18n";
+import { getPublishedProducts } from "@/server/services/site";
 
 export const metadata: Metadata = {
-  title: "Bidhaa",
-  description: "Mkaa safi, majiko ya ufanisi, mbegu za mbono na mboji (mbolea asilia) kutoka Mnyala Co. Ltd, Mbeya.",
+  title: "Bidhaa Zetu | Mnyala Co. Ltd",
+  description:
+    "Suluhisho lako la nishati safi: Mkaa safi wa mbono, majiko ya ufanisi, mbegu bora za mbono, na mboji (mbolea asilia) Mbeya, Tanzania.",
 };
 
-const WHY: Array<[string, string]> = [
-  ["Moto Mrefu (Saa 6+)", "Mkaa wetu unawaka kwa muda mrefu sana na kutoa joto la kudumu wakati wote wa kupika."],
-  ["Unalinda Misitu ya Asili", "Tunatumia matunda ya mbono yaliyodondoka au kuchumwa, hivyo kupunguza kabisa ukataji wa miti."],
-  ["Bila Moshi Wala Harufu", "Unatoa kiwango kidogo sana cha moshi, jambo bora kwa afya ya familia na usafi wa vyombo na nyumba."],
-  ["Endelevu na Rafiki kwa Kilimo", "Mti wa mbono unazalisha matunda kila mwaka bila kukatwa, na mabaki yanakuwa mbolea hai."],
-];
-
-const SIZES = [
-  { size: "Gramu 100", use: "Sampuli na majaribio ya haraka" },
-  { size: "Kilo 1", use: "Kupikia chakula cha familia ndogo" },
-  { size: "Kilo 5", use: "Matumizi ya nyumbani kwa siku kadhaa" },
-  { size: "Kilo 7", use: "Kifurushi cha wiki kwa familia" },
-  { size: "Kilo 15", use: "Biashara ndogo, mikahawa na chipsi" },
-  { size: "Kilo 30", use: "Hoteli, mashule, kambi na taasisi" },
-];
+const DEFAULT_IMAGES: Record<string, string> = {
+  charcoal: "/original/product3.jpg",
+  stove: "/original/stove1.jpg",
+  seeds: "/original/mbegu.jpg",
+  manure: "/original/mbolea.jpg",
+};
 
 export default async function ProductsPage() {
-  const [products, site] = await Promise.all([getPublishedProducts(), getSiteSettings()]);
+  const [products, locale] = await Promise.all([getPublishedProducts(), getLocale()]);
+  const isSw = locale === "sw";
 
   return (
     <>
-      <PageHeading eyebrow="Katalogi ya Bidhaa" title="Suluhisho Lako Kamili la Nishati Safi">
-        <p>
-          Mnyala Co. Ltd inatengeneza na kusambaza bidhaa zenye ubora wa juu zinazotokana na mti wa mbono. Kila moja imebuniwa kwa
-          uangalifu ili kutoa thamani kubwa, kupunguza gharama zako, na kulinda mazingira.
-        </p>
-      </PageHeading>
-
-      <section className="border-b border-line bg-paper py-12 sm:py-16">
-        <div className="mx-auto max-w-6xl space-y-8 px-5 sm:px-8">
-          {products.length > 0 ? (
-            products.map((p) => <ProductEntry key={p.id} product={p} whatsapp={site.whatsapp} />)
-          ) : (
-            <div className="rounded-2xl border border-line bg-surface p-12 text-center text-ink-soft">
-              <p className="text-lg">Orodha ya bidhaa inaandaliwa. Tafadhali wasiliana nasi moja kwa moja kwa maelezo.</p>
-            </div>
-          )}
+      {/* =====================================
+              PRODUCTS HERO
+      ====================================== */}
+      <section className="products-hero">
+        <div className="products-overlay">
+          <span>{isSw ? "BIDHAA ZETU" : "OUR PRODUCTS"}</span>
+          <h1>{isSw ? "Suluhisho Lako la Nishati Safi" : "Your Clean Energy Solution"}</h1>
+          <p>
+            {isSw
+              ? "Kutoka kwenye mti wa mbono (Jatropha curcas), tunakuletea mkaa safi wa kisasa, majiko ya ufanisi, mbegu bora, na mbolea asilia. Bidhaa zote kwa ajili ya Majumbani, shambani, na biashara yako."
+              : "Derived from renewable jatropha curcas biomass, we bring you smokeless bio-charcoal, clean cookstoves, quality seeds, and organic bio-fertilizer for homes and commerce."}
+          </p>
         </div>
       </section>
 
-      {/* Packaging sizes and specs */}
-      <section className="border-b border-line bg-surface py-16 sm:py-20">
-        <div className="mx-auto grid max-w-6xl gap-12 px-5 sm:px-8 lg:grid-cols-2">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-brand">Ulinganifu wa Thamani</span>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-ink">Kwa Nini Mkaa wa Mnyala?</h2>
-            <div className="mt-6 space-y-4">
-              {WHY.map(([term, text]) => (
-                <div key={term} className="rounded-xl border border-line/80 bg-paper p-4">
-                  <h3 className="text-base font-bold text-brand-dark">{term}</h3>
-                  <p className="mt-1 text-sm text-ink-soft">{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* =====================================
+              PRODUCTS INTRO
+      ====================================== */}
+      <section className="products-intro">
+        <div className="container">
+          <h2>{isSw ? "Nishati Safi kwa Kila Mtu" : "Clean Energy for Everyone"}</h2>
+          <p>
+            {isSw
+              ? "Mnyala Co. Ltd inatengeneza na kuuza bidhaa nne kuu zinazotokana na mti wa mbono. Kila bidhaa imebuniwa kwa uangalifu ili kutoa thamani kubwa wakati ikilinda mazingira. Chagua kile unachohitaji leo."
+              : "Mnyala Co. Ltd manufactures four core products from jatropha biomass. Each is engineered to deliver high performance while preserving our natural environment."}
+          </p>
+        </div>
+      </section>
 
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-brand">Ufungashaji wa Kisasa</span>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-ink">Vifungashio Vinavyopatikana</h2>
-            <p className="mt-2 text-sm text-ink-soft">
-              Mkaa wetu umefungashwa kitaalamu kwa mifuko imara isiyovuja majivu, kuanzia rejareja ya nyumbani hadi oda kubwa za kibiashara.
+      {/* =====================================
+              ALL PRODUCTS GRID
+      ====================================== */}
+      <section className="featured-products" style={{ background: "var(--white)" }}>
+        <div className="section-title text-center max-w-xl mx-auto mb-10">
+          <span className="section-tag">{isSw ? "BIDHAA ZOTE" : "ALL PRODUCTS"}</span>
+          <h2 className="text-3xl font-bold text-slate-900 mt-2">
+            {isSw ? "Chagua Kile Unachohitaji" : "Choose What You Need"}
+          </h2>
+        </div>
+
+        <div className="products-grid">
+          {products.map((p) => {
+            const fallbackImg = DEFAULT_IMAGES[p.category] || "/original/product3.jpg";
+            return (
+              <div key={p.id} id={p.slug} className="product-card flex flex-col justify-between scroll-mt-20">
+                <div className="product-image">
+                  <Image
+                    src={fallbackImg}
+                    alt={p.name}
+                    width={500}
+                    height={350}
+                    className="size-full object-cover"
+                  />
+                </div>
+                <div className="product-content flex flex-col justify-between grow">
+                  <div>
+                    <h3 className="flex items-center gap-2">
+                      <svg className="size-5 shrink-0 text-[#f5a623]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z" />
+                      </svg>
+                      <span>{p.name}</span>
+                    </h3>
+
+                    <p className="text-sm text-slate-600 mt-2 mb-3">{p.summary}</p>
+
+                    {p.features.length > 0 ? (
+                      <ul className="space-y-1 mb-4 text-xs text-slate-600">
+                        {p.features.map((feat) => (
+                          <li key={feat} className="flex items-start gap-2">
+                            <span className="size-1.5 rounded-full bg-[#2d7a3e] mt-1.5 shrink-0" />
+                            <span>{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100">
+                    <div className="mb-3">
+                      {p.priceTzs ? (
+                        <p className="text-base font-extrabold text-[#0f3d2e]">
+                          {formatTzs(p.priceTzs)}
+                          {p.priceUnit ? <span className="text-xs font-normal text-slate-500"> / {p.priceUnit}</span> : null}
+                        </p>
+                      ) : (
+                        <p className="text-xs font-bold text-slate-500">Wasiliana kwa bei ya kiwandani</p>
+                      )}
+                    </div>
+
+                    <DirectOrderModal
+                      product={p}
+                      buttonLabel={isSw ? "Agiza Sasa (WhatsApp)" : "Order Now (WhatsApp)"}
+                      buttonClassName="btn-product w-full text-center font-bold"
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* =====================================
+              WHY CHOOSE US (BENEFITS)
+      ====================================== */}
+      <section className="why-products py-16 bg-[#f8faf7]">
+        <div className="section-title text-center max-w-xl mx-auto mb-10">
+          <span className="section-tag">{isSw ? "FAIDA ZA BIDHAA ZETU" : "PRODUCT ADVANTAGES"}</span>
+          <h2 className="text-3xl font-bold text-slate-900 mt-2">
+            {isSw ? "Kwa Nini Uchague Bidhaa za Mnyala?" : "Why Choose Mnyala Products?"}
+          </h2>
+        </div>
+
+        <div className="benefits-grid">
+          <div className="benefit-card">
+            <div className="flex justify-center mb-3 text-[#2d7a3e]">
+              <svg className="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z" />
+              </svg>
+            </div>
+            <h3>{isSw ? "Moto Mrefu" : "Long Burn Time"}</h3>
+            <p>
+              {isSw
+                ? "Mkaa wetu unawaka kwa muda mrefu na kutoa joto la kudumu kwa kipindi cha kupikia chakula chako."
+                : "Burns for 6+ hours with steady thermal output, cooking meals completely without refilling."}
             </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {SIZES.map((item) => (
-                <div key={item.size} className="rounded-xl border border-line/80 bg-paper p-4">
-                  <p className="text-base font-bold text-ink">{item.size}</p>
-                  <p className="mt-0.5 text-xs text-muted">{item.use}</p>
-                </div>
-              ))}
+          </div>
+
+          <div className="benefit-card">
+            <div className="flex justify-center mb-3 text-[#2d7a3e]">
+              <svg className="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+              </svg>
             </div>
-            <div className="mt-6 rounded-2xl bg-emerald-50 p-5 border border-emerald-200/80">
-              <p className="text-sm font-bold text-emerald-950">Unahitaji mzigo wa jumla au tani?</p>
-              <p className="mt-1 text-xs text-emerald-800">
-                Tunatoa punguzo maalum kwa wanunuzi wa jumla, wasambazaji wa mikoani, na taasisi. Wasiliana nasi kwa quotation ya haraka.
-              </p>
+            <h3>{isSw ? "Kulinda Misitu" : "Save Forests"}</h3>
+            <p>
+              {isSw
+                ? "Tunatumia matunda ya mbono yaliyodondoka au kuchumwa, hivyo kupunguza ukataji wa miti ya asili."
+                : "Harvested entirely from living jatropha shrubs, halting illegal tree felling across Tanzania."}
+            </p>
+          </div>
+
+          <div className="benefit-card">
+            <div className="flex justify-center mb-3 text-[#2d7a3e]">
+              <svg className="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
             </div>
+            <h3>{isSw ? "Moshi Mdogo" : "Low Smoke"}</h3>
+            <p>
+              {isSw
+                ? "Inatoa kiwango kidogo cha moshi. Bora kwa afya ya familia na usafi wa mazingira ya nyumbani."
+                : "Produces negligible smoke and ash, keeping cookware spotless and respiratory health protected."}
+            </p>
+          </div>
+
+          <div className="benefit-card">
+            <div className="flex justify-center mb-3 text-[#2d7a3e]">
+              <svg className="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
+            <h3>{isSw ? "Endelevu" : "Sustainable"}</h3>
+            <p>
+              {isSw
+                ? "Mti wa mbono unazalisha matunda kila mwaka bila kukatwa. Rasilimali endelevu isiyokwisha."
+                : "A renewable annual crop yielding seeds and bio-charcoal year after year without depleting forests."}
+            </p>
           </div>
         </div>
       </section>
 
-      {/* CTA Footer banner */}
-      <section className="bg-paper py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-6 rounded-3xl bg-gradient-to-r from-emerald-800 to-slate-900 p-8 sm:p-12 text-white shadow-xl">
-            <div className="max-w-xl">
-              <h2 className="text-2xl sm:text-3xl font-extrabold">Unahitaji mkaa, jiko, mbegu au mbolea?</h2>
-              <p className="mt-2 text-emerald-100/90 text-sm sm:text-base">
-                Wasiliana nasi leo upate bei maalum kulingana na mahitaji yako au uthibitisho wa mzigo kufika eneo lako.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/wasiliana" className={buttonClasses("primary", "md", "bg-emerald-500 hover:bg-emerald-600 text-white border-transparent")}>
-                {COMMON.contactUs}
-              </Link>
-            </div>
-          </div>
+      {/* =====================================
+              SPECIFICATIONS TABLE
+      ====================================== */}
+      <section className="specifications py-16">
+        <div className="section-title text-center max-w-xl mx-auto mb-8">
+          <span className="section-tag">{isSw ? "VIGEZO VYA BIDHAA" : "PRODUCT SPECIFICATIONS"}</span>
+          <h2 className="text-3xl font-bold text-slate-900 mt-2">
+            {isSw ? "Sifa za Mkaa Wetu" : "Charcoal Lab Specifications"}
+          </h2>
         </div>
+
+        <div className="max-w-4xl mx-auto px-4 overflow-x-auto">
+          <table>
+            <thead>
+              <tr>
+                <th>{isSw ? "Kipimo" : "Metric"}</th>
+                <th>{isSw ? "Maelezo" : "Specification"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Malighafi (Raw Material)</strong></td>
+                <td>Matunda ya mbono (Jatropha curcas)</td>
+              </tr>
+              <tr>
+                <td><strong>Muda wa Kuwaka (Burn Time)</strong></td>
+                <td>Dakika 60 kwa kila gramu 100 (Saa 6+ kwa pakiti ya kaya)</td>
+              </tr>
+              <tr>
+                <td><strong>Joto (Calorific Value)</strong></td>
+                <td>17.46 kJ/g</td>
+              </tr>
+              <tr>
+                <td><strong>Carbon Imara (Fixed Carbon)</strong></td>
+                <td>22%</td>
+              </tr>
+              <tr>
+                <td><strong>Uwezo wa Kuwaka (Combustibility)</strong></td>
+                <td>74.2%</td>
+              </tr>
+              <tr>
+                <td><strong>Majivu (Ash Content)</strong></td>
+                <td>4%</td>
+              </tr>
+              <tr>
+                <td><strong>Unyevu (Moisture Content)</strong></td>
+                <td>9.1%</td>
+              </tr>
+              <tr>
+                <td><strong>Bora Kwa (Recommended For)</strong></td>
+                <td>Kupikia Nyumbani, Hotelini, Migahawa na Viwandani</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* =====================================
+              PACKAGING OPTIONS
+      ====================================== */}
+      <section className="packaging py-16 bg-[#f8faf7]">
+        <div className="section-title text-center max-w-xl mx-auto mb-8">
+          <span className="section-tag">{isSw ? "VIFUNGASHIO VILIVYOPO" : "PACKAGING OPTIONS"}</span>
+          <h2 className="text-3xl font-bold text-slate-900 mt-2">
+            {isSw ? "Ukubwa wa Vifungashio (Packages)" : "Available Package Sizes"}
+          </h2>
+        </div>
+
+        <div className="package-grid">
+          <div><span>100gm</span></div>
+          <div><span>1 KG</span></div>
+          <div><span>5 KG</span></div>
+          <div><span>7 KG</span></div>
+          <div><span>15 KG</span></div>
+          <div><span>30 KG</span></div>
+        </div>
+      </section>
+
+      {/* =====================================
+              CALL TO ACTION (WITH ORDER LINK)
+      ====================================== */}
+      <section className="products-cta">
+        <h2>
+          {isSw
+            ? "Unahitaji Mkaa Hai na Jiko Lake, Mbegu au Mbolea?"
+            : "Need Clean Charcoal, Stoves, Seeds, or Bio-Fertilizer?"}
+        </h2>
+        <p>
+          {isSw
+            ? "Wasiliana na Mnyala Co. Ltd leo na upate bei maalum ya kiwandani kulingana na mahitaji yako."
+            : "Contact Mnyala Co. Ltd today for factory-direct wholesale and retail pricing."}
+        </p>
+        <Link href="/wasiliana" className="btn inline-flex items-center gap-2">
+          <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+          <span>{isSw ? "Wasiliana Nasi" : "Contact Us"}</span>
+        </Link>
       </section>
     </>
   );

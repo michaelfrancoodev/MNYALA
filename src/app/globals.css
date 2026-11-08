@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@fontsource-variable/source-sans-3";
 @import "@fontsource-variable/source-serif-4";
+@import "./original-mnyala.css";
 
 /*
  * Modern enterprise design tokens. Clean slate background, crisp obsidian typography,

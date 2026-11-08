@@ -1,62 +1,140 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { telLink, whatsappLink } from "@/lib/contact-links";
+import type { Route } from "next";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { telLink, mailtoLink } from "@/lib/contact-links";
 import type { SiteSettings } from "@/server/services/site";
 import type { Locale } from "@/messages/i18n";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
-import { PublicNav } from "./public-nav";
 
 export function SiteHeader({ site, locale = "sw" }: { site: SiteSettings; locale?: Locale }) {
-  const phoneHref = site.phone ? telLink(site.phone) : undefined;
-  const whatsappHref = site.whatsapp ? whatsappLink(site.whatsapp, "Habari Mnyala, nahitaji maelezo na bei ya bidhaa zenu.") : undefined;
+  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
   const isSw = locale === "sw";
 
+  const phone = site.phone || "+255 758 730 108";
+  const email = site.email || "info@mnyala.co.tz";
+  const address = site.address || "Mbeya, Tanzania";
+
+  const navLinks: Array<{ href: Route; label: string }> = [
+    { href: "/", label: isSw ? "Mwanzo" : "Home" },
+    { href: "/kuhusu", label: isSw ? "Kuhusu Sisi" : "About" },
+    { href: "/bidhaa", label: isSw ? "Bidhaa" : "Products" },
+    { href: "/picha", label: isSw ? "Picha" : "Gallery" },
+    { href: "/wasiliana", label: isSw ? "Wasiliana" : "Contact" },
+  ];
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-line bg-surface/95 backdrop-blur-md shadow-2xs">
-      {/* Top Utility Bar */}
-      <div className="border-b border-slate-800 bg-slate-950 text-slate-300">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2 text-xs sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
-            <span className="flex items-center gap-1.5 font-bold text-slate-200">
-              <svg className="size-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              {isSw ? "Kiwanda Kikuu: Mbeya, Tanzania" : "Main Plant: Mbeya, Tanzania"}
-            </span>
-            {site.phone ? (
-              <a href={phoneHref} className="flex items-center gap-1.5 font-bold text-emerald-400 no-underline hover:text-emerald-300">
-                <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-                {site.phone}
-              </a>
-            ) : null}
-          </div>
+    <header className="w-full relative z-50">
+      {/* 1. TOP BAR */}
+      <div className="top-bar">
+        <div>
+          <svg className="size-4 shrink-0 text-[#4ade80]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          <a href={telLink(phone)} className="text-white hover:text-[#4ade80] transition-colors no-underline">
+            {phone}
+          </a>
+        </div>
 
-          <div className="flex items-center gap-3.5">
-            {site.hours ? <span className="hidden md:inline text-slate-400">{site.hours}</span> : null}
-            <LanguageSwitcher current={locale} />
-          </div>
+        <div>
+          <svg className="size-4 shrink-0 text-[#4ade80]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <a href={mailtoLink(email)} className="text-white hover:text-[#4ade80] transition-colors no-underline">
+            {email}
+          </a>
+        </div>
+
+        <div>
+          <svg className="size-4 shrink-0 text-[#4ade80]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          <span>{address}</span>
+        </div>
+
+        <div className="ml-auto flex items-center gap-3">
+          <LanguageSwitcher current={locale} />
         </div>
       </div>
 
-      {/* Main Clean Header */}
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3 no-underline group shrink-0" aria-label="Mnyala Co. Ltd">
-          <Image src="/brand/emblem.webp" alt="Mnyala" width={42} height={42} priority className="size-10 transition-transform group-hover:scale-105" />
-          <div className="leading-tight">
-            <span className="block text-2xl font-black tracking-tight text-ink">Mnyala</span>
-            <span className="block text-[11px] font-bold uppercase tracking-wider text-muted">
-              {isSw ? "Nishati Safi • Mbeya" : "Clean Energy • Mbeya"}
-            </span>
-          </div>
-        </Link>
+      {/* 2. MAIN HEADER (TWO LOGOS: MUST + MNYALA) */}
+      <div className="main-header">
+        {/* Left Logo (MUST) */}
+        <div className="header-logo left">
+          <Image
+            src="/original/must.png"
+            alt="MUST Logo"
+            width={140}
+            height={140}
+            priority
+            className="size-full object-contain rounded-full"
+          />
+        </div>
 
-        <div className="flex items-center gap-3">
-          <PublicNav phoneHref={phoneHref} whatsappHref={whatsappHref} locale={locale} />
+        {/* Center Title */}
+        <div className="company-title">
+          <h4>{isSw ? "Suluhisho Endelevu la Nishati" : "Sustainable Energy Solutions"}</h4>
+          <h1>MNYALA CO. LTD</h1>
+          <p>
+            {isSw
+              ? "Kutengeneza Mkaa Rafiki wa Mazingira Kutokana na Matunda ya Asili"
+              : "Producing Eco-Friendly Charcoal From Natural Fruits"}
+          </p>
+        </div>
+
+        {/* Right Logo (Mnyala) */}
+        <div className="header-logo right">
+          <Image
+            src="/original/logo.png"
+            alt="Mnyala Logo"
+            width={140}
+            height={140}
+            priority
+            className="size-full object-contain rounded-full"
+          />
         </div>
       </div>
+
+      {/* 3. MENU BAR (WHITE NAVIGATION) */}
+      <nav className="menu-bar">
+        <div className="nav-container lg:hidden">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="hamburger"
+            aria-label="Toggle Menu"
+          >
+            <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="4" x2="20" y1="12" y2="12" />
+              <line x1="4" x2="20" y1="6" y2="6" />
+              <line x1="4" x2="20" y1="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <ul id="nav-menu" className={`menu-bar-list ${menuOpen ? "open" : ""}`}>
+          {navLinks.map((item) => {
+            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={active ? "active" : ""}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
     </header>
   );
 }
