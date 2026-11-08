@@ -41,7 +41,7 @@ export function AdminShell({
   const isSw = locale === "sw";
 
   return (
-    <div className="min-h-screen bg-paper lg:grid lg:grid-cols-[16.5rem_minmax(0,1fr)]">
+    <div className="min-h-screen bg-paper lg:h-screen lg:overflow-hidden lg:grid lg:grid-cols-[16.5rem_minmax(0,1fr)]">
       <a
         href="#main"
         className="sr-only z-50 rounded-lg bg-surface px-4 py-2 font-semibold shadow-md focus:not-sr-only focus:fixed focus:left-3 focus:top-3"
@@ -49,8 +49,8 @@ export function AdminShell({
         Skip to content
       </a>
 
-      {/* Desktop Sidebar */}
-      <aside className="sticky top-0 hidden h-screen flex-col gap-6 overflow-y-auto border-r border-line bg-surface p-5 lg:flex">
+      {/* Desktop Sidebar: STATIC & FIXED, NEVER SCROLLS WITH CONTENT */}
+      <aside className="hidden h-screen flex-col gap-6 overflow-y-auto border-r border-line bg-surface p-5 lg:flex shrink-0 select-none">
         <div className="flex items-center gap-3 px-1 pt-1">
           <Image src="/brand/emblem.webp" alt="Mnyala" width={38} height={38} priority className="size-9.5 shrink-0" />
           <div className="min-w-0">
@@ -71,10 +71,10 @@ export function AdminShell({
         </div>
       </aside>
 
-      {/* Main Content Area with Desktop Topbar & Mobile Header */}
-      <div className="flex min-w-0 flex-col">
+      {/* Main Content Area: ONLY THIS SCROLLS */}
+      <div className="flex min-w-0 flex-col lg:h-screen lg:overflow-y-auto">
         {/* Top Header */}
-        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-line bg-surface/95 px-4 backdrop-blur-md sm:px-6 lg:px-8">
+        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center justify-between border-b border-line bg-surface/95 px-4 backdrop-blur-md sm:px-6 lg:px-8">
           {/* Mobile brand: Logo + Brand Name */}
           <div className="flex items-center gap-2.5 lg:hidden">
             <Image src="/brand/emblem.webp" alt="Mnyala" width={32} height={32} priority className="size-8 shrink-0" />

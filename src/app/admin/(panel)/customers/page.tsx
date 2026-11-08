@@ -71,48 +71,48 @@ export default async function CustomersAdminPage({
         <>
           <DataTable label="Customer list">
             <THead>
-              <Th>Customer Name</Th>
-              <Th>Phone</Th>
-              <Th>Email</Th>
-              <Th>Address</Th>
-              <Th>Orders</Th>
-              <Th>Completed Spend</Th>
-              <Th className="text-right">Actions</Th>
+              <Th className="whitespace-nowrap">Customer Name</Th>
+              <Th className="whitespace-nowrap">Phone</Th>
+              <Th className="whitespace-nowrap">Email</Th>
+              <Th className="whitespace-nowrap">Address</Th>
+              <Th className="whitespace-nowrap text-center">Orders</Th>
+              <Th className="whitespace-nowrap">Completed Spend</Th>
+              <Th className="whitespace-nowrap text-right">Actions</Th>
             </THead>
             <TBody>
               {list.items.map((c) => (
                 <Tr key={c.id}>
-                  <Td label="Customer Name">
+                  <Td label="Customer Name" className="whitespace-nowrap">
                     <Link href={`/admin/customers/${c.id}`} className="font-semibold text-ink hover:underline">
                       {c.name}
                     </Link>
                   </Td>
-                  <Td label="Phone">
+                  <Td label="Phone" className="whitespace-nowrap">
                     <span className="font-mono text-sm">{c.phone || "—"}</span>
                   </Td>
                   <Td label="Email">
-                    <span className="text-sm">{c.email || "—"}</span>
+                    <span className="text-sm max-w-[160px] truncate block" title={c.email || undefined}>{c.email || "—"}</span>
                   </Td>
                   <Td label="Address">
-                    <span className="text-sm truncate max-w-xs">{c.address || "—"}</span>
+                    <span className="text-sm max-w-[140px] truncate block" title={c.address || undefined}>{c.address || "—"}</span>
                   </Td>
-                  <Td label="Orders">
+                  <Td label="Orders" className="whitespace-nowrap md:text-center">
                     <span className="text-sm font-semibold">{c.orderCount}</span>
                   </Td>
-                  <Td label="Completed Spend">
+                  <Td label="Completed Spend" className="whitespace-nowrap">
                     <span className="text-sm font-semibold">{formatTzs(c.totalSpentTzs)}</span>
                   </Td>
-                  <Td label="Actions" className="text-right">
-                    <div className="flex justify-end gap-2">
+                  <Td label="Actions" className="whitespace-nowrap text-right">
+                    <div className="flex items-center justify-end gap-2 shrink-0">
                       <Link
                         href={`/admin/orders/new?customerId=${c.id}`}
-                        className="rounded border border-brand bg-brand-tint px-2.5 py-1 text-xs font-semibold text-brand-dark no-underline hover:bg-brand hover:text-white"
+                        className="inline-flex items-center rounded-lg border border-brand bg-brand-tint px-2.5 py-1 text-xs font-semibold text-brand-dark no-underline hover:bg-brand hover:text-white transition-colors shrink-0"
                       >
                         + Order
                       </Link>
                       <Link
                         href={`/admin/customers/${c.id}`}
-                        className="rounded border border-line-strong bg-paper px-2.5 py-1 text-xs font-semibold text-ink no-underline hover:bg-surface"
+                        className="inline-flex items-center rounded-lg border border-line-strong bg-paper px-2.5 py-1 text-xs font-semibold text-ink no-underline hover:bg-surface transition-colors shrink-0"
                       >
                         View
                       </Link>

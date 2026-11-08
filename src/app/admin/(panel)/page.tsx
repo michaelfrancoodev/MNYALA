@@ -32,7 +32,7 @@ export default async function DashboardPage() {
   return (
     <>
       <PageHeader
-        title={`Hello, ${user.name.split(" ")[0]}`}
+        title={isSw ? `Habari, ${user.name}` : `Hello, ${user.name}`}
         description={
           isSw
             ? "Muhtasari wa shughuli za biashara, maagizo ya wateja, na ujumbe wa tovuti."

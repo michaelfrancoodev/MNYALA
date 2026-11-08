@@ -159,10 +159,12 @@ export function Pagination({ page, pages, hrefFor, total, pageSize }: { page: nu
 /** A real table on wide screens, stacked cards on phones. Cells show their label on small screens. */
 export function DataTable({ children, label }: { children: ReactNode; label: string }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-2xs">
-      <table aria-label={label} className="block w-full border-collapse md:table">
-        {children}
-      </table>
+    <div className="w-full overflow-hidden rounded-2xl border border-line bg-surface shadow-2xs">
+      <div className="w-full overflow-x-auto">
+        <table aria-label={label} className="block w-full min-w-full border-collapse md:table md:min-w-[760px]">
+          {children}
+        </table>
+      </div>
     </div>
   );
 }
@@ -176,7 +178,7 @@ export function THead({ children }: { children: ReactNode }) {
 }
 
 export function Th({ children, className }: { children?: ReactNode; className?: string }) {
-  return <th scope="col" className={cn("px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-muted", className)}>{children}</th>;
+  return <th scope="col" className={cn("px-4 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-muted whitespace-nowrap", className)}>{children}</th>;
 }
 
 export function TBody({ children }: { children: ReactNode }) {
@@ -192,7 +194,7 @@ export function Td({ label, children, className }: { label: string; children: Re
     <td
       data-label={label}
       className={cn(
-        "flex items-baseline justify-between gap-4 py-1.5 before:shrink-0 before:text-xs before:font-bold before:uppercase before:tracking-wider before:text-muted before:content-[attr(data-label)] md:table-cell md:px-4 md:py-3.5 md:align-middle md:before:content-none text-sm text-ink",
+        "flex items-center justify-between gap-4 py-1.5 before:shrink-0 before:text-xs before:font-bold before:uppercase before:tracking-wider before:text-muted before:content-[attr(data-label)] md:table-cell md:px-4 md:py-3.5 md:align-middle md:before:content-none text-sm text-ink",
         className,
       )}
     >
