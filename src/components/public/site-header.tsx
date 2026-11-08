@@ -97,13 +97,13 @@ export function SiteHeader({
         </div>
       </div>
 
-      {/* 2. MAIN HEADER (TWO LOGOS: MUST + MNYALA) */}
+      {/* 2. MAIN HEADER (MNYALA LOGO ON BOTH LEFT AND RIGHT) */}
       <div className="main-header">
-        {/* Left Logo (MUST) */}
+        {/* Left Logo (Mnyala) */}
         <div className="header-logo left">
           <Image
-            src="/original/must.png"
-            alt="MUST Logo"
+            src="/original/logo.png"
+            alt="Mnyala Logo"
             width={140}
             height={140}
             priority
