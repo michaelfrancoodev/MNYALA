@@ -6,7 +6,7 @@ import type { MediaRef } from "@/server/services/site";
 
 export type GalleryEntry = { id: string; title: string; description: string | null; categoryLabel: string; image: MediaRef };
 
-/** A grid of photos. Pressing one opens it large in a native <dialog>; arrow keys move between photos, Esc closes. */
+/** A grid of photos using the original Mnyala gallery card design. Pressing one opens it large in a native <dialog>. */
 export function GalleryGrid({ items }: { items: GalleryEntry[] }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState<number | null>(null);
@@ -37,39 +37,28 @@ export function GalleryGrid({ items }: { items: GalleryEntry[] }) {
 
   return (
     <>
-      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="gallery-container">
         {items.map((item, i) => (
-          <li key={item.id}>
-            <button
-              type="button"
-              onClick={() => setIndex(i)}
-              className="group block w-full text-left rounded-2xl border border-line bg-surface p-3 shadow-2xs hover:shadow-lg hover:border-brand/40 transition-all duration-300 cursor-pointer"
-              aria-label={`Fungua picha: ${item.title}`}
-            >
-              <div className="overflow-hidden rounded-xl bg-slate-100">
-                <MediaImage
-                  image={item.image}
-                  sizes="(min-width: 1024px) 22rem, (min-width: 640px) 50vw, 100vw"
-                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-2 pt-3">
-                <span className="inline-block rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-800">
-                  {item.categoryLabel}
-                </span>
-                <span className="mt-1.5 block text-base font-bold text-ink group-hover:text-brand-dark transition-colors">
-                  {item.title}
-                </span>
-                {item.description ? (
-                  <span className="mt-1 block text-xs text-ink-soft line-clamp-2">
-                    {item.description}
-                  </span>
-                ) : null}
-              </div>
-            </button>
-          </li>
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => setIndex(i)}
+            className="card block w-full text-left border-0 p-0 cursor-pointer"
+            aria-label={`Fungua picha: ${item.title}`}
+          >
+            <MediaImage
+              image={item.image}
+              sizes="(min-width: 1024px) 24rem, (min-width: 640px) 50vw, 100vw"
+              className="size-full object-cover"
+            />
+            <div className="overlay">
+              <h3>{item.title}</h3>
+              {item.description ? <p>{item.description}</p> : null}
+              <span className="category-badge">{item.categoryLabel}</span>
+            </div>
+          </button>
         ))}
-      </ul>
+      </div>
 
       <dialog
         ref={dialog}

@@ -10,19 +10,19 @@ import { DirectOrderModal } from "./direct-order-modal";
 
 export const CATEGORY_DEFAULT_IMAGE: Record<PublicProduct["category"], { src: string; alt: string }> = {
   charcoal: {
-    src: "/original/product3.jpg",
+    src: "/products/mnyala-kraft-pack.jpg",
     alt: "Mkaa Safi wa Mbono - Mnyala Bio-Charcoal Briquettes Mbeya",
   },
   stove: {
-    src: "/original/stove1.jpg",
+    src: "/products/mnyala-clean-cookstove.jpg",
     alt: "Majiko ya Kisasa ya Ufanisi - Mnyala Clean Biomass Cookstoves",
   },
   seeds: {
-    src: "/original/mbegu.jpg",
+    src: "/products/mnyala-jatropha-seeds.jpg",
     alt: "Mbegu Bora za Mbono - Mnyala Selected Jatropha Curcas Seeds",
   },
   manure: {
-    src: "/original/mbolea.jpg",
+    src: "/products/mnyala-organic-fertilizer.jpg",
     alt: "Mbolea Asilia ya Mboji - Mnyala Organic Bio-Fertilizer Compost",
   },
 };

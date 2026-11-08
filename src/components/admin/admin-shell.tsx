@@ -28,7 +28,7 @@ function visibleGroups(user: SessionUser, counts: NavCounts, locale: Locale): Na
 export function AdminShell({
   user,
   counts,
-  locale = "sw",
+  locale = "en",
   children,
 }: {
   user: SessionUser;

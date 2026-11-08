@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { MediaImage } from "@/components/public/media-image";
-import { getLocale } from "@/messages/i18n";
+import Link from "next/link";
+import { GalleryGrid } from "@/components/public/gallery-grid";
+import { cn } from "@/lib/cn";
+import { GALLERY_CATEGORY } from "@/messages/sw";
 import { getPublishedGallery } from "@/server/services/site";
 
 export const metadata: Metadata = {
@@ -10,66 +11,21 @@ export const metadata: Metadata = {
     "Picha za mchakato wetu wa uzalishaji, bidhaa zetu, na jamii tunayoihudumia jijini Mbeya, Tanzania.",
 };
 
-const FALLBACK_GALLERY = [
-  {
-    image: "/original/product3.jpg",
-    titleSw: "Mkaa Safi wa Kisasa",
-    titleEn: "Clean Bio-Charcoal",
-    descSw: "Mkaa wetu unaotokana na matunda ya mbono",
-    descEn: "Our charcoal briquettes from jatropha fruits",
-    categorySw: "Bidhaa",
-    categoryEn: "Product",
-  },
-  {
-    image: "/original/stove1.jpg",
-    titleSw: "Majiko ya Ufanisi",
-    titleEn: "Efficient Cookstoves",
-    descSw: "Majiko yetu yanayotumia mkaa kwa ufanisi",
-    descEn: "Insulated stoves designed for smokeless briquettes",
-    categorySw: "Bidhaa",
-    categoryEn: "Product",
-  },
-  {
-    image: "/original/mbegu.jpg",
-    titleSw: "Mbegu za Mbono",
-    titleEn: "Jatropha Curcas Seeds",
-    descSw: "Mbegu bora za mti wa mbono kwa upandaji",
-    descEn: "Selected seeds for agroforestry cultivation",
-    categorySw: "Bidhaa",
-    categoryEn: "Product",
-  },
-  {
-    image: "/original/mbolea.jpg",
-    titleSw: "Mboji - Mbolea Asilia",
-    titleEn: "Organic Bio-Fertilizer",
-    descSw: "Mbolea kutokana na mabaki ya uzalishaji",
-    descEn: "Compost generated from processing residues",
-    categorySw: "Bidhaa",
-    categoryEn: "Product",
-  },
-  {
-    image: "/original/uzalishaji mkaa.jpg",
-    titleSw: "Mchakato wa Uzalishaji",
-    titleEn: "Production Process",
-    descSw: "Wafanyakazi wetu wakitengeneza mkaa kiwandani Mbeya",
-    descEn: "Our factory staff carbonizing and compacting briquettes",
-    categorySw: "Uzalishaji",
-    categoryEn: "Production",
-  },
-  {
-    image: "/original/mkaa wa jumla.jpg",
-    titleSw: "Uuzaji wa Jumla",
-    titleEn: "Wholesale Distribution",
-    descSw: "Mifuko ya mkaa iko tayari kusafirishwa mikoani",
-    descEn: "Packaged bio-charcoal sacks ready for dispatch",
-    categorySw: "Usafirishaji",
-    categoryEn: "Delivery",
-  },
-];
+type Category = keyof typeof GALLERY_CATEGORY;
+const isCategory = (v: unknown): v is Category => typeof v === "string" && v in GALLERY_CATEGORY;
 
-export default async function GalleryPage() {
-  const [items, locale] = await Promise.all([getPublishedGallery(), getLocale()]);
-  const isSw = locale === "sw";
+export default async function GalleryPage({ searchParams }: { searchParams: Promise<{ kundi?: string }> }) {
+  const { kundi } = await searchParams;
+  const all = await getPublishedGallery();
+  const present = (Object.keys(GALLERY_CATEGORY) as Category[]).filter((c) => all.some((g) => g.category === c));
+  const selected = isCategory(kundi) && present.includes(kundi) ? kundi : null;
+  const shown = selected ? all.filter((g) => g.category === selected) : all;
+
+  const chip = (active: boolean) =>
+    cn(
+      "inline-flex min-h-10 items-center rounded-full border px-5 py-2 text-sm font-bold transition-colors no-underline",
+      active ? "border-[#2d7a3e] bg-[#2d7a3e] text-white shadow-xs" : "border-slate-300 bg-white text-slate-700 hover:bg-emerald-50 hover:text-[#2d7a3e]",
+    );
 
   return (
     <>
@@ -78,12 +34,10 @@ export default async function GalleryPage() {
       ========================= */}
       <section className="contact-hero" style={{ minHeight: "45vh", marginTop: 0 }}>
         <div className="contact-overlay">
-          <span>{isSw ? "MATUKIO NA PICHA" : "EVENTS & GALLERY"}</span>
-          <h1>{isSw ? "Tazama Kazi Zetu" : "View Our Work"}</h1>
+          <span>MATUKIO NA PICHA</span>
+          <h1>Tazama Kazi Zetu</h1>
           <p>
-            {isSw
-              ? "Picha za mchakato wetu wa uzalishaji, bidhaa zetu, na jamii tunayoihudumia."
-              : "Photographs of our production facility, clean products, and community impact."}
+            Picha za mchakato wetu wa uzalishaji, bidhaa zetu, na jamii tunayoihudumia.
           </p>
         </div>
       </section>
@@ -93,59 +47,46 @@ export default async function GalleryPage() {
       ========================= */}
       <section className="gallery-intro">
         <div className="section-header">
-          <span className="section-tag">{isSw ? "Matukio na Picha" : "Events & Photos"}</span>
-          <h2>{isSw ? "Picha Zetu" : "Our Gallery"}</h2>
+          <span className="section-tag">Matukio na Picha</span>
+          <h2>Picha Zetu</h2>
           <p>
-            {isSw
-              ? "Angalia picha za mchakato wetu wa uzalishaji, bidhaa zetu, na jamii inayotumika kwa suluhisho la nishati safi kutoka kwa mti wa mbono."
-              : "Witness our eco-charcoal carbonization, packaging facilities, and nationwide distribution from Mbeya."}
+            Angalia picha za mchakato wetu wa uzalishaji, bidhaa zetu, na jamii inayotumika kwa suluhisho la nishati safi kutoka kwa mti wa mbono.
           </p>
         </div>
+
+        {present.length > 1 ? (
+          <nav aria-label="Chuja picha kwa aina" className="mt-8 flex flex-wrap justify-center gap-2.5">
+            <Link href="/picha" className={chip(selected === null)} aria-current={selected === null ? "page" : undefined}>
+              Zote
+            </Link>
+            {present.map((c) => (
+              <Link key={c} href={`/picha?kundi=${c}`} className={chip(selected === c)} aria-current={selected === c ? "page" : undefined}>
+                {GALLERY_CATEGORY[c]}
+              </Link>
+            ))}
+          </nav>
+        ) : null}
       </section>
 
       {/* =========================
            3. GALLERY GRID
       ========================= */}
       <section className="gallery-section">
-        <div className="gallery-container">
-          {items.length > 0
-            ? items.map((item) => (
-                <div key={item.id} className="card">
-                  {item.image ? (
-                    <MediaImage
-                      image={item.image}
-                      sizes="(min-width: 1024px) 24rem, 100vw"
-                      className="size-full object-cover"
-                    />
-                  ) : (
-                    <div className="size-full bg-slate-200 flex items-center justify-center font-bold text-slate-500">
-                      Mnyala Co. Ltd
-                    </div>
-                  )}
-                  <div className="overlay">
-                    <h3>{item.title}</h3>
-                    {item.description ? <p>{item.description}</p> : null}
-                    <span className="category-badge">{item.category}</span>
-                  </div>
-                </div>
-              ))
-            : FALLBACK_GALLERY.map((f) => (
-                <div key={f.titleSw} className="card">
-                  <Image
-                    src={f.image}
-                    alt={f.titleSw}
-                    width={600}
-                    height={450}
-                    className="size-full object-cover"
-                  />
-                  <div className="overlay">
-                    <h3>{isSw ? f.titleSw : f.titleEn}</h3>
-                    <p>{isSw ? f.descSw : f.descEn}</p>
-                    <span className="category-badge">{isSw ? f.categorySw : f.categoryEn}</span>
-                  </div>
-                </div>
-              ))}
-        </div>
+        {all.length === 0 ? (
+          <div className="mx-auto max-w-4xl px-5 py-12 text-center">
+            <p className="text-lg text-ink-soft">Picha zitaonekana hapa hivi karibuni.</p>
+          </div>
+        ) : (
+          <GalleryGrid
+            items={shown.map((g) => ({
+              id: g.id,
+              title: g.title,
+              description: g.description,
+              categoryLabel: GALLERY_CATEGORY[g.category],
+              image: g.image,
+            }))}
+          />
+        )}
       </section>
     </>
   );

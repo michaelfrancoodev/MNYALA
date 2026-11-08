@@ -29,8 +29,8 @@ export default async function DashboardPage() {
   return (
     <>
       <PageHeader
-        title={`Habari, ${user.name.split(" ")[0]}`}
-        description="Muhtasari wa shughuli za kibiashara, maagizo ya wateja, na ujumbe unaoingia kutoka kwenye tovuti."
+        title={`Hello, ${user.name.split(" ")[0]}`}
+        description="Overview of business operations, customer orders, and incoming website messages."
         actions={
           <div className="flex flex-wrap items-center gap-2.5">
             <Link href="/admin/orders/new" className={buttonClasses("primary", "sm")}>
@@ -38,7 +38,7 @@ export default async function DashboardPage() {
                 <line x1="12" x2="12" y1="5" y2="19" />
                 <line x1="5" x2="19" y1="12" y2="12" />
               </svg>
-              <span>Unda Agizo (Order)</span>
+              <span>New Order</span>
             </Link>
             <Link href="/admin/customers/new" className={buttonClasses("secondary", "sm")}>
               <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
                 <line x1="19" x2="19" y1="8" y2="14" />
                 <line x1="22" x2="16" y1="11" y2="11" />
               </svg>
-              <span>Ongeza Mteja</span>
+              <span>Add Customer</span>
             </Link>
           </div>
         }

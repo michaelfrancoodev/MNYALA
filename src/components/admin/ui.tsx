@@ -125,28 +125,28 @@ export function Pagination({ page, pages, hrefFor, total, pageSize }: { page: nu
   return (
     <nav aria-label="Pages" className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line/80 pt-4">
       <p className="text-xs font-medium text-muted">
-        Inaonyesha <span className="font-bold text-ink">{from}</span> hadi <span className="font-bold text-ink">{to}</span> kati ya <span className="font-bold text-ink">{total}</span>
+        Showing <span className="font-bold text-ink">{from}</span> to <span className="font-bold text-ink">{to}</span> of <span className="font-bold text-ink">{total}</span>
       </p>
       <div className="flex items-center gap-2">
         {page > 1 ? (
           <Link href={hrefFor(page - 1) as Route} className={link} rel="prev">
-            &larr; Nyuma
+            &larr; Previous
           </Link>
         ) : (
           <span className={off} aria-disabled="true">
-            &larr; Nyuma
+            &larr; Previous
           </span>
         )}
         <span className="inline-flex min-h-10 items-center px-2 text-xs font-bold text-ink">
-          Ukurasa {page} wa {pages}
+          Page {page} of {pages}
         </span>
         {page < pages ? (
           <Link href={hrefFor(page + 1) as Route} className={link} rel="next">
-            Mbele &rarr;
+            Next &rarr;
           </Link>
         ) : (
           <span className={off} aria-disabled="true">
-            Mbele &rarr;
+            Next &rarr;
           </span>
         )}
       </div>

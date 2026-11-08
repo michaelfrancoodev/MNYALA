@@ -5,8 +5,10 @@ import { createPublicWhatsAppOrder } from "@/server/actions/public-orders";
 import { formatTzs } from "@/lib/format";
 import type { PublicProduct } from "@/server/services/site";
 
+export type OrderProductSummary = Pick<PublicProduct, "id" | "name" | "category" | "priceTzs" | "priceUnit">;
+
 interface DirectOrderModalProps {
-  product: PublicProduct;
+  product: OrderProductSummary;
   buttonLabel?: string;
   buttonClassName?: string;
   defaultPackage?: string;

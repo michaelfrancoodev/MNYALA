@@ -18,7 +18,8 @@ export function UserBlock({ user }: { user: SessionUser }) {
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-bold text-ink">{user.name}</p>
-          <div className="flex items-center gap-1.5">
+          <p className="truncate text-xs text-muted">{user.email}</p>
+          <div className="mt-1 flex items-center gap-1.5">
             <span className="inline-block rounded-md bg-brand-tint px-1.5 py-0.5 text-[10px] font-bold text-brand-dark">
               {ROLE_LABEL[user.role]}
             </span>
@@ -26,8 +27,8 @@ export function UserBlock({ user }: { user: SessionUser }) {
         </div>
       </div>
       <form action={logoutAction}>
-        <SubmitButton variant="secondary" size="sm" pendingLabel="Inatoka..." className="w-full text-xs">
-          Ondoka (Sign out)
+        <SubmitButton variant="secondary" size="sm" pendingLabel="Signing out..." className="w-full text-xs">
+          Sign out
         </SubmitButton>
       </form>
     </div>

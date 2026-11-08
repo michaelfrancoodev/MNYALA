@@ -144,7 +144,7 @@ export function NavLinks({ groups }: { groups: NavLinkGroup[] }) {
                         )}
                       >
                         {item.count > 99 ? "99+" : item.count}
-                        <span className="sr-only"> mpya</span>
+                        <span className="sr-only"> waiting</span>
                       </span>
                     ) : null}
                   </Link>

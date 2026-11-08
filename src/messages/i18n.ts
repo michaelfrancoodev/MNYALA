@@ -9,7 +9,7 @@ export const COOKIE_NAME = "mnyala_lang";
 export async function getLocale(): Promise<Locale> {
   const cookieStore = await cookies();
   const val = cookieStore.get(COOKIE_NAME)?.value;
-  return val === "en" ? "en" : "sw";
+  return val === "sw" ? "sw" : "en";
 }
 
 export function getDictionary(locale: Locale) {
