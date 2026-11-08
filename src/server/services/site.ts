@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq, ne } from "drizzle-orm";
 import { cache } from "react";
 import { getDb } from "@/server/db/client";
 import { galleryItems, media, products, siteSettings } from "@/server/db/schema";
@@ -81,6 +81,46 @@ export const getPublishedProducts = cache(async (): Promise<PublicProduct[]> => 
     .leftJoin(media, eq(media.id, products.imageId))
     .where(eq(products.isPublished, true))
     .orderBy(asc(products.sortOrder), asc(products.name));
+  return rows.map((r) => ({
+    id: r.id, slug: r.slug, name: r.name, category: r.category, summary: r.summary, features: r.features,
+    priceTzs: r.priceTzs, priceUnit: r.priceUnit,
+    image: r.file && r.width && r.height && r.alt !== null ? { file: r.file, width: r.width, height: r.height, alt: r.alt } : null,
+  }));
+});
+
+export const getPublishedProductBySlug = cache(async (slug: string): Promise<PublicProduct | null> => {
+  const [r] = await getDb()
+    .select({
+      id: products.id, slug: products.slug, name: products.name, category: products.category, summary: products.summary,
+      features: products.features, priceTzs: products.priceTzs, priceUnit: products.priceUnit,
+      file: media.file, width: media.width, height: media.height, alt: media.alt,
+    })
+    .from(products)
+    .leftJoin(media, eq(media.id, products.imageId))
+    .where(and(eq(products.slug, slug), eq(products.isPublished, true)))
+    .limit(1);
+
+  if (!r) return null;
+  return {
+    id: r.id, slug: r.slug, name: r.name, category: r.category, summary: r.summary, features: r.features,
+    priceTzs: r.priceTzs, priceUnit: r.priceUnit,
+    image: r.file && r.width && r.height && r.alt !== null ? { file: r.file, width: r.width, height: r.height, alt: r.alt } : null,
+  };
+});
+
+export const getRelatedProducts = cache(async (currentSlug: string, limit = 3): Promise<PublicProduct[]> => {
+  const rows = await getDb()
+    .select({
+      id: products.id, slug: products.slug, name: products.name, category: products.category, summary: products.summary,
+      features: products.features, priceTzs: products.priceTzs, priceUnit: products.priceUnit,
+      file: media.file, width: media.width, height: media.height, alt: media.alt,
+    })
+    .from(products)
+    .leftJoin(media, eq(media.id, products.imageId))
+    .where(and(ne(products.slug, currentSlug), eq(products.isPublished, true)))
+    .orderBy(asc(products.sortOrder), asc(products.name))
+    .limit(limit);
+
   return rows.map((r) => ({
     id: r.id, slug: r.slug, name: r.name, category: r.category, summary: r.summary, features: r.features,
     priceTzs: r.priceTzs, priceUnit: r.priceUnit,

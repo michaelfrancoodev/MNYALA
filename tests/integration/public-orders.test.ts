@@ -17,14 +17,16 @@ describe("createPublicWhatsAppOrder", () => {
           slug: "mkaa-kilo-5",
           category: "charcoal",
           name: "Mkaa wa Mbegu 5kg",
-          summary: "Mkaa bora wa mbegu za mbono",
-          description: "Mkaa usio na moshi wala harufu",
+          summary: "Mkaa bora wa mbegu za mbono usio na moshi",
           priceTzs: 15000,
           priceUnit: "mfuko",
-          position: 1,
+          sortOrder: 1,
           isPublished: true,
         })
         .returning();
+
+      expect(product).toBeDefined();
+      if (!product) return;
 
       const result = await createPublicWhatsAppOrder(
         {
@@ -45,7 +47,7 @@ describe("createPublicWhatsAppOrder", () => {
 
       expect(result.orderCode).toMatch(/^MN-\d{4}-\d{4}$/);
       expect(result.whatsappUrl).toContain("https://wa.me/");
-      expect(result.whatsappUrl).toContain(encodeURIComponent(result.orderCode));
+      expect(result.whatsappUrl).toContain(encodeURIComponent(result.orderCode!));
 
       // Verify order exists in DB via admin service
       const savedOrder = await getOrderAdmin(db, result.orderId!);

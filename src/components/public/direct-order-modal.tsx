@@ -10,6 +10,7 @@ interface DirectOrderModalProps {
   buttonLabel?: string;
   buttonClassName?: string;
   defaultPackage?: string;
+  initialPackageSize?: string;
 }
 
 const CHARCOAL_SIZES = ["100gm", "1 KG", "5 KG", "7 KG", "15 KG", "30 KG"];
@@ -19,13 +20,14 @@ export function DirectOrderModal({
   buttonLabel = "Agiza Sasa",
   buttonClassName = "btn-product",
   defaultPackage,
+  initialPackageSize,
 }: DirectOrderModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const isCharcoal = product.category === "charcoal";
   const [packageSize, setPackageSize] = useState<string>(
-    defaultPackage || (isCharcoal ? "5 KG" : "Kawaida")
+    initialPackageSize || defaultPackage || (isCharcoal ? "5 KG" : "Kawaida")
   );
   const [quantity, setQuantity] = useState<number>(1);
   const [name, setName] = useState("");

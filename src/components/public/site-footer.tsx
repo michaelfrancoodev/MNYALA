@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import type { Route } from "next";
 import { telLink, mailtoLink } from "@/lib/contact-links";
 import type { SiteSettings } from "@/server/services/site";
 import type { Locale } from "@/messages/i18n";
@@ -14,13 +16,21 @@ export function SiteFooter({ site, locale = "sw" }: { site: SiteSettings; locale
       <div className="footer-container">
         {/* ABOUT */}
         <div className="footer-box">
-          <h3 className="flex items-center gap-2">
-            <svg className="size-5 shrink-0 text-[#f5a623]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-            </svg>
-            <span>Mnyala Co. Ltd</span>
-          </h3>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="size-11 rounded-full bg-white p-1 flex items-center justify-center shrink-0">
+              <Image
+                src="/original/logo.png"
+                alt="Mnyala Co. Ltd"
+                width={38}
+                height={38}
+                className="object-contain"
+              />
+            </div>
+            <div>
+              <h3 className="m-0 text-base font-bold text-white">Mnyala Co. Ltd</h3>
+              <p className="m-0 text-[11px] text-emerald-400 font-medium">Sustainable Energy</p>
+            </div>
+          </div>
           <p>
             {isSw
               ? "Tunageuza matunda ya mti wa mbono (Jatropha curcas) kuwa mkaa safi wa kisasa, mbegu na mbolea asilia, pia tunauza majiko. Lengo letu ni kutoa nishati safi na kulinda mazingira Tanzania."
@@ -52,19 +62,19 @@ export function SiteFooter({ site, locale = "sw" }: { site: SiteSettings; locale
 
         {/* SERVICES */}
         <div className="footer-box">
-          <h3>{isSw ? "Huduma Zetu" : "Our Services"}</h3>
+          <h3>{isSw ? "Huduma & Bidhaa" : "Products & Services"}</h3>
           <ul>
             <li>
-              <Link href="/bidhaa#charcoal">{isSw ? "Uzalishaji wa Mkaa Safi" : "Bio-charcoal Production"}</Link>
+              <Link href={"/bidhaa/mkaa-safi-wa-kisasa" as Route}>{isSw ? "Mkaa Safi wa Kisasa" : "Bio-Charcoal Briquettes"}</Link>
             </li>
             <li>
-              <Link href="/bidhaa#stove">{isSw ? "Uuzaji wa Majiko ya Kisasa" : "Stoves (Majiko) Sales"}</Link>
+              <Link href={"/bidhaa/majiko-ya-ufanisi" as Route}>{isSw ? "Majiko ya Ufanisi (Majiko)" : "Clean Cookstoves"}</Link>
             </li>
             <li>
-              <Link href="/bidhaa#seeds">{isSw ? "Usambazaji wa Mbegu za Mbono" : "Jatropha Seeds Supply"}</Link>
+              <Link href={"/bidhaa/mbegu-za-mbono" as Route}>{isSw ? "Mbegu Bora za Mbono" : "Jatropha Curcas Seeds"}</Link>
             </li>
             <li>
-              <Link href="/bidhaa#manure">{isSw ? "Mbolea Asilia (Mboji)" : "Organic Manure (Mboji)"}</Link>
+              <Link href={"/bidhaa/mboji-mbolea-asilia" as Route}>{isSw ? "Mbolea Asilia ya Mboji" : "Organic Bio-Fertilizer"}</Link>
             </li>
             <li>
               <Link href="/wasiliana">{isSw ? "Oda za Jumla na Usafirishaji" : "Bulk Orders & Delivery"}</Link>

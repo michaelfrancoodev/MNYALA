@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { JsonLd } from "@/components/public/json-ld";
@@ -334,46 +334,54 @@ export default async function HomePage() {
         <div className="products-container">
           {products.map((p) => {
             const fallbackImg = DEFAULT_IMAGES[p.category] || "/original/product3.jpg";
+            const detailHref = `/bidhaa/${p.slug}` as Route;
             return (
-              <div key={p.id} className="product-card">
-                <div className="product-image">
+              <div key={p.id} className="product-card flex flex-col justify-between group">
+                <Link href={detailHref} className="product-image block overflow-hidden">
                   <Image
                     src={fallbackImg}
                     alt={p.name}
                     width={500}
                     height={350}
-                    className="size-full object-cover"
+                    className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                </div>
-                <div className="product-content">
-                  <h3 className="flex items-center gap-2">
-                    <svg className="size-5 shrink-0 text-[#f5a623]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z" />
-                    </svg>
-                    <span>{p.name}</span>
-                  </h3>
-                  <p>{p.summary}</p>
+                </Link>
+                <div className="product-content flex flex-col justify-between grow p-5">
+                  <div>
+                    <Link href={detailHref} className="block">
+                      <h3 className="flex items-center gap-2 group-hover:text-emerald-800 transition-colors">
+                        <svg className="size-5 shrink-0 text-[#f5a623]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z" />
+                        </svg>
+                        <span>{p.name}</span>
+                      </h3>
+                    </Link>
+                    <p className="text-xs text-slate-600 mt-2 mb-3 line-clamp-2 leading-relaxed">{p.summary}</p>
 
-                  {p.features.length > 0 ? (
-                    <ul className="mb-4 space-y-1 text-xs text-slate-600">
-                      {p.features.slice(0, 3).map((f) => (
-                        <li key={f} className="flex items-center gap-2">
-                          <span className="size-1.5 rounded-full bg-[#2d7a3e]" />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
+                    {p.features.length > 0 ? (
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        {p.features.slice(0, 2).map((f) => (
+                          <span key={f} className="inline-flex items-center gap-1 rounded bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700 truncate max-w-full">
+                            <span className="size-1.5 rounded-full bg-[#2d7a3e] shrink-0" />
+                            <span className="truncate">{f}</span>
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
 
-                  {/* Direct WhatsApp Order Button + Modal */}
-                  <div className="mt-4 flex flex-col sm:flex-row gap-2">
+                  {/* Direct WhatsApp Order Button + Dedicated Detail Page Link */}
+                  <div className="mt-4 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
                     <DirectOrderModal
                       product={p}
-                      buttonLabel={isSw ? "Agiza Sasa (WhatsApp)" : "Order Now (WhatsApp)"}
-                      buttonClassName="btn-product text-center font-bold"
+                      buttonLabel={isSw ? "Agiza Sasa" : "Order Now"}
+                      buttonClassName="btn-product text-center font-bold text-xs py-2 px-1"
                     />
-                    <Link href={`/bidhaa#${p.slug}`} className="btn-secondary text-center text-xs py-3 px-4 border-[#2d7a3e] text-[#2d7a3e] hover:bg-[#2d7a3e] hover:text-white rounded-full font-bold transition-colors">
-                      {isSw ? "Maelezo Zaidi" : "More Info"}
+                    <Link
+                      href={detailHref}
+                      className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-800 hover:bg-slate-50 hover:border-slate-400 hover:text-emerald-800 py-2 px-1 transition-colors text-center"
+                    >
+                      {isSw ? "Maelezo Zaidi" : "View Details"}
                     </Link>
                   </div>
                 </div>

@@ -1,3 +1,4 @@
+import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonClasses } from "@/components/ui/button";
@@ -7,7 +8,7 @@ import type { PublicProduct } from "@/server/services/site";
 import { MediaImage } from "./media-image";
 import { DirectOrderModal } from "./direct-order-modal";
 
-const CATEGORY_DEFAULT_IMAGE: Record<PublicProduct["category"], { src: string; alt: string }> = {
+export const CATEGORY_DEFAULT_IMAGE: Record<PublicProduct["category"], { src: string; alt: string }> = {
   charcoal: {
     src: "/original/product3.jpg",
     alt: "Mkaa Safi wa Mbono - Mnyala Bio-Charcoal Briquettes Mbeya",
@@ -42,19 +43,20 @@ export function Price({ product }: { product: Pick<PublicProduct, "priceTzs" | "
   );
 }
 
-/** Clean, honest product card */
+/** Clean, responsive product card */
 export function ProductCard({ product }: { product: PublicProduct; whatsapp?: string }) {
   const fallback = CATEGORY_DEFAULT_IMAGE[product.category];
+  const detailHref = `/bidhaa/${product.slug}` as Route;
 
   return (
-    <div className="group flex flex-col justify-between rounded-lg border border-line bg-surface p-5 shadow-xs hover:border-emerald-700 hover:shadow-md transition-all duration-200">
+    <div className="group flex flex-col justify-between rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs hover:border-emerald-600 hover:shadow-md transition-all duration-200">
       <div>
-        <div className="relative overflow-hidden rounded-md border border-line/80 bg-slate-100">
+        <Link href={detailHref} className="block relative overflow-hidden rounded-lg border border-slate-100 bg-slate-100">
           {product.image ? (
             <MediaImage
               image={product.image}
               sizes="(min-width: 1024px) 24rem, 100vw"
-              className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-102"
+              className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : fallback ? (
             <Image
@@ -62,42 +64,44 @@ export function ProductCard({ product }: { product: PublicProduct; whatsapp?: st
               alt={fallback.alt}
               width={600}
               height={450}
-              className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-102"
+              className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="flex aspect-[4/3] items-center justify-center bg-slate-100 text-ink font-bold text-sm">
+            <div className="flex aspect-[4/3] items-center justify-center bg-slate-100 text-slate-800 font-bold text-sm">
               {PRODUCT_CATEGORY[product.category]}
             </div>
           )}
-          <span className="absolute left-2.5 top-2.5 rounded bg-slate-900/90 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-xs">
+          <span className="absolute left-2.5 top-2.5 rounded bg-emerald-800/95 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-xs">
             {PRODUCT_CATEGORY[product.category]}
           </span>
-        </div>
+        </Link>
 
         <div className="mt-4">
-          <h3 className="text-lg font-bold text-ink group-hover:text-emerald-800 transition-colors leading-snug">
-            {product.name}
-          </h3>
-          <p className="mt-1.5 text-xs text-ink-soft line-clamp-3 leading-relaxed">
+          <Link href={detailHref} className="block">
+            <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-800 transition-colors leading-snug">
+              {product.name}
+            </h3>
+          </Link>
+          <p className="mt-1.5 text-xs text-slate-600 line-clamp-2 leading-relaxed">
             {product.summary}
           </p>
         </div>
 
         {product.features.length > 0 ? (
-          <ul className="mt-3.5 space-y-1.5 border-t border-line/60 pt-3">
-            {product.features.slice(0, 3).map((f) => (
-              <li key={f} className="flex items-center gap-2 text-xs text-slate-700">
-                <svg className="size-3.5 shrink-0 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <div className="mt-3 flex flex-wrap gap-1.5 pt-2 border-t border-slate-100">
+            {product.features.slice(0, 2).map((f) => (
+              <span key={f} className="inline-flex items-center gap-1 rounded bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700 truncate max-w-full">
+                <svg className="size-3 shrink-0 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 <span className="truncate">{f}</span>
-              </li>
+              </span>
             ))}
-          </ul>
+          </div>
         ) : null}
       </div>
 
-      <div className="mt-5 border-t border-line/80 pt-3.5">
+      <div className="mt-5 border-t border-slate-100 pt-3.5">
         <div className="mb-3">
           <Price product={product} />
         </div>
@@ -107,8 +111,11 @@ export function ProductCard({ product }: { product: PublicProduct; whatsapp?: st
             buttonLabel={COMMON.orderNow}
             buttonClassName="btn-product text-center text-xs font-bold w-full py-2 px-1"
           />
-          <Link href={`/bidhaa#${product.slug}`} className={buttonClasses("secondary", "sm", "w-full text-xs font-semibold text-center")}>
-            Maelezo
+          <Link
+            href={detailHref}
+            className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-800 hover:bg-slate-50 hover:border-slate-400 hover:text-emerald-800 py-2 px-1 transition-colors text-center"
+          >
+            Maelezo Zaidi
           </Link>
         </div>
       </div>
@@ -186,8 +193,8 @@ export function ProductEntry({ product }: { product: PublicProduct; whatsapp?: s
                 buttonLabel={COMMON.orderNow}
                 buttonClassName="btn-product font-bold px-6 py-2.5 text-xs"
               />
-              <Link href={`/wasiliana?bidhaa=${product.slug}`} className={buttonClasses("secondary", "md", "font-semibold")}>
-                Wasiliana Nasi
+              <Link href={`/bidhaa/${product.slug}` as Route} className={buttonClasses("secondary", "md", "font-semibold")}>
+                Maelezo Kamili &rarr;
               </Link>
             </div>
           </div>
@@ -210,7 +217,7 @@ export function ProductLine({ product }: { product: PublicProduct }) {
       </div>
       <div className="flex items-center gap-4 shrink-0">
         <Price product={product} />
-        <Link href={`/bidhaa#${product.slug}`} className={buttonClasses("secondary", "sm")}>
+        <Link href={`/bidhaa/${product.slug}` as Route} className={buttonClasses("secondary", "sm")}>
           Maelezo
           <span className="sr-only"> ya {product.name}</span>
         </Link>
